@@ -78,7 +78,7 @@ nb_path: "00_summarise_rpl.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rps_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/Users/david/Documents/phdcode/sc2readertest/sc2readertest/test_replays&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rps_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./test_replays&quot;</span><span class="p">)</span>
 <span class="n">game_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s2">&quot;Jagannatha LE.SC2Replay&quot;</span><span class="p">)</span>
 <span class="n">single_replay</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="n">game_path</span><span class="p">)</span>
 <span class="n">single_replay</span>
@@ -96,7 +96,7 @@ nb_path: "00_summarise_rpl.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x1b53eb06310&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x2645c2d5280&gt;</pre>
 </div>
 
 </div>
@@ -121,7 +121,7 @@ nb_path: "00_summarise_rpl.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rps_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/Users/david/Documents/phdcode/sc2readertest/sc2readertest/test_replays&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rps_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./test_replays&quot;</span><span class="p">)</span>
 <span class="n">replays</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replays</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="p">))</span>
 <span class="n">replays</span>
 </pre></div>
@@ -138,7 +138,7 @@ nb_path: "00_summarise_rpl.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;generator object SC2Factory.load_all at 0x000001B53EB7C190&gt;</pre>
+<pre>&lt;generator object SC2Factory.load_all at 0x000002645CE4C2E0&gt;</pre>
 </div>
 
 </div>
@@ -226,7 +226,7 @@ nb_path: "00_summarise_rpl.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>File path: \Users\david\Documents\phdcode\sc2readertest\sc2readertest\test_replays\Jagannatha LE.SC2Replay
+<pre>File path: test_replays\Jagannatha LE.SC2Replay
 File hash: ffdcccf847aa496305a76be69e4d53c28422d308d59015558a149bd9363d0268
 Version of the game in which the replay was played: 5.0.6.83830
 Expansion (WoL: Wingd of Liberty, HotS: Heart of the Swarm, LotV: Legacy of the Void): LotV
@@ -704,7 +704,7 @@ Player_data instance.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Replay_data(replay_name=&#39;\\Users\\david\\Documents\\phdcode\\sc2readertest\\sc2readertest\\test_replays\\Jagannatha LE.SC2Replay&#39;, replay_id=&#39;Jagannatha LE.SC2Replay&#39;, date_time=datetime.datetime(2021, 2, 24, 2, 53, 6), game_length=590, match_type=&#39;1v1&#39;, game_release=&#39;5.0.6.83830&#39;, map_name=&#39;Jagannatha LE&#39;, category=&#39;Ladder&#39;, winner=Team 2: Player 2 - MxChrisxM (Terran), players=[Player_data(player_number=1, username=&#39;HDEspino&#39;, race=&#39;Protoss&#39;, result=&#39;Loss&#39;), Player_data(player_number=2, username=&#39;MxChrisxM&#39;, race=&#39;Terran&#39;, result=&#39;Win&#39;)])</pre>
+<pre>Replay_data(replay_name=&#39;test_replays\\Jagannatha LE.SC2Replay&#39;, replay_id=&#39;Jagannatha LE.SC2Replay&#39;, date_time=datetime.datetime(2021, 2, 24, 2, 53, 6), game_length=590, match_type=&#39;1v1&#39;, game_release=&#39;5.0.6.83830&#39;, map_name=&#39;Jagannatha LE&#39;, category=&#39;Ladder&#39;, winner=Team 2: Player 2 - MxChrisxM (Terran), players=[Player_data(player_number=1, username=&#39;HDEspino&#39;, race=&#39;Protoss&#39;, result=&#39;Loss&#39;), Player_data(player_number=2, username=&#39;MxChrisxM&#39;, race=&#39;Terran&#39;, result=&#39;Win&#39;)])</pre>
 </div>
 
 </div>
@@ -742,7 +742,7 @@ Player_data instance.</p>
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>File path:                   \Users\david\Documents\phdcode\sc2readertest\sc2readertest\test_replays\Jagannatha LE.SC2Replay 
+<pre>File path:                   test_replays\Jagannatha LE.SC2Replay 
 File name:                   Jagannatha LE.SC2Replay 
 Date (datetime.datetime):    2021-02-24 02:53:06 
 Duration (seconds):          590 
@@ -840,7 +840,7 @@ Here is the documentation for that function.</p>
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>File path:                   \Users\david\Documents\phdcode\sc2readertest\sc2readertest\test_replays\Jagannatha LE.SC2Replay 
+<pre>File path:                   test_replays\Jagannatha LE.SC2Replay 
 File name:                   Jagannatha LE.SC2Replay 
 Date (datetime.datetime):    2021-02-24 02:53:06 
 Duration (seconds):          590 

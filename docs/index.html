@@ -1,13 +1,13 @@
 ---
 
-title: sc2readertest: Tutorial for sc2reader
+title: sc_training
 
 
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "Tutorial that explores the features and characteristics of <a href='https://github.com/ggtracker/sc2reader'>sc2reader</a>"
-description: "Tutorial that explores the features and characteristics of <a href='https://github.com/ggtracker/sc2reader'>sc2reader</a>"
+summary: "This library is a prototype meant to facilitate the exploration of the technical feasibility, requirements, possibilities and limitations of developing an in-game recommender system for StarCraft II, i.e. SC2 Training Grounds."
+description: "This library is a prototype meant to facilitate the exploration of the technical feasibility, requirements, possibilities and limitations of developing an in-game recommender system for StarCraft II, i.e. SC2 Training Grounds."
 nb_path: "index.ipynb"
 ---
 <!--
@@ -31,16 +31,16 @@ nb_path: "index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p>sc2readertest is a python library developed to document, organise and communicate the basic technical specifications and design that supports SC2 Training Grounds.</p>
-<p>As such, I develop this library using literate and iterative programming. This means that I try to build the library while simultaneously providing a narrative explanation and documentation for this development, i.e. literate programming. In other words, "the program is its own documentation" (XXX). This approach also helps me keep a journal of the development process, which is especially useful as this library is developed as part of my creative practice PhD project. Furthermore, this methodology allows me to rapidly test and explore many features and ideas while integrating the finalised elements into the library's source code and structure.</p>
-<p>In this case, I used nbdev to facilitate this process. This means that the library includes three components that can be explored separately or combined. First, the library was developed through a series of Jupyter notebooks. These interactive documents contain intertwined textual elements and source code, which can be consulted using jupyter lab or other IPython interpreters. Readers can read these documents if they want to explore the basic ideas in this library and the source code that compose all its functions. 
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p><code>sc_training</code> is a python library developed to document, organise and communicate the basic technical posibilities, specifications and design that support SC2 Training Grounds.</p>
+<p>As such, I develop this library using literate and iterative programming. This means that I try to build the library while simultaneously providing a narrative explanation and documentation for this development, i.e. literate programming. In other words, "the program is its own documentation" (Knuth, 1984; Ramsey, 1994; Literate Programming, 2014; Kery et al., 2018). This approach also helps me keep a journal of the development process, which is especially useful as this library is developed as part of my creative practice PhD project. Furthermore, this methodology allows me to rapidly test and explore many features and ideas while integrating the finalised elements into the library's source code and structure (Howard, 2019).</p>
+<p>In this case, I used <a href="https://nbdev.fast.ai/">nbdev</a> to facilitate this process. This means that the library includes three components that can be explored separately or combined. First, the library was developed through a series of Jupyter notebooks. These interactive documents contain intertwined textual elements and source code, which can be consulted using jupyter lab or other IPython interpreters. Readers can read these documents if they want to explore the basic ideas in this library and the source code that compose all its functions. 
 {% include tip.html content='the following link explains how to set up the Jupyter and IPython libraries to use these documents. <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/">Jupyter/IPython Quick Start Guide</a>' %}
-Second, the library also includes its complete documentation, where I review the development of each of its modules. I have structured this documentation as linearly as possible to reflect its development process and the structure that underlines the library. There are separate sections for each module. There, I expand on the main challenges each development stage posed. I also include the documentation developers would need to use the functions each module exports as a solution to these challenges. This documentation hides much of the implementation details of each module, which can be reviewed in the library's source code or its development jupyter notebooks. 
+Second, the library also includes its complete documentation, where I review the development of each of its modules. I have structured this documentation as linearly as possible to reflect its development process and the structure that underlines the library. 
+Each module's documentation includes several sections that review the main challenges I faced at each development stage. Additionally, at each document's end, there is a summary of the functions each module exports as a solution to these challenges. This summary hides much of the implementation details of each module, which readers can review in the library's source code or its development Jupyter notebooks. 
 {% include tip.html content='this documentation can be consulted as an interactive website or a pdf document. I include both versions as appendices to my research project.' %}
-Finally, this library is also exported as a traditional python library. This means that readers can find a functioning version of all the module's source code contained in the sc2readertest folder of the library. Hence, they can use source code can replicate many of the examples and prototype uses explored in the documentation.
-{% include tip.html content='this library contains the same source code as the jupyter notebooks, without examples and narrative explanations.' %}</p>
-<h2 id="Modules-and-Structure">Modules and Structure<a class="anchor-link" href="#Modules-and-Structure"> </a></h2><p>sc2readertest has various modules that are divided into several sections. The sections respond to the general strategy proposed in SC2 Training Grounds Design Brief.</p>
-<h3 id="Section-1-Input-and-Data-Structures">Section 1 Input and Data Structures<a class="anchor-link" href="#Section-1-Input-and-Data-Structures"> </a></h3><p>Modules 00 to 07 cover an in-depth exploration of the sc2reader library. I use this package as the primary interface to extract data from StarCraft II replays and maps as input for SC2 Training Grounds.</p>
+Finally, this library is also exported as a traditional python library. This means that readers can find a functioning version of all the module's source code contained in the <code>sc_training</code> folder of the library. With this source code anyone can replicateand verify any of the examples and experiments I explore in the documentation and the notebooks.</p>
+<h2 id="Modules-and-Structure">Modules and Structure<a class="anchor-link" href="#Modules-and-Structure"> </a></h2><p><code>sc_training</code> has various modules that are divided into several sections. The sections respond to the general strategy proposed in SC2 Training Grounds Design Brief.</p>
+<h3 id="Section-1-Input-and-Data-Structures">Section 1 Input and Data Structures<a class="anchor-link" href="#Section-1-Input-and-Data-Structures"> </a></h3><p>Modules 00 to 07 cover an in-depth exploration of the <a href="https://github.com/ggtracker/sc2reader">sc2reader</a> library. I use this package as the primary interface to extract data from StarCraft II replays and maps as input for SC2 Training Grounds.</p>
 <h3 id="Section-2-Clustering">Section 2 Clustering<a class="anchor-link" href="#Section-2-Clustering"> </a></h3><p>In modules XX to XX, I review the clustering component of SC 2 Training Grounds. This component uses the player profiles constructed with Section 1's modules to generate a player classification model based on the players' performance indicators.</p>
 <h3 id="Section-3-Classifier">Section 3 Classifier<a class="anchor-link" href="#Section-3-Classifier"> </a></h3><p>The modules in this section explore how I would use supervised learning techniques to generate a classification model based on the initial cluster analysis. This model aims to allow the system to rapidly and efficiently classify players into the categories defined in the previous cluster analysis.</p>
 <h3 id="Section-4-Recommender">Section 4 Recommender<a class="anchor-link" href="#Section-4-Recommender"> </a></h3><p>This final section explores how the player classification can be used to generate play recommendations for the players. This recommendation's objective is to help players build and follow specific training regimes to improve their performance in StarCraft II online melee matches.
@@ -51,7 +51,7 @@ Finally, this library is also exported as a traditional python library. This mea
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Install">Install<a class="anchor-link" href="#Install"> </a></h2><p>{% include warning.html content='incomplete' %}
+<h2 id="Install">Install<a class="anchor-link" href="#Install"> </a></h2><p>{% include warning.html content='THE FOLLOWING 2 SECTIONS ARE INCOMPLETE PLACEHOLDERS. PLEASE DISREGARD FOR NOW' %}
 If time allows I will cover the package intallation process and a sample run of the final system in these sections</p>
 
 </div>
@@ -59,7 +59,7 @@ If time allows I will cover the package intallation process and a sample run of 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>pip install your_project_name</code></p>
+<p><code>pirpi install sc_traing</code></p>
 
 </div>
 </div>

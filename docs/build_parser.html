@@ -1631,7 +1631,7 @@ This second approach also means that each match's record will contain fewer blan
       <td>0</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
+      <td>4</td>
     </tr>
     <tr>
       <th>early</th>
@@ -1669,7 +1669,7 @@ This second approach also means that each match's record will contain fewer blan
       <td>0</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
+      <td>4</td>
     </tr>
     <tr>
       <th>late</th>
@@ -1688,7 +1688,7 @@ This second approach also means that each match's record will contain fewer blan
       <td>0</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
+      <td>4</td>
     </tr>
   </tbody>
 </table>
@@ -1755,6 +1755,7 @@ This second approach also means that each match's record will contain fewer blan
       <th>missileturret</th>
       <th>orbitalcommand</th>
       <th>planetaryfortress</th>
+      <th>reactor</th>
       <th>refinery</th>
       <th>sensortower</th>
       <th>starport</th>
@@ -1768,7 +1769,7 @@ This second approach also means that each match's record will contain fewer blan
       <td>3</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
+      <td>1</td>
       <td>1</td>
       <td>6</td>
       <td>0</td>
@@ -1776,11 +1777,12 @@ This second approach also means that each match's record will contain fewer blan
       <td>0</td>
       <td>2</td>
       <td>1</td>
+      <td>0</td>
       <td>6</td>
       <td>0</td>
       <td>2</td>
-      <td>9</td>
-      <td>0</td>
+      <td>13</td>
+      <td>6</td>
     </tr>
     <tr>
       <th>early</th>
@@ -1795,11 +1797,12 @@ This second approach also means that each match's record will contain fewer blan
       <td>0</td>
       <td>1</td>
       <td>0</td>
-      <td>2</td>
-      <td>0</td>
       <td>1</td>
       <td>2</td>
       <td>0</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>mid</th>
@@ -1814,18 +1817,19 @@ This second approach also means that each match's record will contain fewer blan
       <td>0</td>
       <td>2</td>
       <td>0</td>
+      <td>0</td>
       <td>4</td>
       <td>0</td>
       <td>1</td>
-      <td>4</td>
-      <td>0</td>
+      <td>8</td>
+      <td>6</td>
     </tr>
     <tr>
       <th>late</th>
       <td>3</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
+      <td>1</td>
       <td>1</td>
       <td>6</td>
       <td>0</td>
@@ -1833,11 +1837,12 @@ This second approach also means that each match's record will contain fewer blan
       <td>0</td>
       <td>2</td>
       <td>1</td>
+      <td>0</td>
       <td>6</td>
       <td>0</td>
       <td>2</td>
-      <td>9</td>
-      <td>0</td>
+      <td>13</td>
+      <td>6</td>
     </tr>
   </tbody>
 </table>
@@ -1963,7 +1968,7 @@ This second approach also means that each match's record will contain fewer blan
       <td>12</td>
       <td>0</td>
       <td>7</td>
-      <td>11</td>
+      <td>14</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -2009,7 +2014,7 @@ This second approach also means that each match's record will contain fewer blan
       <td>7</td>
       <td>0</td>
       <td>4</td>
-      <td>10</td>
+      <td>13</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -2118,7 +2123,7 @@ This second approach also means that each match's record will contain fewer blan
     <tr>
       <th>whole</th>
       <td>0</td>
-      <td>0</td>
+      <td>2</td>
       <td>0</td>
       <td>4</td>
       <td>0</td>
@@ -2140,7 +2145,7 @@ This second approach also means that each match's record will contain fewer blan
     <tr>
       <th>early</th>
       <td>0</td>
-      <td>0</td>
+      <td>1</td>
       <td>0</td>
       <td>2</td>
       <td>0</td>
@@ -2162,7 +2167,7 @@ This second approach also means that each match's record will contain fewer blan
     <tr>
       <th>mid</th>
       <td>0</td>
-      <td>0</td>
+      <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -2329,43 +2334,16 @@ In the player profile, I can average the times a player researched a particular 
 
 <div class="output_area">
 
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">ValueError</span>                                Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-38-124052f31f1d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">      1</span> player1_upgrades <span class="ansi-yellow-intense-fg ansi-bold">=</span> list_player_upgrades<span class="ansi-yellow-intense-fg ansi-bold">(</span>sing_zerg<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 2</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>player1_upgrades<span class="ansi-yellow-intense-fg ansi-bold">,</span> index<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;Player1_upgrades&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
 
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{&#39;BansheeCloak&#39;: 0,
- &#39;BansheeSpeed&#39;: 0,
- &#39;BattlecruiserEnableSpecializations&#39;: 0,
- &#39;CycloneLockOnDamageUpgrade&#39;: 546.3041002277904,
- &#39;DrillClaws&#39;: 427.7596810933941,
- &#39;EnhancedShockwaves&#39;: 0,
- &#39;HiSecAutoTracking&#39;: 0,
- &#39;HighCapacityBarrels&#39;: 347.77790432801817,
- &#39;LiberatorAGRangeUpgrade&#39;: 0,
- &#39;MedivacIncreaseSpeedBoost&#39;: 0,
- &#39;PersonalCloaking&#39;: 0,
- &#39;PunisherGrenades&#39;: 0,
- &#39;RavenCorvidReactor&#39;: 0,
- &#39;ShieldWall&#39;: 0,
- &#39;SmartServos&#39;: 526.3086560364465,
- &#39;Stimpack&#39;: 0,
- &#39;TerranBuildingArmor&#39;: 0,
- &#39;TerranInfantryArmorsLevel1&#39;: 0,
- &#39;TerranInfantryArmorsLevel2&#39;: 0,
- &#39;TerranInfantryArmorsLevel3&#39;: 0,
- &#39;TerranInfantryWeaponsLevel1&#39;: 0,
- &#39;TerranInfantryWeaponsLevel2&#39;: 0,
- &#39;TerranInfantryWeaponsLevel3&#39;: 0,
- &#39;TerranShipWeaponsLevel1&#39;: 0,
- &#39;TerranShipWeaponsLevel2&#39;: 0,
- &#39;TerranShipWeaponsLevel3&#39;: 0,
- &#39;TerranVehicleAndShipArmorsLevel1&#39;: 0,
- &#39;TerranVehicleAndShipArmorsLevel2&#39;: 0,
- &#39;TerranVehicleAndShipArmorsLevel3&#39;: 0,
- &#39;TerranVehicleWeaponsLevel1&#39;: 574.1548974943053,
- &#39;TerranVehicleWeaponsLevel2&#39;: 0,
- &#39;TerranVehicleWeaponsLevel3&#39;: 0}</pre>
+<span class="ansi-red-intense-fg ansi-bold">ValueError</span>: not enough values to unpack (expected 2, got 1)</pre>
 </div>
-
 </div>
 
 </div>

@@ -1,0 +1,9 @@
+{
+  "sc_training": {
+    "Overview": "/",
+    "00 summarise_rpl getting the a replay's basic info": "summarise_rpl.html",
+    "01 handle_tracker_events Extracting information from the game's events": "handle_tracker_events.html",
+    "02 macro_econ_parser Macroeconomic performance indicators": "macro_econ_parser.html",
+    "03 build_parser Outlining a player's army, base and tech builds": "build_parser.html"
+  }
+}

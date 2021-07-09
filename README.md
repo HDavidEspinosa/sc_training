@@ -1,7 +1,17 @@
 # sc_training
-> This library is a prototype meant to facilitate the exploration of the technical feasibility, requirements, possibilities and limitations of developing an in-game recommender system for StarCraft II, i.e. SC2 Training Grounds.
+> : This library is a prototype meant to facilitate the exploration of the technical feasibility, requirements, possibilities and limitations of developing an in-game recommender system for StarCraft II, i.e. SC2 Training Grounds.
 
 
+```python
+%load_ext autoreload
+%autoreload 2
+```
+
+    The autoreload extension is already loaded. To reload it, use:
+      %reload_ext autoreload
+    
+
+{% include note.html content='this prototype is mainly a tool for the reflective practice of development. This reflection is part of my PhD research project, "Encouraging Play Experience Expansion Through Machine-Learning-Based Recommendations: User-Experience Design considerations in the use of Machine-Learning-Based Recommendation System for Videogames".' %}
 ## Introduction
 
 `sc_training` is a python library developed to document, organise and communicate the basic technical posibilities, specifications and design that support SC2 Training Grounds.
@@ -39,6 +49,7 @@ This final section explores how the player classification can be used to generat
 ## Install
 {% include warning.html content='THE FOLLOWING 2 SECTIONS ARE INCOMPLETE PLACEHOLDERS. PLEASE DISREGARD FOR NOW' %}
 If time allows I will cover the package intallation process and a sample run of the final system in these sections 
+{% include note.html content='This is a test quote' %}
 
 `pirpi install sc_traing`
 
@@ -46,13 +57,61 @@ If time allows I will cover the package intallation process and a sample run of 
 
 Fill me in please! Don't forget code examples:
 
+```python
+# This are this module's dependencies.
+from pathlib import Path
+from pprint import pprint
+from dataclasses import dataclass, astuple, field
+from datetime import datetime
+from typing import *
+
+
+import sc2reader
+
 ```
-1+1
+
+```python
+# This code sets up the notebook's sample replay.
+rps_path = Path("./test_replays")
+game_path = str(rps_path/"Jagannatha LE.SC2Replay")
+single_replay = sc2reader.load_replay(game_path)
+single_replay
 ```
 
 
 
 
-    2
+    <sc2reader.resources.Replay at 0x213d3d617f0>
 
 
+
+```python
+p1 = single_replay.player[1]
+```
+
+```python
+p1.units[:5]
+```
+
+
+
+
+    [BeaconArmy [2640001],
+     BeaconDefend [2680001],
+     BeaconAttack [26C0001],
+     BeaconHarass [2700001],
+     BeaconIdle [2740001]]
+
+
+
+```python
+from nbdev.export import notebook2script
+notebook2script()
+```
+
+    Converted 00_summarise_rpl.ipynb.
+    Converted 01_handle_tracker_events.ipynb.
+    Converted 02_macro_econ_parser.ipynb.
+    Converted 03_build_parser.ipynb.
+    Converted index.ipynb.
+    

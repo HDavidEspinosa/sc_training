@@ -10,7 +10,7 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: 00 summarise_rpl getting the a replay's basic info
+      title: Chapter 1 - summarise_rpl getting the a replay's basic info
       url: summarise_rpl.html
     - output: web,pdf
       title: 01 handle_tracker_events Extracting information from the game's events

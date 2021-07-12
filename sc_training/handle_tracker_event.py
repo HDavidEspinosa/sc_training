@@ -11,20 +11,25 @@ import fastcore.test as ft
 
 import sc2reader
 
+
 # Cell
 INTERVALS_BASE = 4*60
 
-# Cell
-def calc_realtime_index(registered_time: int, rpl: sc2reader.resources.Replay) -> float:
-    """Calculate the time index of an event based on the replay recorded duration.
 
-    Given that the registered time index on TrackerEvents don not necessarily coincide with the replay
-    duration, this function recalculates the time index of an event to correct this discrepancy.
+# Cell
+def calc_realtime_index(registered_time: int,
+                        rpl: sc2reader.resources.Replay) -> float:
+    """Calculate the time index of an event based on the replay recorded
+    duration.
+
+    Given that the registered time index on TrackerEvents don not necessarily
+    coincide with the replay duration, this function recalculates the time
+    index of an event to correct this discrepancy.
 
     *Args*
         - registered_time (int)
-            The time index in seconds recorded in the event. Normally accessible through the .second
-            attribute.
+            The time index in seconds recorded in the event. Normally
+            accessible through the .second attribute.
         - rpl (sc2reader.resources.Replay)
             Working replay
 
@@ -33,5 +38,8 @@ def calc_realtime_index(registered_time: int, rpl: sc2reader.resources.Replay) -
             The time index that would match the replay's duration
     """
     rpl_length = rpl.length.seconds
-    rpl_last_rec_time = [e.second for e in rpl.events if isinstance(e, sc2reader.events.tracker.PlayerStatsEvent)][-1]
+    rpl_last_rec_time = [e.second for e in rpl.events
+                        if isinstance(e,
+                        sc2reader.events.tracker.PlayerStatsEvent)][-1]
+
     return (registered_time/rpl_last_rec_time) * rpl_length

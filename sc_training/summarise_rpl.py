@@ -14,6 +14,7 @@ from typing import *
 
 import sc2reader
 
+
 # Cell
 @dataclass(frozen=True)
 class Player_data:
@@ -23,14 +24,16 @@ class Player_data:
 
     *Attributes:*
         - player_number (int):
-            Player number in the match. In a 1v1, match there would be a Player 1 and 2.
+            Player number in the match. In a 1v1, match there would be a
+            Player 1 and 2.
         - username (str):
             The player's user name.
         - race (str):
-            The game race (Protoss, Terran, Zerg) with which the player played this match.
+            The game race (Protoss, Terran, Zerg) with which the player
+            played this match.
         - result (str):
-            Variable descriving whether the player was the matches winner ('Win')
-            or loser ('Loss').
+            Variable descriving whether the player was the matches winner
+            ('Win') or loser ('Loss').
 
     """
     player_number: int
@@ -40,8 +43,11 @@ class Player_data:
 
     def __str__(self):
         headers = ('Player Number:', 'User Name:', 'Race:', 'Result:')
-        print_lines = (f'{h:<15}{att:>10}\n' for h, att in zip(headers, astuple(self)))
+        print_lines = (f'{h:<15}{att:>10}\n' for h, att
+                        in zip(headers, astuple(self)))
         return ''.join(print_lines)
+
+
 
 
 # Cell
@@ -98,8 +104,11 @@ class Replay_data:
                    'winner:',
                    'players:'
                    )
-        print_lines = (f'{h:<28} {str(att)} \n' for h, att in zip(headers, astuple(self)))
+        print_lines = (f'{h:<28} {str(att)} \n'
+                       for h, att in zip(headers, astuple(self)))
         return ''.join(print_lines)
+
+
 
 # Cell
 def get_players(player_dict: Dict[Any, Any]) -> List[Player_data]:
@@ -113,14 +122,19 @@ def get_players(player_dict: Dict[Any, Any]) -> List[Player_data]:
 
     *Returns:*
         - List[Player_data]:
-            List of the match's players, each player contains a summary of their match data.
+            List of the match's players, each player contains a summary of
+            their match data.
     """
-    return [Player_data(p.pid, p.name, p.play_race, p.result) for p in player_dict.values()]
+    return [Player_data(p.pid, p.name, p.play_race, p.result)
+            for p in player_dict.values()]
+
+
 
 # Cell
 def get_replay_info(replay: sc2reader.resources.Replay) -> Replay_data:
     '''
-    Extracts a summary of a match's general information into a Replay_data dataclass instance.
+    Extracts a summary of a match's general information into a Replay_data
+    dataclass instance.
 
     *Args:*
         - replay (sc2reader.resources.Replay):
@@ -142,5 +156,7 @@ def get_replay_info(replay: sc2reader.resources.Replay) -> Replay_data:
         map_name= replay.map_name,
         category= replay.category,
         winner= replay.winner,
-        players= get_players(replay.player) #note the use of the helper function here
+        players= get_players(replay.player) # note the use of the helper
+                                            # function here
     )
+

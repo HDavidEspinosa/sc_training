@@ -9,7 +9,7 @@
 
     The autoreload extension is already loaded. To reload it, use:
       %reload_ext autoreload
-    
+
 
 {% include note.html content='this prototype is mainly a tool for the reflective practice of development. This reflection is part of my PhD research project, "Encouraging Play Experience Expansion Through Machine-Learning-Based Recommendations: User-Experience Design considerations in the use of Machine-Learning-Based Recommendation System for Videogames".' %}
 ## Introduction
@@ -114,4 +114,4 @@ notebook2script()
     Converted 02_macro_econ_parser.ipynb.
     Converted 03_build_parser.ipynb.
     Converted index.ipynb.
-    
+

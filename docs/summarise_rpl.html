@@ -6,8 +6,8 @@ title: Chapter 1 - summarise_rpl getting the a replay's basic info
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "In this module, I explore the necessary elements to set up a `sc2reader`. I also review some of the data someone can extract using `sc2reader`.  "
-description: "In this module, I explore the necessary elements to set up a `sc2reader`. I also review some of the data someone can extract using `sc2reader`.  "
+
+
 nb_path: "01_summarise_rpl.ipynb"
 ---
 <!--
@@ -32,8 +32,8 @@ nb_path: "01_summarise_rpl.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Setup">Setup<a class="anchor-link" href="#Setup"> </a></h2><ol>
-<li>Import <code>sc2reader</code> and libraries that you need in your project. For example, here, I use <code>pathlib.Path</code> to standardise the use of files and dirs. </li>
-<li>Locate the directory for the replay files. </li>
+<li>Import <code>sc2reader</code> and libraries that you need in your project. For example, here, I use <code>pathlib.Path</code> to standardise the use of files and dirs.</li>
+<li>Locate the directory for the replay files.</li>
 </ol>
 
 </div>
@@ -71,7 +71,7 @@ nb_path: "01_summarise_rpl.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x2a3eaade040&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x221ec0fbca0&gt;</pre>
 </div>
 
 </div>
@@ -113,7 +113,7 @@ nb_path: "01_summarise_rpl.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;generator object SC2Factory.load_all at 0x000002A3EC9BD6D0&gt;</pre>
+<pre>&lt;generator object SC2Factory.load_all at 0x00000221EC15EB30&gt;</pre>
 </div>
 
 </div>
@@ -174,17 +174,20 @@ nb_path: "01_summarise_rpl.ipynb"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File path: </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">filename</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;File hash: </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">filehash</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Version of the game in which the replay was played: </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">release_string</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expansion (WoL: Wingd of Liberty, HotS: Heart of the Swarm, LotV: Legacy of the Void): </span><span class="se">\</span>
-<span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">expansion</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Version of the game in which the replay was played: </span><span class="se">\</span>
+<span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">release_string</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expansion (WoL: Wingd of Liberty, HotS: Heart of the Swarm, </span><span class="se">\</span>
+<span class="s1">LotV: Legacy of the Void): </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">expansion</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Game region: </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">region</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Game category: </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Game type: </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Map: </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">map_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Date start (datetime.datetime): </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">start_time</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Date end (datetime.datetime): </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">end_time</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Duration in MM.SS (minutes.seconds): </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_length</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Duration in MM.SS (minutes.seconds): </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">single_replay</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Duration in MM.SS (minutes.seconds): </span><span class="se">\</span>
+<span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_length</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Duration in MM.SS (minutes.seconds): </span><span class="se">\</span>
+<span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">single_replay</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Duration in frames: </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">frames</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frames per Second: </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_fps</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Players dict: </span><span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -241,15 +244,15 @@ Winner : Team 2: Player 2 - MxChrisxM (Terran)
 <p>All entities in a replay fall into one of two overlapping buckets:</p>
 <ul>
 <li><strong>User</strong>: is a human entity. Only users have <em>game and message events</em>.</li>
-<li><strong>Player</strong>: is an entity that actively plays in the game. Only players have <em>tracker events</em>.</li>
-</ul>
+<li><p><strong>Player</strong>: is an entity that actively plays in the game. Only players have <em>tracker events</em>.</p>
 <p>As such, one can summarise the entities encountered in replays as follows:</p>
-<ul>
+</li>
 <li>A <strong>Participant</strong> is a Player and a User</li>
 <li>An <strong>Observer</strong> is a User and not a Player</li>
-<li>A <strong>Computer</strong> is a Player and not a User</li>
-</ul>
+<li><p>A <strong>Computer</strong> is a Player and not a User</p>
 <p>With this in mind, here I access the match participans' information as follows:</p>
+</li>
+</ul>
 
 </div>
 </div>
@@ -410,21 +413,23 @@ Player ID: 2
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Player_data" class="doc_header"><code>class</code> <code>Player_data</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L18" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Player_data</code>(<strong><code>player_number</code></strong>:<code>int</code>, <strong><code>username</code></strong>:<code>str</code>, <strong><code>race</code></strong>:<code>str</code>, <strong><code>result</code></strong>:<code>str</code>)</p>
+<h4 id="Player_data" class="doc_header"><code>class</code> <code>Player_data</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Player_data</code>(<strong><code>player_number</code></strong>:<code>int</code>, <strong><code>username</code></strong>:<code>str</code>, <strong><code>race</code></strong>:<code>str</code>, <strong><code>result</code></strong>:<code>str</code>)</p>
 </blockquote>
 <p>Immutable dataclass that contains Information that describes a
 player's attributes in a match.</p>
 <p><em>Attributes:</em></p>
 
 <pre><code>- player_number (int):
-    Player number in the match. In a 1v1, match there would be a Player 1 and 2.
+    Player number in the match. In a 1v1, match there would be a
+    Player 1 and 2.
 - username (str):
     The player's user name.
 - race (str):
-    The game race (Protoss, Terran, Zerg) with which the player played this match.
+    The game race (Protoss, Terran, Zerg) with which the player
+    played this match.
 - result (str):
-    Variable descriving whether the player was the matches winner ('Win')
-    or loser ('Loss').</code></pre>
+    Variable descriving whether the player was the matches winner
+    ('Win') or loser ('Loss').</code></pre>
 
 </div>
 
@@ -549,7 +554,7 @@ Result:              Loss
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Replay_data" class="doc_header"><code>class</code> <code>Replay_data</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L48" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Replay_data</code>(<strong><code>replay_name</code></strong>:<code>str</code>, <strong><code>replay_id</code></strong>:<code>str</code>, <strong><code>date_time</code></strong>:<code>datetime</code>, <strong><code>game_length</code></strong>:<code>int</code>, <strong><code>match_type</code></strong>:<code>str</code>, <strong><code>game_release</code></strong>:<code>str</code>, <strong><code>map_name</code></strong>:<code>str</code>, <strong><code>category</code></strong>:<code>str</code>, <strong><code>winner</code></strong>:<code>str</code>, <strong><code>players</code></strong>:<code>list</code>[<a href="/sc_training/summarise_rpl.html#Player_data"><code>Player_data</code></a>])</p>
+<h4 id="Replay_data" class="doc_header"><code>class</code> <code>Replay_data</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L54" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Replay_data</code>(<strong><code>replay_name</code></strong>:<code>str</code>, <strong><code>replay_id</code></strong>:<code>str</code>, <strong><code>date_time</code></strong>:<code>datetime</code>, <strong><code>game_length</code></strong>:<code>int</code>, <strong><code>match_type</code></strong>:<code>str</code>, <strong><code>game_release</code></strong>:<code>str</code>, <strong><code>map_name</code></strong>:<code>str</code>, <strong><code>category</code></strong>:<code>str</code>, <strong><code>winner</code></strong>:<code>str</code>, <strong><code>players</code></strong>:<code>list</code>[<a href="/sc_training/summarise_rpl.html#Player_data"><code>Player_data</code></a>])</p>
 </blockquote>
 <p>Immutable dataclass that contains information summarising a
 match's main attributes.</p>
@@ -599,13 +604,6 @@ match's main attributes.</p>
     
 <div class="cell border-box-sizing code_cell rendered">
 
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
 <div class="output_wrapper">
 <div class="output">
 
@@ -613,7 +611,7 @@ match's main attributes.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_players" class="doc_header"><code>get_players</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L105" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_players</code>(<strong><code>player_dict</code></strong>:<code>Dict</code>[<code>Any</code>, <code>Any</code>])</p>
+<h4 id="get_players" class="doc_header"><code>get_players</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L114" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_players</code>(<strong><code>player_dict</code></strong>:<code>Dict</code>[<code>Any</code>, <code>Any</code>])</p>
 </blockquote>
 <p>Extracts the players' data from a Participant Object, into a
 Player_data instance.</p>
@@ -626,7 +624,8 @@ Player_data instance.</p>
 <p><em>Returns:</em></p>
 
 <pre><code>- List[Player_data]:
-    List of the match's players, each player contains a summary of their match data.</code></pre>
+    List of the match's players, each player contains a summary of
+    their match data.</code></pre>
 
 </div>
 
@@ -634,6 +633,13 @@ Player_data instance.</p>
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
@@ -662,7 +668,8 @@ Player_data instance.</p>
         <span class="n">map_name</span><span class="o">=</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">map_name</span><span class="p">,</span>
         <span class="n">category</span><span class="o">=</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
         <span class="n">winner</span><span class="o">=</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">winner</span><span class="p">,</span>
-        <span class="n">players</span><span class="o">=</span> <span class="n">get_players</span><span class="p">(</span><span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">)</span> <span class="c1">#note the use of the helper function here</span>
+        <span class="n">players</span><span class="o">=</span> <span class="n">get_players</span><span class="p">(</span><span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">)</span> <span class="c1"># note the use of the</span>
+                                                   <span class="c1"># helper function here</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
 </pre></div>
@@ -749,18 +756,11 @@ players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Lo
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Exported-Functions">Exported Functions<a class="anchor-link" href="#Exported-Functions"> </a></h3><p>Having defined these data structures, I can define a simple function that receives a <code>Replay</code> and returns a replay summary as a <a href="/sc_training/summarise_rpl.html#Replay_data"><code>Replay_data</code></a> instance.
-Here is the documentation for that function.</p>
+ Here is the documentation for that function.</p>
 
 </div>
 </div>
 </div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -772,9 +772,10 @@ Here is the documentation for that function.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_replay_info" class="doc_header"><code>get_replay_info</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L121" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_replay_info</code>(<strong><code>replay</code></strong>:<code>Replay</code>)</p>
+<h4 id="get_replay_info" class="doc_header"><code>get_replay_info</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L133" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_replay_info</code>(<strong><code>replay</code></strong>:<code>Replay</code>)</p>
 </blockquote>
-<p>Extracts a summary of a match's general information into a Replay_data dataclass instance.</p>
+<p>Extracts a summary of a match's general information into a Replay_data
+dataclass instance.</p>
 <p><em>Args:</em></p>
 
 <pre><code>- replay (sc2reader.resources.Replay):
@@ -792,6 +793,13 @@ Here is the documentation for that function.</p>
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
@@ -865,10 +873,11 @@ players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Lo
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Converted 00_summarise_rpl.ipynb.
-Converted 01_handle_tracker_events.ipynb.
-Converted 02_macro_econ_parser.ipynb.
-Converted 03_build_parser.ipynb.
+<pre>Converted 01_summarise_rpl.ipynb.
+Converted 02_handle_tracker_events.ipynb.
+Converted 03_macro_econ_parser.ipynb.
+Converted 04_build_parser.ipynb.
+Converted 05_handle_game_events.ipynb.
 Converted index.ipynb.
 </pre>
 </div>

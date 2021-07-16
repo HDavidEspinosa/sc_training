@@ -44,21 +44,6 @@ nb_path: "index.ipynb"
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>The autoreload extension is already loaded. To reload it, use:
-  %reload_ext autoreload
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -83,6 +68,193 @@ Finally, this library is also exported as a traditional python library. This mea
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Setup">Setup<a class="anchor-link" href="#Setup"> </a></h2><p>As a prelude to the exploration in the following modules, I will like to clarify some aspects of the composition of this document for brevity's and clarity's sake.</p>
+<p>In every case, when I start developing one of this library's modules, I have to include some setup elements at the beginning of each document. Since this process is almost identical in most cases, I will cover it here so that I can hide it in the module's documentation.
+{% include note.html content='Remember that any elements that I may hide in these documents can still be consulted and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.' %}The development of all modules starts with two elements: importing the module's dependencies and loading the development tests and sample data.</p>
+<p>Importing the module's dependencies means invoking several libraries used by the modules. The following is an example of these imports.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># development.</span>
+
+<span class="c1"># These are some of the libraries of Python&#39;s standard library </span>
+<span class="c1"># I use to support differnt functionalities. </span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">astuple</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># I use the following libries to load and manage data files. </span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="c1"># Pymongo allows me to interact with a local MongoDB client to </span>
+<span class="c1"># store and manage my document-based database.</span>
+<span class="kn">import</span> <span class="nn">pymongo</span>
+
+<span class="c1"># The following libraries offer various utilities for efficient</span>
+<span class="c1"># data and numeric manipulation, and for data visualisation.</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">import</span> <span class="nn">sklearn</span> <span class="c1"># Depending on the module I use different modules of</span>
+               <span class="c1"># scikit-learn library.</span>
+
+
+<span class="c1"># sc2reader facilitates data extraction from replay files</span>
+<span class="kn">import</span> <span class="nn">sc2reader</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Additionally, to develop each module, I need to load some StarCraft II replay files (marked with the .SC2Replay extension). The game generates these files to store all relevant configuration and game-play information necessary to rebuild and reproduce a match.</p>
+<p>The replays used to test and develop this project are extracted from publicly available datasets. In no case do I access any personal or private information of the users or players. These data sets have been collected using Blizzards developer's API and their client protocol (SC2client-proto), which only gathers them with the express authorisation of the users. The following code illustrates how they are loaded using sc2reader and collected into variables that store <code>sc2reader.resources.Replay</code> objects for later processing. I store this data in the library's test_replays folder.
+{% include tip.html content='One can load one replay at a time using the <code>sc2replays.load_replay(&lt;str_file_path&gt;)</code> method.' %}</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rps_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">/</span><span class="s1">&#39;test_replays&#39;</span><span class="p">)</span> \
+           <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;test_replays&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> \
+           <span class="k">else</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;../test_replays&#39;</span><span class="p">)</span>
+<span class="n">game_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s1">&#39;Jagannatha LE.SC2Replay&#39;</span><span class="p">)</span>
+<span class="n">single_replay</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="n">game_path</span><span class="p">)</span>
+<span class="n">single_replay</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;sc2reader.resources.Replay at 0x16af5961d90&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>{% include tip.html content='Alternatively, one can use the sc2replays.load_replays(<str_dir_path>) method, which returns a generator of replay objects.' %}</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">replays</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replays</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="p">))</span>
+<span class="n">replays</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;generator object SC2Factory.load_all at 0x0000016AF5C2CC10&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Beyond these two initial setup elements, some modules also load data files that store helpful information to organise and configure the modules and their functions. These data files are stored in the library's data folder. The code below illustrates how I load some of these files.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">/</span><span class="s1">&#39;data&#39;</span><span class="p">)</span> \
+            <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> \
+            <span class="k">else</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;../data&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="o">/</span><span class="s1">&#39;unit_names.csv&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">file_reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">unit_names</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">file_reader</span><span class="p">)</span>
+    
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="o">/</span><span class="s1">&#39;changes_names.csv&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">file_reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">change_names</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">file_reader</span><span class="p">)</span>
+    
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="o">/</span><span class="s1">&#39;army_list.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">race_armies</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="o">/</span><span class="s1">&#39;buildings_list.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">race_buildings</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="o">/</span><span class="s1">&#39;upgrades.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">race_upgrades</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Install">Install<a class="anchor-link" href="#Install"> </a></h2><p>{% include warning.html content='THE FOLLOWING 2 SECTIONS ARE INCOMPLETE PLACEHOLDERS. PLEASE DISREGARD FOR NOW' %}

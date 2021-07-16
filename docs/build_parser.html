@@ -1,6 +1,6 @@
 ---
 
-title: 03 build_parser Outlining a player's army, base and tech builds
+title: Chapter 04 - build_parser Outlining a player's army, base and tech builds
 
 
 keywords: fastai
@@ -31,45 +31,7 @@ nb_path: "04_build_parser.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Setup-for-examples-and-tests">Setup for examples and tests<a class="anchor-link" href="#Setup-for-examples-and-tests"> </a></h2><p>The following code contains this module's dependencies</p>
-
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">astuple</span><span class="p">,</span> <span class="n">field</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">fastcore</span> <span class="kn">import</span> <span class="n">test</span> <span class="k">as</span> <span class="n">ft</span>
-
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">csv</span>
-<span class="kn">import</span> <span class="nn">json</span>
-
-<span class="kn">import</span> <span class="nn">sc2reader</span>
-
-<span class="kn">from</span> <span class="nn">sc_training</span> <span class="kn">import</span> <span class="o">*</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Next, I load a test <code>Replay</code> to use as a sample, and test case in this notebook.</p>
+<p>First, I load a test <code>Replay</code> to use as a sample, and test case in this notebook for development and prototyping.</p>
 
 </div>
 </div>
@@ -87,15 +49,16 @@ nb_path: "04_build_parser.ipynb"
 <span class="n">single_replay</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s2">&quot;Jagannatha LE.SC2Replay&quot;</span><span class="p">))</span>
 
 <span class="c1"># The following replays have various compositions of races, armies, structures,</span>
-<span class="c1"># tech updates and other game elements that allow me to test and debug the functions.abs</span>
+<span class="c1"># tech updates and other game elements that allow me to test and debug the </span>
+<span class="c1"># functions.abs</span>
 <span class="n">sing_zerg</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s2">&quot;Oxide LE (14).SC2Replay&quot;</span><span class="p">))</span>
 <span class="n">sing_protoss</span><span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s2">&quot;Oxide LE (13).SC2Replay&quot;</span><span class="p">))</span>
 <span class="n">zustates</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s1">&#39;zustates.SC2Replay&#39;</span><span class="p">))</span>
 <span class="n">tustates</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s1">&#39;tustates.SC2Replay&#39;</span><span class="p">))</span>
 <span class="n">tfly</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s1">&#39;terranfly.SC2Replay&#39;</span><span class="p">))</span>
 
-<span class="c1"># I store some basic variables out of the test case replay to make the sample code more</span>
-<span class="c1"># readable.</span>
+<span class="c1"># I store some basic variables out of the test case replay to make the sample </span>
+<span class="c1"># code more readable.</span>
 <span class="n">match_events</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span><span class="p">]</span>
 <span class="n">rpl_duration</span> <span class="o">=</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">seconds</span>
 <span class="n">rpl_rec_duration</span> <span class="o">=</span> <span class="n">match_events</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">second</span>
@@ -122,8 +85,8 @@ nb_path: "04_build_parser.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Listing-a-player's-elements">Listing a player's elements<a class="anchor-link" href="#Listing-a-player's-elements"> </a></h3><p>In any case, the first step to parse any indicators related to the build order is to obtain a list of the player's elements.</p>
-<p>In the following code, I use the <code>Player</code> object's <code>units</code> attribute to extract a list of all these elements owned by the player during the match. I also use a list of all the units I want to include in my analysis (i.e. <code>unit_names</code>) to filter unwanted units. For example, I exclude Zerg larvae from my analysis because they are generated automatically by the game with little control from the player. 
-{% include note.html content='In this example, I exclude some units that change their play-state during the game (e.g. burrowed units). I exclude these units for the time being to focus on the game&#8217;s basic unit types. Later, I expand on some considerations related to this stage changes that I need to account for in the module&#8217;s <a href="/sc_training/build_parser.html#composition_df"><code>composition_df</code></a> helper function to generate an accurate unit count. ' %}</p>
+<p>In the following code, I use the <code>Player</code> object's <code>units</code> attribute to extract a list of all these elements owned by the player during the match. I also use a list of all the units I want to include in my analysis (i.e. <code>unit_names</code>) to filter unwanted units. For example, I exclude Zerg larvae from my analysis because they are generated automatically by the game with little control from the player.
+{% include note.html content='In this example, I exclude some units that change their play-state during the game (e.g. burrowed units). I exclude these units for the time being to focus on the game&#8217;s basic unit types. Later, I expand on some considerations related to this stage changes that I need to account for in the module&#8217;s <a href="/sc_training/build_parser.html#composition_df"><code>composition_df</code></a> helper function to generate an accurate unit count.' %}</p>
 
 </div>
 </div>
@@ -135,13 +98,16 @@ nb_path: "04_build_parser.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># list of zerg players has some particularities that I want to ilustrate straight</span>
-<span class="c1"># away. </span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># list of zerg players has some particularities that I want to ilustrate </span>
+<span class="c1"># straight away. </span>
 
-<span class="n">p2_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">sing_zerg</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
+<span class="n">p2_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">sing_zerg</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
+            <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
                 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p2_units</span><span class="p">[:</span><span class="mi">20</span><span class="p">])]:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="c1"># This command shows the first 20 units of the player&#39;s units list.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="c1"># This command shows the first 20 units of the player&#39;s </span>
+                  <span class="c1"># units list.</span>
 </pre></div>
 
     </div>
@@ -187,7 +153,7 @@ nb_path: "04_build_parser.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>{% include note.html content='each player&#8217;s unit list begins with thirteen or fourteen starting units. For example, if the players play with Protoss or Terran, they start with thirteen units (one main base plus twelve workers). If they play with Zerg, they begin with fourteen units (one main base, twelve workers, and one overlord). Because these elements are not built by the players, they should not count as part of the players&#8217; build strategy.' %}
-The following code extracts the unit lists for both players in the sample match, ignoring the starting units. In the examples, I print the first ten items in each list.</p>
+ The following code extracts the unit lists for both players in the sample match, ignoring the starting units. In the examples, I print the first ten items in each list.</p>
 
 </div>
 </div>
@@ -200,7 +166,8 @@ The following code extracts the unit lists for both players in the sample match,
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p1_race</span> <span class="o">=</span> <span class="n">sing_zerg</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">play_race</span>
-<span class="n">p1_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">sing_zerg</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span><span class="p">]</span>
+<span class="n">p1_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">sing_zerg</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
+            <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span><span class="p">]</span>
 
 <span class="c1"># The following expression stores a comy of the element list excludind</span>
 <span class="c1"># the starting elements according to the player&#39;s race</span>
@@ -208,8 +175,9 @@ The following code extracts the unit lists for both players in the sample match,
 
 <span class="c1"># I print the list of the starting elements in the new list to show they</span>
 <span class="c1"># skip the starting elements.</span>
-<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
-                <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p1_units_no_inits</span><span class="p">[:</span><span class="mi">10</span><span class="p">])]:</span>
+<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
+               <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p1_units_no_inits</span><span class="p">[:</span><span class="mi">10</span><span class="p">])]:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
 </pre></div>
 
@@ -254,8 +222,9 @@ The following code extracts the unit lists for both players in the sample match,
 <span class="c1"># starting units.</span>
 <span class="n">p2_race</span> <span class="o">=</span> <span class="n">sing_zerg</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">play_race</span>
 <span class="n">p2_units_no_inits</span> <span class="o">=</span> <span class="n">p2_units</span><span class="p">[(</span><span class="mi">13</span> <span class="k">if</span> <span class="n">p2_race</span> <span class="o">!=</span> <span class="s1">&#39;Zerg&#39;</span> <span class="k">else</span> <span class="mi">14</span><span class="p">):]</span>
-<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
-                <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p2_units_no_inits</span><span class="p">[:</span><span class="mi">10</span><span class="p">])]:</span>
+<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
+               <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p2_units_no_inits</span><span class="p">[:</span><span class="mi">10</span><span class="p">])]:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
 </pre></div>
 
@@ -321,7 +290,8 @@ The following code extracts the unit lists for both players in the sample match,
             <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">1</span>
             <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span><span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;UnitsBorn: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p1_uborn_e</span><span class="p">)</span><span class="si">}</span><span class="s1"> Init: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p1_uinit_e</span><span class="p">)</span><span class="si">}</span><span class="s1"> Done: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p1_udone_e</span><span class="p">)</span><span class="si">}</span><span class="s1"> Change: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p1_uchange_e</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;UnitsBorn: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p1_uborn_e</span><span class="p">)</span><span class="si">}</span><span class="s1"> Init: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p1_uinit_e</span><span class="p">)</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">Done: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p1_udone_e</span><span class="p">)</span><span class="si">}</span><span class="s1"> Change: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p1_uchange_e</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -359,8 +329,10 @@ The following code extracts the unit lists for both players in the sample match,
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">u_init_done_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_init_done_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> where initialised and done. One was destructed before completion.&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">u_init_done_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">])</span> \
+                           <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_init_done_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> where initialised and done. </span><span class="se">\</span>
+<span class="s1">One was destructed before completion.&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -391,8 +363,10 @@ The following code extracts the unit lists for both players in the sample match,
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">u_born_change_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uborn_e</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uchange_e</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_born_change_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> changed during the game, possibly to another unti type.&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">u_born_change_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uborn_e</span><span class="p">])</span> \
+                             <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uchange_e</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_born_change_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> changed during the game, possibly </span><span class="se">\</span>
+<span class="s1">to another unti type.&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -423,9 +397,12 @@ The following code extracts the unit lists for both players in the sample match,
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">u_init_change_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uchange_e</span><span class="p">])</span>
-<span class="n">u_done_change_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uchange_e</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_init_change_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> initialised and change, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_done_change_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> complete their building and changed&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">u_init_change_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">])</span> \
+                             <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uchange_e</span><span class="p">])</span>
+<span class="n">u_done_change_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">])</span> \
+                             <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uchange_e</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_init_change_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> initialised and change, </span><span class="se">\</span>
+<span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_done_change_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> complete their building and changed&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -465,7 +442,9 @@ The following code extracts the unit lists for both players in the sample match,
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UnitName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;13</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  Event_rec_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  U_rec_start_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1"> U_rec_finish_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uborn_e</span><span class="p">][</span><span class="mi">14</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UnitName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;13</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
+<span class="s1">Event_rec_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  U_rec_start_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">U_rec_finish_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uborn_e</span><span class="p">][</span><span class="mi">14</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span>
 </pre></div>
 
     </div>
@@ -510,7 +489,10 @@ The following code extracts the unit lists for both players in the sample match,
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">  Event_rec_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">  U_rec_start_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1"> U_rec_finish_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
+<span class="s1">Event_rec_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
+<span class="s1">U_rec_start_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">U_rec_finish_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
 </pre></div>
 
     </div>
@@ -560,7 +542,10 @@ The following code extracts the unit lists for both players in the sample match,
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  Event_rec_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  U_rec_start_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1"> U_rec_finish_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
+<span class="s1">Event_rec_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
+<span class="s1">U_rec_start_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">U_rec_finish_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
 </pre></div>
 
     </div>
@@ -656,7 +641,8 @@ The following code extracts the unit lists for both players in the sample match,
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">incomplete_u</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UNane: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;18</span><span class="si">}</span><span class="s1"> unitId: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="si">:</span><span class="s1">&lt;10.0f</span><span class="si">}</span><span class="s1"> u_start_frame: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;8.0f</span><span class="si">}</span><span class="s1"> u_finish_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">finished_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">incomplete_u</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UNane: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;18</span><span class="si">}</span><span class="s1"> unitId: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="si">:</span><span class="s1">&lt;10.0f</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">u_start_frame: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;8.0f</span><span class="si">}</span><span class="s1"> u_finish_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">finished_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
         <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span>
         <span class="ow">and</span> <span class="n">u</span><span class="o">.</span><span class="n">finished_at</span> <span class="o">==</span> <span class="kc">None</span><span class="p">]</span>
@@ -702,14 +688,17 @@ The following code extracts the unit lists for both players in the sample match,
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p1_incomplet_units_ids</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">, his unit was killed by player </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">killed_by</span><span class="o">.</span><span class="n">pid</span><span class="si">}</span><span class="s1">&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p1_incomplet_units_ids</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, </span><span class="se">\</span>
+<span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">, his unit was killed by player </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">killed_by</span><span class="o">.</span><span class="n">pid</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
         <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span>
         <span class="ow">and</span> <span class="n">u</span><span class="o">.</span><span class="n">finished_at</span> <span class="o">==</span> <span class="kc">None</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;List of incomplete units on player 1</span><span class="se">\&#39;</span><span class="s1">s units-list </span><span class="si">{</span><span class="n">p1_incomplet_units_ids</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;List of incomplete units on player 1</span><span class="se">\&#39;</span><span class="s1">s </span><span class="se">\</span>
+<span class="s1">units-list </span><span class="si">{</span><span class="n">p1_incomplet_units_ids</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 
-<span class="n">p1_udied_e</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
+<span class="n">p1_udied_e</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">&#39;</span> 
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitDiedEvent</span><span class="p">)</span>
             <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span> <span class="o">!=</span> <span class="kc">None</span>
             <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">1</span>
@@ -722,10 +711,12 @@ The following code extracts the unit lists for both players in the sample match,
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
         <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span>
         <span class="ow">and</span> <span class="n">u</span><span class="o">.</span><span class="n">finished_at</span> <span class="o">==</span> <span class="kc">None</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;List of incomplete units on player 2</span><span class="se">\&#39;</span><span class="s1">s units-list </span><span class="si">{</span><span class="n">p2_incomplet_units_ids</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;List of incomplete units on player 2</span><span class="se">\&#39;</span><span class="s1">s </span><span class="se">\</span>
+<span class="s1">units-list </span><span class="si">{</span><span class="n">p2_incomplet_units_ids</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 
-<span class="n">p2_udied_e</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
+<span class="n">p2_udied_e</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">&#39;</span> 
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitDiedEvent</span><span class="p">)</span>
             <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span> <span class="o">!=</span> <span class="kc">None</span>
             <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">2</span>
@@ -853,8 +844,11 @@ Sample Terran unit set in tustates replay.
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">terran_player_units</span> <span class="o">=</span> <span class="p">[(</span><span class="n">uname</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">tustates</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> <span class="k">for</span> <span class="n">uname</span> <span class="ow">in</span> <span class="n">race_armies</span><span class="p">[</span><span class="s1">&#39;Terran&#39;</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="n">uname</span> <span class="ow">in</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="c1"># Use the naming convention to get all units in different states</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">terran_player_units</span> <span class="o">=</span> <span class="p">[(</span><span class="n">uname</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">tustates</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
+                    <span class="k">for</span> <span class="n">uname</span> <span class="ow">in</span> <span class="n">race_armies</span><span class="p">[</span><span class="s1">&#39;Terran&#39;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">uname</span> <span class="ow">in</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="c1"># Use the naming convention </span>
+                                               <span class="c1"># to get all units in </span>
+                                               <span class="c1"># different states</span>
                     <span class="ow">and</span> <span class="n">u</span><span class="o">.</span><span class="n">is_army</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
 <span class="n">tpunits_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
         <span class="s1">&#39;Unit&#39;</span><span class="p">:[</span><span class="n">uname</span> <span class="k">for</span> <span class="n">uname</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">terran_player_units</span><span class="p">],</span>
@@ -980,8 +974,11 @@ Sample Terran unit set in tustates replay.
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">terran_player_buildings</span> <span class="o">=</span> <span class="p">[(</span><span class="n">uname</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">tustates</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> <span class="k">for</span> <span class="n">uname</span> <span class="ow">in</span> <span class="n">race_buildings</span><span class="p">[</span><span class="s1">&#39;Terran&#39;</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="n">uname</span> <span class="ow">in</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="c1"># Use the naming convention to get all units in different states</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">terran_player_buildings</span> <span class="o">=</span> <span class="p">[(</span><span class="n">uname</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">tustates</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
+                    <span class="k">for</span> <span class="n">uname</span> <span class="ow">in</span> <span class="n">race_buildings</span><span class="p">[</span><span class="s1">&#39;Terran&#39;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">uname</span> <span class="ow">in</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="c1"># Use the naming </span>
+                                               <span class="c1"># convention to get all units </span>
+                                               <span class="c1"># in different states</span>
                     <span class="ow">and</span> <span class="n">u</span><span class="o">.</span><span class="n">is_building</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
 <span class="n">tbunits_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
         <span class="s1">&#39;Unit&#39;</span><span class="p">:[</span><span class="n">uname</span> <span class="k">for</span> <span class="n">uname</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">terran_player_buildings</span><span class="p">],</span>
@@ -1259,7 +1256,7 @@ Sample Terran unit set in tustates replay.
 <h2 id="Functions">Functions<a class="anchor-link" href="#Functions"> </a></h2><p>In this section, I develop the functions this module exports. These functions allow for the extraction of various performance indicators relative to the units trained, buildings built and upgrades researched by players through a match.</p>
 <p>As is the case for other modules in this package, the exportable functions use several helper functions that can be consulted in the module's development notebooks or the module's source code. However, these helper functions are not included in this documentation.</p>
 <h3 id="Composition-functions">Composition functions<a class="anchor-link" href="#Composition-functions"> </a></h3><p>The following functions generate lists of dictionaries that describe a player's army or buildings composition (<a href="/sc_training/build_parser.html#count_composicion"><code>count_composicion</code></a>) and the number of units that started training or buildings that started construction (<a href="/sc_training/build_parser.html#count_started"><code>count_started</code></a>) during the whole match and through the early, mid and late games.
- In this case, I define <em>composition</em> as the number of active units of different types a player has in the game. This count goes up every time a unit is created and down if they are killed. Meanwhile, <em>count_started</em> refers to the player's intended army, i.e. the number of units of different types they try to create at each interval of the game.</p>
+  In this case, I define <em>composition</em> as the number of active units of different types a player has in the game. This count goes up every time a unit is created and down if they are killed. Meanwhile, <em>count_started</em> refers to the player's intended army, i.e. the number of units of different types they try to create at each interval of the game.</p>
 
 </div>
 </div>
@@ -1465,8 +1462,8 @@ Sample Terran unit set in tustates replay.
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>After calculating a player's army composition or unit started counts, I need to format the output of the functions so that I can process them with the results of other matches.</p>
 <p>In this regard, I considered two options. On the one hand, I could store counts for all units of all races for each player in every match. Following this approach, I would have a single set of replays for each player that would, by averaging all unit counts, express the general building preferences of each player. On the other hand, I could segregate the results by game race. This second option implies that I would have to keep three separate sets of replays per player. I would also have to process three profiles per player that express their preferences when playing each game race.</p>
-<p>Although initially, I was inclined to opt for the first option, I decided on the second because it seems closer to the actual game experience. For example, in StarCraft II, players are classified separately in leagues when playing with different game races. Similarly, many of the game's achievements are repeated for each race. Thus, it felt more akin to the game experience to provide threes profiles. 
-This second approach also means that each match's record will contain fewer blanc data points when processing the profiles, which safes storage and processing memory.</p>
+<p>Although initially, I was inclined to opt for the first option, I decided on the second because it seems closer to the actual game experience. For example, in StarCraft II, players are classified separately in leagues when playing with different game races. Similarly, many of the game's achievements are repeated for each race. Thus, it felt more akin to the game experience to provide threes profiles.
+ This second approach also means that each match's record will contain fewer blanc data points when processing the profiles, which safes storage and processing memory.</p>
 <p>With this in mind, the last step of each module's functions is to complete their outcomes to include values for all the units or buildings of each player's race.</p>
 
 </div>
@@ -1533,7 +1530,7 @@ This second approach also means that each match's record will contain fewer blan
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_composicion" class="doc_header"><code>count_composicion</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L186" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composicion</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_composicion" class="doc_header"><code>count_composicion</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L226" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composicion</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -1868,7 +1865,7 @@ This second approach also means that each match's record will contain fewer blan
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L212" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L265" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -2224,60 +2221,13 @@ This second approach also means that each match's record will contain fewer blan
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Base-Expansion">Base Expansion<a class="anchor-link" href="#Base-Expansion"> </a></h3><p>{% include warning.html content='UNDER DEVELOPMENT!!!' %}
-To build their economy, players will, in most cases, establish more than one base. These expansions allow them to collect resources faster and to prevent running out of resources. To be precise, here, I define <em>expansion</em> as building the main base structure for the player's play race. These main structures are a Nexus for Protoss, a Command Center for Terrans, or a Hatchery for the Zerg.</p>
-<p>The speed with which players build their first expansion serves as an indicator for their economic development strategy.</p>
-
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_expansion_time</span><span class="p">(</span><span class="n">rpl</span><span class="p">:</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">resources</span><span class="o">.</span><span class="n">Replay</span><span class="p">,</span> <span class="n">pid</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-    <span class="n">bases</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Protoss&#39;</span><span class="p">:</span><span class="s1">&#39;nexus&#39;</span><span class="p">,</span> <span class="s1">&#39;Zerg&#39;</span><span class="p">:</span><span class="s1">&#39;hatchery&#39;</span><span class="p">,</span> <span class="s1">&#39;Terran&#39;</span><span class="p">:</span><span class="s1">&#39;commandcenter&#39;</span><span class="p">}</span>
-    <span class="n">expansions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;exp1&#39;</span><span class="p">,</span><span class="s1">&#39;exp2&#39;</span><span class="p">,</span><span class="s1">&#39;exp3&#39;</span><span class="p">,</span><span class="s1">&#39;exp4&#39;</span><span class="p">]</span>
-    <span class="n">player_race</span> <span class="o">=</span> <span class="n">rpl</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="n">pid</span><span class="p">]</span><span class="o">.</span><span class="n">play_race</span>
-    
-    <span class="n">units_df</span> <span class="o">=</span> <span class="n">composition_df</span><span class="p">(</span><span class="n">rpl</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">buildings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="n">bases_df</span> <span class="o">=</span> <span class="n">units_df</span><span class="p">[</span><span class="s1">&#39;Unit&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">units_df</span><span class="o">.</span><span class="n">Unit</span> <span class="o">==</span> <span class="n">bases</span><span class="p">[</span><span class="n">player_race</span><span class="p">])]</span>
-
-    <span class="k">return</span> <span class="n">units_df</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># print(get_expansion_time(zerg_test, 1))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Player-Tech-Update">Player Tech Update<a class="anchor-link" href="#Player-Tech-Update"> </a></h3><p>Beyond buildings and training units, the third way players can spend their resources is by researching tech updates. 
-However, contrary to units and buildings, player objects do not store a list of tech upgrades. Thus, I use the match's  <code>UpgradeCompleteEvent</code> to build this list. Bear in mind that, instead of recording a count for each upgrade, I can record the second at which the update takes place. I can do this because each type of update can only occur once every game. 
-In the player profile, I can average the times a player researched a particular update, ignoring any matches when they didn't, to get an approximate measure of when they prefer to make any update. I can also count the number of times they research each upgrade to see what upgrades they favour.</p>
+ To build their economy, players will, in most cases, establish more than one base. These expansions allow them to collect resources faster and to prevent running out of resources. To be precise, here, I define <em>expansion</em> as building the main base structure for the player's play race. These main structures are a Nexus for Protoss, a Command Center for Terrans, or a Hatchery, Lair or Hive for the Zerg.</p>
+<p>Around expansions, I extract three performance indicators:</p>
+<ul>
+<li>The total number of expansions</li>
+<li>The time of the first three expansions</li>
+</ul>
+<p>The speed with which players build their expansions serves as an indicator for their economic development strategy.</p>
 
 </div>
 </div>
@@ -2293,7 +2243,99 @@ In the player profile, I can average the times a player researched a particular 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L229" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_expansion_time" class="doc_header"><code>get_expansion_time</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L292" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expansion_time</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+</blockquote>
+<p>Gets a dictionary with the finished_at times for a player's first
+three expansions.</p>
+<p>The functions searches a player's list of buildings and extracts the
+times (in seconds) when the first three base buildings are finished.
+These times are indexed as expan_1, expan_2 and expan_3.</p>
+<p>If the player had less than three expansions during the game the
+missing values are filled with np.nan. If they have more than 3
+expansions, the rest of the expansions are ignored.</p>
+<p><em>Args</em></p>
+
+<pre><code>- rpl (sc2reader.resources.Replay)
+        Replay containing the data of the match.
+- pid (int)
+        Player id during the match.
+
+</code></pre>
+<p><em>Returns</em></p>
+
+<pre><code>- dict[str, float]
+        Dictionary containing the names and completion times of the
+        player's first three expansions.</code></pre>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">get_expansion_time</span><span class="p">(</span><span class="n">zustates</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&#39;expan_1&#39;: 344.77611940298505, &#39;expan_2&#39;: 791.4626865671642, &#39;expan_3&#39;: 984.9850746268656}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Player-Tech-Update">Player Tech Update<a class="anchor-link" href="#Player-Tech-Update"> </a></h3><p>Beyond buildings and training units, the third way players can spend their resources is by researching tech updates.
+ However, contrary to units and buildings, player objects do not store a list of tech upgrades. Thus, I use the match's  <code>UpgradeCompleteEvent</code> to build this list. Bear in mind that, instead of recording a count for each upgrade, I can record the second at which the update takes place. I can do this because each type of update can only occur once every game.
+ In the player profile, I can average the times a player researched a particular update, ignoring any matches when they didn't, to get an approximate measure of when they prefer to make any update. I can also count the number of times they research each upgrade to see what upgrades they favour.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L345" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Lists the times at wich the player completed their updates</p>
 
@@ -2322,6 +2364,23 @@ In the player profile, I can average the times a player researched a particular 
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># player1_upgrades, index=[&#39;Player1_upgrades&#39;]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>
 </pre></div>
 
     </div>

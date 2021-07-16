@@ -1,13 +1,13 @@
 ---
 
-title: 01 handle_tracker_events Extracting information from the game's events
+title: Chapter 02 - handle_tracker_events 
 
 
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "Module that explores the common elements between all TrackerEvents and creates some basic general purpose functions for this type of event. "
-description: "Module that explores the common elements between all TrackerEvents and creates some basic general purpose functions for this type of event. "
+
+
 nb_path: "02_handle_tracker_events.ipynb"
 ---
 <!--
@@ -29,43 +29,13 @@ nb_path: "02_handle_tracker_events.ipynb"
 </div>
     {% endraw %}
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The following are this module's dependencies.</p>
-
-</div>
-</div>
-</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="kn">import</span> <span class="nn">fastcore.test</span> <span class="k">as</span> <span class="nn">ft</span>
-
-<span class="kn">import</span> <span class="nn">sc2reader</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
     {% endraw %}
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Meanwhile, the following code sets up the notebook's sample replay.</p>
-
-</div>
-</div>
-</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -91,7 +61,7 @@ nb_path: "02_handle_tracker_events.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x25645a8f340&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x2b087ae8160&gt;</pre>
 </div>
 
 </div>
@@ -105,11 +75,11 @@ nb_path: "02_handle_tracker_events.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Events">Events<a class="anchor-link" href="#Events"> </a></h2><p>Events contain a considerable part of the information regarding a <code>Replay</code>. As explained in sc2reader documentation:</p>
-<blockquote><p>All of the gameplay and state information contained in the replay is packed into events. <a href="https://sc2reader.readthedocs.io/en/latest/events/index.html">(Kim, 2015, p. 22)</a>
-The main types of events registered by sc2reader are:</p>
+<blockquote><p>:All of the gameplay and state information contained in the replay is packed into events. <a href="https://sc2reader.readthedocs.io/en/latest/events/index.html">(Kim, 2015, p. 22)</a>
+  The main types of events registered by sc2reader are:</p>
 <ul>
-<li>Game Events: Human actions and certain triggered events. </li>
-<li>Message Events: Message and Pings to other players. </li>
+<li>Game Events: Human actions and certain triggered events.</li>
+<li>Message Events: Message and Pings to other players.</li>
 <li>Tracker Events: Game state information.</li>
 </ul>
 </blockquote>
@@ -133,9 +103,12 @@ The main types of events registered by sc2reader are:</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">match_events</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span><span class="p">]</span>
-<span class="n">tracker_e</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">TrackerEvent</span><span class="p">)]</span>
-<span class="n">game_e</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">GameEvent</span><span class="p">)]</span>
-<span class="n">message_e</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">MessageEvent</span><span class="p">)]</span>
+<span class="n">tracker_e</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">TrackerEvent</span><span class="p">)]</span>
+<span class="n">game_e</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
+         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">GameEvent</span><span class="p">)]</span>
+<span class="n">message_e</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">MessageEvent</span><span class="p">)]</span>
 </pre></div>
 
     </div>
@@ -226,8 +199,8 @@ The match contains 15 events total
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Tracker-Events">Tracker Events<a class="anchor-link" href="#Tracker-Events"> </a></h2><p>These events store information relative to the state general of the game. They can be used to track various aspects of a player's performance.</p>
 <p>In this module, I explore the types of <code>TrackerEvents</code> and the information I found helpful in later modules.
-{% include note.html content='each type of object stores other data that goes beyond the data points I explore here. To extract a complete list of the data stored in each type of event, you can call the <code>__dict__</code> attribute on an object of each type.  ' %}
-Here, I also create various helper functions that address some management issues common to all this type of events. For example, I include the <a href="/sc_training/handle_tracker_events.html#calc_realtime_index"><code>calc_realtime_index</code></a> function, which corrects an event's time index to match the duration of a match.|</p>
+{% include note.html content='each type of object stores other data that goes beyond the data points I explore here. To extract a complete list of the data stored in each type of event, you can call the <code>__dict__</code> attribute on an object of each type.' %}
+  Here, I also create various helper functions that address some management issues common to all this type of events. For example, I include the <a href="/sc_training/handle_tracker_events.html#calc_realtime_index"><code>calc_realtime_index</code></a> function, which corrects an event's time index to match the duration of a match.|</p>
 
 </div>
 </div>
@@ -337,7 +310,7 @@ Here, I also create various helper functions that address some management issues
 <p>TThese events are generated for each player every ten seconds, regardless of the player's presence in the match. In other words, if one is analysing a match of more than two players and one is defeated, the game still generates <code>PlayerStatsEvents</code> for that player up until the end of the match.</p>
 <p>Additionally, the game generates a <code>PlayerStatEvent</code> when a player leaves (i.e., defeated or surrenders) and when the match ends.
 {% include note.html content='In 1v1 games, the above behaviour can cause the losing player to have two events generated at the end of the game. One for leaving and one for the end of the game. Source <a href="https://sc2reader.readthedocs.io/en/latest/events/tracker.html">(Kim, 2015, p. 24)</a>' %}
-Note that this match lasted 590 seconds. Hence, there should be 59 <code>PlayerStatEvent</code>s per player, plus two or three for start and end events. Bellow, I show some important information about the <code>Replay</code> that can be useful for debugging and managing these events.</p>
+  Note that this match lasted 590 seconds. Hence, there should be 59 <code>PlayerStatEvent</code>s per player, plus two or three for start and end events. Bellow, I show some important information about the <code>Replay</code> that can be useful for debugging and managing these events.</p>
 
 </div>
 </div>
@@ -349,9 +322,11 @@ Note that this match lasted 590 seconds. Hence, there should be 59 <code>PlayerS
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;Game length in seconds:&quot;</span><span class="si">:</span><span class="s1">&lt;30</span><span class="si">}{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_length</span><span class="o">.</span><span class="n">seconds</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;Game length in seconds:&quot;</span><span class="si">:</span><span class="s1">&lt;30</span><span class="si">}</span><span class="se">\</span>
+<span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_length</span><span class="o">.</span><span class="n">seconds</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;Game frames per second:&quot;</span><span class="si">:</span><span class="s1">&lt;30</span><span class="si">}{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_fps</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;Total frames in the match:&quot;</span><span class="si">:</span><span class="s1">&lt;30</span><span class="si">}{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_length</span><span class="o">.</span><span class="n">seconds</span> <span class="o">*</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">game_fps</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;Total frames in the match:&quot;</span><span class="si">:</span><span class="s1">&lt;30</span><span class="si">}</span><span class="se">\</span>
+<span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_length</span><span class="o">.</span><span class="n">seconds</span> <span class="o">*</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">game_fps</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -439,8 +414,10 @@ Total frames in the match:    9440.0
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Second recorded in the last event: </span><span class="si">{</span><span class="n">p_one_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_one_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frame recorded in the last event: </span><span class="si">{</span><span class="n">p_one_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_one_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">frame</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Second recorded in the last event: </span><span class="se">\</span>
+<span class="si">{</span><span class="n">p_one_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_one_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frame recorded in the last event: </span><span class="se">\</span>
+<span class="si">{</span><span class="n">p_one_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_one_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">frame</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -480,11 +457,14 @@ Frame recorded in the last event: 13224
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p_two_state</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">match_events</span> 
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">PlayerStatsEvent</span><span class="p">)</span> 
-                <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Number of events recorded for p2: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p_two_state</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Second recorded in the last event: </span><span class="si">{</span><span class="n">p_two_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_two_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frame recorded in the last event: </span><span class="si">{</span><span class="n">p_two_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_two_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">frame</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+               <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">PlayerStatsEvent</span><span class="p">)</span> 
+               <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Number of events recorded for p2: </span><span class="se">\</span>
+<span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p_two_state</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Second recorded in the last event: </span><span class="se">\</span>
+<span class="si">{</span><span class="n">p_two_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_two_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frame recorded in the last event: </span><span class="se">\</span>
+<span class="si">{</span><span class="n">p_two_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_two_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">frame</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -512,7 +492,7 @@ Frame recorded in the last event: 13224
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>{% include warning.html content='this time index discrepancy will also affect other types of Tracker Events. I propose a basic solution in the functions section of this module further bellow (see <a href="/sc_training/handle_tracker_events.html#calc_realtime_index"><code>calc_realtime_index</code></a> function). ' %}</p>
+<p>{% include warning.html content='this time index discrepancy will also affect other types of Tracker Events. I propose a basic solution in the functions section of this module further bellow (see <a href="/sc_training/handle_tracker_events.html#calc_realtime_index"><code>calc_realtime_index</code></a> function).' %}</p>
 
 </div>
 </div>
@@ -525,9 +505,10 @@ Frame recorded in the last event: 13224
 <li><code>unit_type_name</code> (str): type of the unit.</li>
 <li><code>location</code> (tuple(x, y)): tuple of ints that indicate the unit's x and y coordinates in the map.</li>
 <li><code>control_pid</code> (int): player id in the match.</li>
-<li><code>unit</code>: points to the <code>unit</code> object, which stores helpful information such as the minerals, vespene, and supply cost of the unit type <a href="https://sc2reader.readthedocs.io/en/latest/dataobjects.html?highlight=unit#sc2reader.data.Unit">(see Kim, 2015, p. 30)</a>.</li>
-</ul>
+<li><p><code>unit</code>: points to the <code>unit</code> object, which stores helpful information such as the minerals, vespene, and supply cost of the unit type <a href="https://sc2reader.readthedocs.io/en/latest/dataobjects.html?highlight=unit#sc2reader.data.Unit">(see Kim, 2015, p. 30)</a>.</p>
 <p>The following code illustrates some uses of these attributes:</p>
+</li>
+</ul>
 
 </div>
 </div>
@@ -539,14 +520,19 @@ Frame recorded in the last event: 13224
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">UnitBorn_e</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">match_events</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># of a single player.</span>
+<span class="n">UnitBorn_e</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">match_events</span> 
               <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitBornEvent</span><span class="p">)</span> 
-              <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">control_pid</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span> <span class="c1"># I can use the control_pid attributeto separate the UnitBornEvents of a single player.</span>
+              <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">control_pid</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span> 
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;The recorded time of birth of a unit:&quot;</span><span class="si">:</span><span class="s1">&lt;40</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">UnitBorn_e</span><span class="p">[</span><span class="mi">62</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;The supply cost of the unit type:&quot;</span><span class="si">:</span><span class="s1">&lt;40</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">UnitBorn_e</span><span class="p">[</span><span class="mi">62</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">supply</span><span class="si">:</span><span class="s1">&gt;10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;The unit type:&quot;</span><span class="si">:</span><span class="s1">&lt;40</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">UnitBorn_e</span><span class="p">[</span><span class="mi">62</span><span class="p">]</span><span class="o">.</span><span class="n">unit_type_name</span><span class="si">:</span><span class="s1">&gt;10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;The birth x, y location of the unit:&quot;</span><span class="si">:</span><span class="s1">&lt;40</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">UnitBorn_e</span><span class="p">[</span><span class="mi">62</span><span class="p">]</span><span class="o">.</span><span class="n">location</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;The recorded time of birth of a unit:&quot;</span><span class="si">:</span><span class="s1">&lt;40</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="si">{</span><span class="n">UnitBorn_e</span><span class="p">[</span><span class="mi">62</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;The supply cost of the unit type:&quot;</span><span class="si">:</span><span class="s1">&lt;40</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="si">{</span><span class="n">UnitBorn_e</span><span class="p">[</span><span class="mi">62</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">supply</span><span class="si">:</span><span class="s1">&gt;10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;The unit type:&quot;</span><span class="si">:</span><span class="s1">&lt;40</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="si">{</span><span class="n">UnitBorn_e</span><span class="p">[</span><span class="mi">62</span><span class="p">]</span><span class="o">.</span><span class="n">unit_type_name</span><span class="si">:</span><span class="s1">&gt;10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;The birth x, y location of the unit:&quot;</span><span class="si">:</span><span class="s1">&lt;40</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">UnitBorn_e</span><span class="p">[</span><span class="mi">62</span><span class="p">]</span><span class="o">.</span><span class="n">location</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -577,15 +563,16 @@ The birth x, y location of the unit:       (72, 40)
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To group all the game's UnitBornEvent, I can use the  <code>control_pid</code> attribute, which points to the participant that owns the unit.
 {% include tip.html content='Units with <code>control_pid</code> equal 0 are neutral units such as minerals, vespene geysers or obstacles.' %}
-With this grouping, I can start to compose that player's build order. That is their sequence of built units during the game. However, I also need to consider the <code>UnitDoneEvent</code> instances to complete this build order (see below).</p>
+  With this grouping, I can start to compose that player's build order. That is their sequence of built units during the game. However, I also need to consider the <code>UnitDoneEvent</code> instances to complete this build order (see below).</p>
 <p>Additionally, having grouped all the <code>UnitBornEvent</code> instances related to a particular player, I notice the following pattern:</p>
 <ul>
 <li>The first 15 units born (indexes 0-14) are Beacons sc2reader uses for tracking.</li>
 <li>Unit 15 is the starting base building (Nexus, CommandCenter, Hatchery).</li>
-<li>Units 16-27 are the first worker units of each player.</li>
-</ul>
+<li><p>Units 16-27 are the first worker units of each player.</p>
 <p>This pattern means I should only consider whatever units are born after index 27 to track the player's build order.</p>
 <p>The following code illustrates this pattern.</p>
+</li>
+</ul>
 
 </div>
 </div>
@@ -601,7 +588,8 @@ With this grouping, I can start to compose that player's build order. That is th
               <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitBornEvent</span><span class="p">)</span> 
               <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">control_pid</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
 
-<span class="n">born_order</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:(</span><span class="n">k</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">unit_type_name</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;second: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">UnitBorn_e</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;=</span><span class="mi">30</span><span class="p">}</span>
+<span class="n">born_order</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:(</span><span class="n">k</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">unit_type_name</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;second: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> 
+             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">UnitBorn_e</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;=</span><span class="mi">30</span><span class="p">}</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">born_order</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
@@ -663,7 +651,8 @@ With this grouping, I can start to compose that player's build order. That is th
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Note: the first unit borned past second 0 is the 28th unit boned at </span><span class="si">{</span><span class="n">UnitBorn_e</span><span class="p">[</span><span class="mi">28</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">th second.&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Note: the first unit borned past second 0 is the 28th unit boned at </span><span class="se">\</span>
+<span class="si">{</span><span class="n">UnitBorn_e</span><span class="p">[</span><span class="mi">28</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">th second.&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -762,9 +751,10 @@ With this grouping, I can start to compose that player's build order. That is th
 <li><code>unit_type_name</code> (str): type of the unit.</li>
 <li><code>location</code> (tuple(x, y)): tuple of ints that indicate the unit's x and y coordinates in the map.</li>
 <li><code>control_pid</code> (int): player id in the match.</li>
-<li><code>unit</code>: points to the <code>unit</code> object, which stores helpful information such as the minerals, vespene, and supply cost of the unit type <a href="https://sc2reader.readthedocs.io/en/latest/dataobjects.html?highlight=unit#sc2reader.data.Unit">(see Kim, 2015, p. 30)</a>.</li>
-</ul>
+<li><p><code>unit</code>: points to the <code>unit</code> object, which stores helpful information such as the minerals, vespene, and supply cost of the unit type <a href="https://sc2reader.readthedocs.io/en/latest/dataobjects.html?highlight=unit#sc2reader.data.Unit">(see Kim, 2015, p. 30)</a>.</p>
 <p>Note that, in this case, there are no initial units that should be disregarded from the player's build order.</p>
+</li>
+</ul>
 
 </div>
 </div>
@@ -780,7 +770,8 @@ With this grouping, I can start to compose that player's build order. That is th
               <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitInitEvent</span><span class="p">)</span> 
               <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">control_pid</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
 
-<span class="n">init_order</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:(</span><span class="n">event</span><span class="o">.</span><span class="n">unit_type_name</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;second: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">UnitInit_e</span><span class="p">)}</span>
+<span class="n">init_order</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:(</span><span class="n">event</span><span class="o">.</span><span class="n">unit_type_name</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;second: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> 
+             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">UnitInit_e</span><span class="p">)}</span>
 
 <span class="n">init_order</span>
 </pre></div>
@@ -856,9 +847,12 @@ With this grouping, I can start to compose that player's build order. That is th
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is building: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_building</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is army: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_army</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is worker: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_worker</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is building: </span><span class="se">\</span>
+<span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_building</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is army: </span><span class="se">\</span>
+<span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_army</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is worker: </span><span class="se">\</span>
+<span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_worker</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -891,9 +885,12 @@ Unit_name: RoboticsFacility is worker: False
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is building: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_building</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is army: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_army</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is worker: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_worker</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is building: </span><span class="se">\</span>
+<span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_building</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is army: </span><span class="se">\</span>
+<span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_army</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit_name: </span><span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> is worker: </span><span class="se">\</span>
+<span class="si">{</span><span class="n">UnitInit_e</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_worker</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -970,7 +967,7 @@ Unit_name: Stalker is worker: False
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Refinery
-{&#39;_type_class&#39;: &lt;sc2reader.data.UnitType object at 0x0000025647B90BE0&gt;,
+{&#39;_type_class&#39;: &lt;sc2reader.data.UnitType object at 0x000002B088565E20&gt;,
  &#39;died_at&#39;: None,
  &#39;finished_at&#39;: 1999,
  &#39;flags&#39;: 0,
@@ -984,7 +981,7 @@ Unit_name: Stalker is worker: False
  &#39;owner&#39;: Player 2 - MxChrisxM (Terran),
  &#39;started_at&#39;: 1519,
  &#39;type_history&#39;: OrderedDict([(1519,
-                               &lt;sc2reader.data.UnitType object at 0x0000025647B90BE0&gt;)])}
+                               &lt;sc2reader.data.UnitType object at 0x000002B088565E20&gt;)])}
 </pre>
 </div>
 </div>
@@ -1017,7 +1014,7 @@ Unit_name: Stalker is worker: False
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Probe
-{&#39;_type_class&#39;: &lt;sc2reader.data.UnitType object at 0x0000025647B9D850&gt;,
+{&#39;_type_class&#39;: &lt;sc2reader.data.UnitType object at 0x000002B088573A90&gt;,
  &#39;died_at&#39;: None,
  &#39;finished_at&#39;: 2143,
  &#39;flags&#39;: 0,
@@ -1031,7 +1028,7 @@ Unit_name: Stalker is worker: False
  &#39;owner&#39;: Player 1 - HDEspino (Protoss),
  &#39;started_at&#39;: 2143,
  &#39;type_history&#39;: OrderedDict([(2143,
-                               &lt;sc2reader.data.UnitType object at 0x0000025647B9D850&gt;)])}
+                               &lt;sc2reader.data.UnitType object at 0x000002B088573A90&gt;)])}
 </pre>
 </div>
 </div>
@@ -1049,8 +1046,10 @@ Unit_name: Stalker is worker: False
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">done_order</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:(</span><span class="sa">f</span><span class="s1">&#39;second: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_building</span><span class="p">)</span> 
-              <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">UnitDone_e</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">done_order</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:(</span><span class="sa">f</span><span class="s1">&#39;second: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> 
+                <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> 
+                <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_building</span><span class="p">)</span> 
+             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">UnitDone_e</span><span class="p">)</span>
              <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;=</span><span class="mi">20</span><span class="p">}</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">done_order</span><span class="p">)</span>
 </pre></div>
@@ -1174,7 +1173,28 @@ Unit_name: Stalker is worker: False
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">upgrade_order</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:(</span><span class="sa">f</span><span class="s1">&#39;second: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">upgrade_type_name</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">count</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Upgrades</span><span class="p">)}</span>
+<div class=" highlight hl-ipython3"><pre><span></span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">upgrade_order</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:(</span><span class="sa">f</span><span class="s1">&#39;second: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> 
+                   <span class="n">event</span><span class="o">.</span><span class="n">upgrade_type_name</span><span class="p">,</span> 
+                   <span class="n">event</span><span class="o">.</span><span class="n">count</span><span class="p">)</span> 
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">event</span> 
+                <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Upgrades</span><span class="p">)}</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">upgrade_order</span><span class="p">)</span>
 </pre></div>
 
@@ -1234,7 +1254,8 @@ Unit_name: Stalker is worker: False
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prototype</span> <span class="o">=</span> <span class="p">{(</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">unit_type_name</span><span class="p">):</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_army</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">unit_id</span><span class="p">)</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prototype</span> <span class="o">=</span> <span class="p">{(</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">unit_type_name</span><span class="p">):</span> 
+            <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_army</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">unit_id</span><span class="p">)</span> 
             <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitTypeChangeEvent</span><span class="p">)</span>
             <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">1</span><span class="p">}</span>
@@ -1269,10 +1290,11 @@ Unit_name: Stalker is worker: False
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prototype_2</span> <span class="o">=</span> <span class="p">{(</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="p">,</span><span class="n">event</span><span class="o">.</span><span class="n">unit_type_name</span><span class="p">):</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_army</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">unit_id</span><span class="p">)</span> 
-            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitTypeChangeEvent</span><span class="p">)</span>
-            <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">2</span><span class="p">}</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prototype_2</span> <span class="o">=</span> <span class="p">{(</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="p">,</span><span class="n">event</span><span class="o">.</span><span class="n">unit_type_name</span><span class="p">):</span> 
+              <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">is_army</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">unit_id</span><span class="p">)</span> 
+              <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
+              <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitTypeChangeEvent</span><span class="p">)</span>
+              <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">2</span><span class="p">}</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">prototype_2</span><span class="p">,</span> <span class="n">sort_dicts</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
@@ -1346,7 +1368,7 @@ Unit_name: Stalker is worker: False
 <p>Since <code>UnitDiedEvents</code> can be triggered when a unit is morphed, merged or exhausted, it is important not to assume that every kill results from an opponent's actions.</p>
 <p>Thus, in this case, I will use the following attributes:</p>
 <ul>
-<li><code>second</code> (int): registered time of birth in seconds. This attribute requires the same consideration as in the previous cases. (see <a href="/sc_training/handle_tracker_events.html#calc_realtime_index"><code>calc_realtime_index</code></a> function) </li>
+<li><code>second</code> (int): registered time of birth in seconds. This attribute requires the same consideration as in the previous cases. (see <a href="/sc_training/handle_tracker_events.html#calc_realtime_index"><code>calc_realtime_index</code></a> function)</li>
 <li><code>killer_pid</code> (int): player id for the player who destroys a unit. This attribute can be a significant component to build a player kill list.</li>
 <li><code>unit</code> (unit)</li>
 </ul>
@@ -1367,8 +1389,9 @@ Unit_name: Stalker is worker: False
              <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span> <span class="o">!=</span> <span class="kc">None</span>
              <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
 
-<span class="n">kill_list</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:(</span><span class="sa">f</span><span class="s1">&#39;second: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;unit: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;16</span><span class="si">}</span><span class="s1">, owner: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">pid</span><span class="si">}</span><span class="s1">, killer:</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">killer_pid</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> 
-             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">UnitDied_e</span><span class="p">)}</span>
+<span class="n">kill_list</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:(</span><span class="sa">f</span><span class="s1">&#39;second: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;unit: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;16</span><span class="si">}</span><span class="s1">, </span><span class="se">\</span>
+<span class="s1">owner: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">pid</span><span class="si">}</span><span class="s1">, killer:</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">killer_pid</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> 
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">UnitDied_e</span><span class="p">)}</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Player 1 kill list:&#39;</span><span class="p">)</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">kill_list</span><span class="p">)</span>
@@ -1411,7 +1434,9 @@ Unit_name: Stalker is worker: False
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">UnitPos_e</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitPositionsEvent</span><span class="p">)]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">UnitPos_e</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> 
+            <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitPositionsEvent</span><span class="p">)]</span>
 </pre></div>
 
     </div>
@@ -1431,7 +1456,7 @@ Unit_name: Stalker is worker: False
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Exportable-constants">Exportable constants<a class="anchor-link" href="#Exportable-constants"> </a></h3><p>Additionally, this module exports a constant <a href="/sc_training/handle_tracker_events.html#INTERVALS_BASE"><code>INTERVALS_BASE</code></a> which defines the number of seconds that should determine the time intervals used to analyse the replays.</p>
 <p>In the following modules, I separate the analysis of many performance indicators derived from several types of Tracker Events into four game intervals, i.e. the whole, early, mid and late games. These intervals are meant to match the economy and initial strategy building portion of the game (i.e. the early game), the initial strategy execution and response state (i.e. the mid-game), and the counter strategic stage of the game (i.e. the late-game).  The early match takes typically between 4 and 5 minutes, or 240 and 300 seconds. Afterwards, the mid-game takes about the same time. Suppose the game has not ended by minutes 8 to 10. In that case, players typically re-organise their strategy using updated, more advanced and expensive, units, i.e. late game.
-Thus, in this case, I establish a base value in seconds that I use in later modules as the finish time for the early game. I also use it to calculate the end mark of the mid-game as double this base value. The late-game always covers the portion from the mid-game's end to the match's end.</p>
+  Thus, in this case, I establish a base value in seconds that I use in later modules as the finish time for the early game. I also use it to calculate the end mark of the mid-game as double this base value. The late-game always covers the portion from the mid-game's end to the match's end.</p>
 <p>I establish this constant here in case I need to change it. This way, any change will automatically be propagated through all modules.</p>
 
 </div>
@@ -1447,7 +1472,7 @@ Thus, in this case, I establish a base value in seconds that I use in later modu
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Exportable-Functions">Exportable Functions<a class="anchor-link" href="#Exportable-Functions"> </a></h3><p>Similarly, I export the <a href="/sc_training/handle_tracker_events.html#calc_realtime_index"><code>calc_realtime_index</code></a> function. I use this function in later modules to recalculate the time when an event took place in seconds to match the game's recorded length.
-This recalculation is necessary because Tracker Events seem to record the time they happened as the quotient of their recorded execution frame and the match's frames-per-second, which does not match its duration,</p>
+  This recalculation is necessary because Tracker Events seem to record the time they happened as the quotient of their recorded execution frame and the match's frames-per-second, which does not match its duration,</p>
 
 </div>
 </div>
@@ -1463,16 +1488,18 @@ This recalculation is necessary because Tracker Events seem to record the time t
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="calc_realtime_index" class="doc_header"><code>calc_realtime_index</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_tracker_event.py#L18" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_realtime_index</code>(<strong><code>registered_time</code></strong>:<code>int</code>, <strong><code>rpl</code></strong>:<code>Replay</code>)</p>
+<h4 id="calc_realtime_index" class="doc_header"><code>calc_realtime_index</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_tracker_event.py#L23" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_realtime_index</code>(<strong><code>registered_time</code></strong>:<code>int</code>, <strong><code>rpl</code></strong>:<code>Replay</code>)</p>
 </blockquote>
-<p>Calculate the time index of an event based on the replay recorded duration.</p>
-<p>Given that the registered time index on TrackerEvents don not necessarily coincide with the replay
-duration, this function recalculates the time index of an event to correct this discrepancy.</p>
+<p>Calculate the time index of an event based on the replay recorded
+duration.</p>
+<p>Given that the registered time index on TrackerEvents don not necessarily
+coincide with the replay duration, this function recalculates the time
+index of an event to correct this discrepancy.</p>
 <p><em>Args</em></p>
 
 <pre><code>- registered_time (int)
-    The time index in seconds recorded in the event. Normally accessible through the .second
-    attribute.
+    The time index in seconds recorded in the event. Normally
+    accessible through the .second attribute.
 - rpl (sc2reader.resources.Replay)
     Working replay
 
@@ -1517,10 +1544,21 @@ duration, this function recalculates the time index of an event to correct this 
 <span class="n">second_e</span> <span class="o">=</span> <span class="n">UnitBorn_e</span><span class="p">[</span><span class="mi">28</span><span class="p">]</span>
 <span class="n">last_e</span> <span class="o">=</span> <span class="n">UnitBorn_e</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit: </span><span class="si">{</span><span class="n">first_e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">, Birth recorded time: </span><span class="si">{</span><span class="n">first_e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">, Brith real time: </span><span class="si">{</span><span class="n">calc_realtime_index</span><span class="p">(</span><span class="n">first_e</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">single_replay</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;7.2f</span><span class="si">}</span><span class="s1"> &#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit: </span><span class="si">{</span><span class="n">second_e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">, Birth recorded time: </span><span class="si">{</span><span class="n">second_e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">, Brith real time: </span><span class="si">{</span><span class="n">calc_realtime_index</span><span class="p">(</span><span class="n">second_e</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">single_replay</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;7.2f</span><span class="si">}</span><span class="s1"> &#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit: </span><span class="si">{</span><span class="n">last_e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">, Birth recorded time: </span><span class="si">{</span><span class="n">last_e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">, Brith real time: </span><span class="si">{</span><span class="n">calc_realtime_index</span><span class="p">(</span><span class="n">last_e</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">single_replay</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;7.2f</span><span class="si">}</span><span class="s1"> &#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit: </span><span class="si">{</span><span class="s2">&quot;FinalFrame&quot;</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">, Birth recorded time: </span><span class="si">{</span><span class="mi">826</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">, Brith real time: </span><span class="si">{</span><span class="n">calc_realtime_index</span><span class="p">(</span><span class="mi">826</span><span class="p">,</span> <span class="n">single_replay</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;7.2f</span><span class="si">}</span><span class="s1"> &#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit: </span><span class="si">{</span><span class="n">first_e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">, </span><span class="se">\</span>
+<span class="s1">Birth recorded time: </span><span class="si">{</span><span class="n">first_e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">, </span><span class="se">\</span>
+<span class="s1">Brith real time: </span><span class="si">{</span><span class="n">calc_realtime_index</span><span class="p">(</span><span class="n">first_e</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">single_replay</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;7.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit: </span><span class="si">{</span><span class="n">second_e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">, </span><span class="se">\</span>
+<span class="s1">Birth recorded time: </span><span class="si">{</span><span class="n">second_e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">, </span><span class="se">\</span>
+<span class="s1">Brith real time: </span><span class="si">{</span><span class="n">calc_realtime_index</span><span class="p">(</span><span class="n">second_e</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">single_replay</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;7.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit: </span><span class="si">{</span><span class="n">last_e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">, </span><span class="se">\</span>
+<span class="s1">Birth recorded time: </span><span class="si">{</span><span class="n">last_e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">, </span><span class="se">\</span>
+<span class="s1">Brith real time: </span><span class="si">{</span><span class="n">calc_realtime_index</span><span class="p">(</span><span class="n">last_e</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">single_replay</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;7.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unit: </span><span class="si">{</span><span class="s2">&quot;FinalFrame&quot;</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">, </span><span class="se">\</span>
+<span class="s1">Birth recorded time: </span><span class="si">{</span><span class="mi">826</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">, </span><span class="se">\</span>
+<span class="s1">Brith real time: </span><span class="si">{</span><span class="n">calc_realtime_index</span><span class="p">(</span><span class="mi">826</span><span class="p">,</span> <span class="n">single_replay</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;7.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -1533,10 +1571,10 @@ duration, this function recalculates the time index of an event to correct this 
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Unit:    Probe, Birth recorded time:     0, Brith real time:    0.00 
-Unit:    Probe, Birth recorded time:    18, Brith real time:   12.86 
-Unit:    Probe, Birth recorded time:   820, Brith real time:  585.71 
-Unit: FinalFrame, Birth recorded time:   826, Brith real time:  590.00 
+<pre>Unit:    Probe, Birth recorded time:     0, Brith real time:    0.00
+Unit:    Probe, Birth recorded time:    18, Brith real time:   12.86
+Unit:    Probe, Birth recorded time:   820, Brith real time:  585.71
+Unit: FinalFrame, Birth recorded time:   826, Brith real time:  590.00
 </pre>
 </div>
 </div>

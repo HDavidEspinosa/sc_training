@@ -129,7 +129,6 @@ def get_players(player_dict: Dict[Any, Any]) -> List[Player_data]:
             for p in player_dict.values()]
 
 
-
 # Cell
 def get_replay_info(replay: sc2reader.resources.Replay) -> Replay_data:
     '''
@@ -159,4 +158,3 @@ def get_replay_info(replay: sc2reader.resources.Replay) -> Replay_data:
         players= get_players(replay.player) # note the use of the helper
                                             # function here
     )
-

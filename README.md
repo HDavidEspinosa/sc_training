@@ -7,10 +7,6 @@
 %autoreload 2
 ```
 
-    The autoreload extension is already loaded. To reload it, use:
-      %reload_ext autoreload
-
-
 {% include note.html content='this prototype is mainly a tool for the reflective practice of development. This reflection is part of my PhD research project, "Encouraging Play Experience Expansion Through Machine-Learning-Based Recommendations: User-Experience Design considerations in the use of Machine-Learning-Based Recommendation System for Videogames".' %}
 ## Introduction
 
@@ -45,6 +41,110 @@ The modules in this section explore how I would use supervised learning techniqu
 
 This final section explores how the player classification can be used to generate play recommendations for the players. This recommendation's objective is to help players build and follow specific training regimes to improve their performance in StarCraft II online melee matches.
 {% include warning.html content='this library is not meant as a complete implementation of the recommender system. Instead, the library has three primary objectives. First, it facilitates exploring some of the technical challenges developers and designers would face when creating a solution like the one described in the *SC2 Training Grounds Desing Brief*. Second, it helps me gauge the possibilities and limitations of the resources I am using. These, in turn, help me scope and design a more realistic interface and experience for the solution in its *User experience Design Document*. Third, as a part of a proof-of-concept, it helps me evaluate the realistic technical feasibility of this project.' %} 
+
+## Setup
+
+As a prelude to the exploration in the following modules, I will like to clarify some aspects of the composition of this document for brevity's and clarity's sake. 
+
+In every case, when I start developing one of this library's modules, I have to include some setup elements at the beginning of each document. Since this process is almost identical in most cases, I will cover it here so that I can hide it in the module's documentation.
+{% include note.html content='Remember that any elements that I may hide in these documents can still be consulted and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.' %}The development of all modules starts with two elements: importing the module's dependencies and loading the development tests and sample data.
+
+Importing the module's dependencies means invoking several libraries used by the modules. The following is an example of these imports.
+
+```python
+# This are some of the common libraries for this library's
+# development.
+
+# These are some of the libraries of Python's standard library 
+# I use to support differnt functionalities. 
+from pathlib import Path
+from pprint import pprint
+from dataclasses import dataclass, astuple, field
+from datetime import datetime
+from typing import *
+
+# I use the following libries to load and manage data files. 
+import csv
+import json
+
+# Pymongo allows me to interact with a local MongoDB client to 
+# store and manage my document-based database.
+import pymongo
+
+# The following libraries offer various utilities for efficient
+# data and numeric manipulation, and for data visualisation.
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+import sklearn # Depending on the module I use different modules of
+               # scikit-learn library.
+
+
+# sc2reader facilitates data extraction from replay files
+import sc2reader
+```
+
+Additionally, to develop each module, I need to load some StarCraft II replay files (marked with the .SC2Replay extension). The game generates these files to store all relevant configuration and game-play information necessary to rebuild and reproduce a match. 
+
+The replays used to test and develop this project are extracted from publicly available datasets. In no case do I access any personal or private information of the users or players. These data sets have been collected using Blizzards developer's API and their client protocol (SC2client-proto), which only gathers them with the express authorisation of the users. The following code illustrates how they are loaded using sc2reader and collected into variables that store `sc2reader.resources.Replay` objects for later processing. I store this data in the library's test_replays folder.
+{% include tip.html content='One can load one replay at a time using the `sc2replays.load_replay(<str_file_path>)` method.' %}
+
+```python
+# This code sets up the notebook's sample replay.
+rps_path = Path(Path.cwd()/'test_replays') \
+           if Path('test_replays').exists() \
+           else Path('../test_replays')
+game_path = str(rps_path/'Jagannatha LE.SC2Replay')
+single_replay = sc2reader.load_replay(game_path)
+single_replay
+```
+
+
+
+
+    <sc2reader.resources.Replay at 0x16af5961d90>
+
+
+
+{% include tip.html content='Alternatively, one can use the sc2replays.load_replays(<str_dir_path>) method, which returns a generator of replay objects.' %}
+
+```python
+replays = sc2reader.load_replays(str(rps_path))
+replays
+```
+
+
+
+
+    <generator object SC2Factory.load_all at 0x0000016AF5C2CC10>
+
+
+
+Beyond these two initial setup elements, some modules also load data files that store helpful information to organise and configure the modules and their functions. These data files are stored in the library's data folder. The code below illustrates how I load some of these files. 
+
+```python
+data_path = Path(Path.cwd()/'data') \
+            if Path('data').exists() \
+            else Path('../data')
+
+with open(data_path/'unit_names.csv') as f:
+    file_reader = csv.reader(f)
+    unit_names = next(file_reader)
+    
+with open(data_path/'changes_names.csv') as f:
+    file_reader = csv.reader(f)
+    change_names = next(file_reader)
+    
+with open(data_path/'army_list.json') as f:
+    race_armies = json.load(f)
+
+with open(data_path/'buildings_list.json') as f:
+    race_buildings = json.load(f)
+
+with open(data_path/'upgrades.json') as f:
+    race_upgrades = json.load(f)
+```
 
 ## Install
 {% include warning.html content='THE FOLLOWING 2 SECTIONS ARE INCOMPLETE PLACEHOLDERS. PLEASE DISREGARD FOR NOW' %}

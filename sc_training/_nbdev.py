@@ -18,18 +18,20 @@ index = {"Player_data": "01_summarise_rpl.ipynb",
          "list_attr_interval_values": "03_macro_econ_parser.ipynb",
          "get_player_macro_econ_df": "03_macro_econ_parser.ipynb",
          "get_player_macro_econ_stats": "03_macro_econ_parser.ipynb",
-         "data_path": "04_build_parser.ipynb",
+         "data_path": "05_handle_game_events.ipynb",
          "composition_df": "04_build_parser.ipynb",
          "count_active_units": "04_build_parser.ipynb",
          "complete_count": "04_build_parser.ipynb",
          "count_composicion": "04_build_parser.ipynb",
          "count_started": "04_build_parser.ipynb",
+         "get_expansion_time": "04_build_parser.ipynb",
          "list_player_upgrades": "04_build_parser.ipynb"}
 
 modules = ["summarise_rpl.py",
            "handle_tracker_event.py",
            "macro_econ_parser.py",
-           "build_parser.py"]
+           "build_parser.py",
+           "handle_game_events.py"]
 
 doc_url = "https://HDavidEspinosa.github.io/sc_training/"
 

@@ -203,10 +203,10 @@ def get_cappedTime(subdf:pd.DataFrame) -> float:
     # for the lapse.
     if lapse_start:
 
-        last_event_length = (subdf.iloc[-1]['real_time'] -
-                             subdf.iloc[-2]['real_time'])
-        capped_lapses.append(subdf.iloc[-1]['real_time'] -
-                             lapse_start + last_event_length)
+        last_event_length = (subdf.iloc[-1]['real_time']
+                             - subdf.iloc[-2]['real_time'])
+        capped_lapses.append(subdf.iloc[-1]['real_time']
+                             - lapse_start + last_event_length)
 
     return sum(capped_lapses)
 

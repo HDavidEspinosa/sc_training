@@ -13,14 +13,17 @@ entries:
       title: Chapter 1 - summarise_rpl getting the a replay's basic info
       url: summarise_rpl.html
     - output: web,pdf
-      title: 01 handle_tracker_events Extracting information from the game's events
+      title: 'Chapter 02 - handle_tracker_events '
       url: handle_tracker_events.html
     - output: web,pdf
-      title: 02 macro_econ_parser Macroeconomic performance indicators
+      title: Chapter 03 - macro_econ_parser Macroeconomic performance indicators
       url: macro_econ_parser.html
     - output: web,pdf
-      title: 03 build_parser Outlining a player's army, base and tech builds
+      title: Chapter 04 - build_parser Outlining a player's army, base and tech builds
       url: build_parser.html
+    - output: web,pdf
+      title: 'Chapter 05 - handle_game_events '
+      url: handle_game_events.html
     output: web
     title: sc_training
   output: web

@@ -142,5 +142,5 @@ checklink/cookies.txt
 # debugging scripts
 debug_pys/
 
-# test and sample replay, not included for privacy
-test_replays/
+# # test and sample replay, not included for privacy
+# test_replays/

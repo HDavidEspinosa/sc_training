@@ -2,7 +2,7 @@
 
 __all__ = ['INTERVALS_BASE', 'calc_realtime_index']
 
-# Cell
+# Internal Cell
 
 # Load Module's dependencies
 
@@ -14,10 +14,8 @@ import fastcore.test as ft
 
 import sc2reader
 
-
 # Cell
 INTERVALS_BASE = 4*60
-
 
 # Cell
 def calc_realtime_index(registered_time: int,

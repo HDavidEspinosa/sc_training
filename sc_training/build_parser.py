@@ -22,8 +22,6 @@ import sc2reader
 
 from sc_training import *
 
-
-
 # Internal Cell
 
 # Load data files
@@ -47,7 +45,6 @@ with open(data_path/'buildings_list.json') as f:
 
 with open(data_path/'upgrades.json') as f:
     race_upgrades = json.load(f)
-
 
 # Internal Cell
 def composition_df(rpl: sc2reader.resources.Replay,
@@ -122,8 +119,6 @@ def composition_df(rpl: sc2reader.resources.Replay,
     # Generate and return the DataFrame with info from the units.
     return player_units_df.drop(['Uname', 'UnitID'], axis=1)
 
-
-
 # Internal Cell
 def count_active_units(df: pd.DataFrame,
                        end: float, start:float = 0) -> pd.DataFrame:
@@ -182,8 +177,6 @@ def count_active_units(df: pd.DataFrame,
                                                       fill_value = 0)
     return result_dfs
 
-
-
 # Internal Cell
 def complete_count(compositions:list[pd.DataFrame],
                    player_race:str,
@@ -219,8 +212,6 @@ def complete_count(compositions:list[pd.DataFrame],
             and not np.isnan(compo[unit]) else 0
             for unit in unit_list[player_race]}
             for compo in compositions]
-
-
 
 # Cell
 def count_composicion(rpl: sc2reader.resources.Replay,
@@ -259,8 +250,6 @@ def count_composicion(rpl: sc2reader.resources.Replay,
 
     return fin_dict
 
-
-
 # Cell
 def count_started(rpl: sc2reader.resources.Replay,
                   pid: int, buildings:bool =False) \
@@ -285,8 +274,6 @@ def count_started(rpl: sc2reader.resources.Replay,
                    for inter_start, inter_end in interval_marks]
 
     return complete_count(army_counts, player_race, buildings)
-
-
 
 # Cell
 def get_expansion_time(rpl: sc2reader.resources.Replay,
@@ -340,7 +327,6 @@ def get_expansion_time(rpl: sc2reader.resources.Replay,
                 in zip(expansions,
                        bases_df.enter_game_time)}
 
-
 # Cell
 def list_player_upgrades(rpl: sc2reader.resources.Replay,
                          pid: int) -> dict[str, float]:
@@ -357,4 +343,3 @@ def list_player_upgrades(rpl: sc2reader.resources.Replay,
 
     return {upgrade_name: upg_events.get(upgrade_name, 0)
             for upgrade_name in race_upgrades[player_race]}
-

@@ -17,7 +17,6 @@ import sc2reader
 
 from sc_training import *
 
-
 # Internal Cell
 # The Following are the module's helper functions
 def get_pstatse(rpl: sc2reader.resources.Replay,
@@ -41,8 +40,6 @@ def get_pstatse(rpl: sc2reader.resources.Replay,
     return [event for event in rpl.events
             if isinstance(event, sc2reader.events.tracker.PlayerStatsEvent)
             and event.pid == current_pid]
-
-
 
 # Internal Cell
 def complete_pstatse_df(rpl: sc2reader.resources.Replay,
@@ -103,8 +100,6 @@ def complete_pstatse_df(rpl: sc2reader.resources.Replay,
     df_no_loss_record.insert(26, 'supply_capped', supply_capped_column)
     return df_no_loss_record
 
-
-
 # Internal Cell
 def gen_interval_sub_dfs(rpl_length: float,
                         df: pd.DataFrame, column: str) -> pd.DataFrame:
@@ -152,8 +147,6 @@ def gen_interval_sub_dfs(rpl_length: float,
                for interval in time_intervals]
 
     return sub_dfs
-
-
 
 # Internal Cell
 # Functions for specific indicators
@@ -218,8 +211,6 @@ def calculate_spending_coeficient(unspent_rsrc: float,
     else:
         return None
 
-
-
 # Internal Cell
 def list_attr_interval_values(df: pd.DataFrame,
                               func: Callable[[pd.DataFrame], Any],
@@ -252,7 +243,6 @@ def list_attr_interval_values(df: pd.DataFrame,
     """
     return [func(subdf) if not subdf.empty else None
             for subdf in gen_interval_sub_dfs(rpl_length, df, df_attribute)]
-
 
 # Cell
 def get_player_macro_econ_df(rpl: sc2reader.resources.Replay,
@@ -315,8 +305,6 @@ def get_player_macro_econ_df(rpl: sc2reader.resources.Replay,
     # army_value.
     # Also, eliminate possible duplicate last record.
     return complete_pstatse_df(rpl, pstatse_df)
-
-
 
 # Cell
 def get_player_macro_econ_stats(rpl: sc2reader.resources.Replay, pid: int):

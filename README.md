@@ -2,11 +2,6 @@
 > : This library is a prototype meant to facilitate the exploration of the technical feasibility, requirements, possibilities and limitations of developing an in-game recommender system for StarCraft II, i.e. SC2 Training Grounds.
 
 
-```python
-%load_ext autoreload
-%autoreload 2
-```
-
 {% include note.html content='this prototype is mainly a tool for the reflective practice of development. This reflection is part of my PhD research project, "Encouraging Play Experience Expansion Through Machine-Learning-Based Recommendations: User-Experience Design considerations in the use of Machine-Learning-Based Recommendation System for Videogames".' %}
 ## Introduction
 
@@ -103,7 +98,7 @@ single_replay
 
 
 
-    <sc2reader.resources.Replay at 0x16af5961d90>
+    <sc2reader.resources.Replay at 0x257b0250d30>
 
 
 
@@ -117,7 +112,7 @@ replays
 
 
 
-    <generator object SC2Factory.load_all at 0x0000016AF5C2CC10>
+    <generator object SC2Factory.load_all at 0x00000257B0220740>
 
 
 
@@ -181,7 +176,7 @@ single_replay
 
 
 
-    <sc2reader.resources.Replay at 0x213d3d617f0>
+    <sc2reader.resources.Replay at 0x257b05ca820>
 
 
 
@@ -202,16 +197,4 @@ p1.units[:5]
      BeaconHarass [2700001],
      BeaconIdle [2740001]]
 
-
-
-```python
-from nbdev.export import notebook2script
-notebook2script()
-```
-
-    Converted 00_summarise_rpl.ipynb.
-    Converted 01_handle_tracker_events.ipynb.
-    Converted 02_macro_econ_parser.ipynb.
-    Converted 03_build_parser.ipynb.
-    Converted index.ipynb.
 

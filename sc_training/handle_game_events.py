@@ -15,9 +15,11 @@ import fastcore.test as ft
 
 import sc2reader
 
+
 # Cell
 data_path = (Path(Path.cwd()/'data')
              if Path('data').exists() else Path('../data'))
 
 with open(data_path/'ability_list.json') as af:
-    ab_lists = json.load(af)
+    ABILITIES = json.load(af)
+

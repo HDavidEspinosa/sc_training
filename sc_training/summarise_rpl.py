@@ -4,7 +4,7 @@ __all__ = ['Player_data', 'Replay_data', 'get_players', 'get_replay_info']
 
 # Internal Cell
 
-# This are summarise_rpl's dependencies.
+# Load Module's dependencies
 
 from pathlib import Path
 from pprint import pprint
@@ -13,6 +13,7 @@ from datetime import datetime
 from typing import *
 
 import sc2reader
+
 
 # Cell
 @dataclass(frozen=True)
@@ -45,6 +46,8 @@ class Player_data:
         print_lines = (f'{h:<15}{att:>10}\n' for h, att
                         in zip(headers, astuple(self)))
         return ''.join(print_lines)
+
+
 
 # Cell
 @dataclass(frozen=True)
@@ -104,6 +107,8 @@ class Replay_data:
                        for h, att in zip(headers, astuple(self)))
         return ''.join(print_lines)
 
+
+
 # Cell
 def get_players(player_dict: Dict[Any, Any]) -> List[Player_data]:
     """
@@ -121,6 +126,7 @@ def get_players(player_dict: Dict[Any, Any]) -> List[Player_data]:
     """
     return [Player_data(p.pid, p.name, p.play_race, p.result)
             for p in player_dict.values()]
+
 
 # Cell
 def get_replay_info(replay: sc2reader.resources.Replay) -> Replay_data:

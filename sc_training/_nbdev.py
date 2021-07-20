@@ -25,7 +25,14 @@ index = {"Player_data": "01_summarise_rpl.ipynb",
          "count_composicion": "04_build_parser.ipynb",
          "count_started": "04_build_parser.ipynb",
          "get_expansion_time": "04_build_parser.ipynb",
-         "list_player_upgrades": "04_build_parser.ipynb"}
+         "list_player_upgrades": "04_build_parser.ipynb",
+         "COMMON_ABILITIES": "05_handle_game_events.ipynb",
+         "MOVE_COMMAND": "05_handle_game_events.ipynb",
+         "build_commands_df": "05_handle_game_events.ipynb",
+         "calc_spe_abil_ratios": "05_handle_game_events.ipynb",
+         "get_top_abilities": "05_handle_game_events.ipynb",
+         "get_prefered_spec_abil": "05_handle_game_events.ipynb",
+         "calc_attack_ratio": "05_handle_game_events.ipynb"}
 
 modules = ["summarise_rpl.py",
            "handle_tracker_event.py",

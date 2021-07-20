@@ -1,10 +1,10 @@
 {
   "sc_training": {
     "Overview": "/",
-    "Chapter 1 - summarise_rpl getting the a replay's basic info": "summarise_rpl.html",
-    "Chapter 02 - handle_tracker_events ": "handle_tracker_events.html",
+    "Chapter 1 - summarise_rpl": "summarise_rpl.html",
+    "Chapter 2 - handle_tracker_events": "handle_tracker_events.html",
     "Chapter 03 - macro_econ_parser Macroeconomic performance indicators": "macro_econ_parser.html",
-    "Chapter 04 - build_parser Outlining a player's army, base and tech builds": "build_parser.html",
-    "Chapter 05 - handle_game_events ": "handle_game_events.html"
+    "Chapter 4 - build_parser": "build_parser.html",
+    "Chapter 05 - handle_game_events": "handle_game_events.html"
   }
 }

@@ -1,13 +1,13 @@
 ---
 
-title: Chapter 05 - handle_game_events 
+title: Chapter 05 - handle_game_events
 
 
 keywords: fastai
 sidebar: home_sidebar
 
-
-
+summary: ": Module that explores the common elements between all GameEvents and creates some basic general purpose functions for this type of event."
+description: ": Module that explores the common elements between all GameEvents and creates some basic general purpose functions for this type of event."
 nb_path: "05_handle_game_events.ipynb"
 ---
 <!--
@@ -31,7 +31,7 @@ nb_path: "05_handle_game_events.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In the previous modules, I focussed on the indicators I could extract and build based on the information in a replay's PlayerStatsEvents. For the most part, these indicators revolve around economic and building indicators, which point to the game's strategic (i.e. macro) dimension. Meanwhile, beyond what a player's build orders and army composition may tangentially suggest, these indicators don't seem to reveal much about the game's tactical (i.e. micro) dimension. 
+<p>In the previous modules, I focussed on the indicators I could extract and build based on the information in a replay's PlayerStatsEvents. For the most part, these indicators revolve around economic and building indicators, which point to the game's strategic (i.e. macro) dimension. Meanwhile, beyond what a player's build orders and army composition may tangentially suggest, these indicators don't seem to reveal much about the game's tactical (i.e. micro) dimension.
 What is more, the game itself and other applications like sc2replaystats offer players little information in this regard.</p>
 <p>One indicator gets some attention in this respect, the average actions per minute (APM). This indicator does points how fast players can play. The assumption around this marker is that if players have high APMs, this indicates that they use many of the game commands directly to control their unit's actions. Thus, I will take this indicator into account when building the player's profiles. Thankfully, sc2reader includes the APMTracker pug-in that facilitates the collection of this information.</p>
 <p>The problem is that this APM tells the observer little of what actions players use and when.</p>
@@ -59,7 +59,7 @@ What is more, the game itself and other applications like sc2replaystats offer p
              <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;../data&#39;</span><span class="p">))</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="o">/</span><span class="s1">&#39;ability_list.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">af</span><span class="p">:</span>
-    <span class="n">ab_lists</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">af</span><span class="p">)</span>
+    <span class="n">ABILITIES</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">af</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -76,17 +76,17 @@ What is more, the game itself and other applications like sc2replaystats offer p
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rps_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./test_replays&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">RPS_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./test_replays&quot;</span><span class="p">)</span>
 
-<span class="n">game_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s2">&quot;Jagannatha LE.SC2Replay&quot;</span><span class="p">)</span>
+<span class="n">game_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">RPS_PATH</span><span class="o">/</span><span class="s2">&quot;Jagannatha LE.SC2Replay&quot;</span><span class="p">)</span>
 <span class="n">single_replay</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="n">game_path</span><span class="p">)</span>
 <span class="n">single_replay</span>
 
-<span class="n">ta_test</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s1">&#39;Terran_abilities.SC2Replay&#39;</span><span class="p">))</span>
-<span class="n">pa_test</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s1">&#39;ProtossAbilities.SC2Replay&#39;</span><span class="p">))</span>
+<span class="n">ta_test</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">RPS_PATH</span><span class="o">/</span><span class="s1">&#39;Terran_abilities.SC2Replay&#39;</span><span class="p">))</span>
+<span class="n">pa_test</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">RPS_PATH</span><span class="o">/</span><span class="s1">&#39;ProtossAbilities.SC2Replay&#39;</span><span class="p">))</span>
 
-<span class="n">tms_test</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s1">&#39;TMovesSelect.SC2Replay&#39;</span><span class="p">))</span>
-<span class="n">pms_test</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s1">&#39;p_move_test.SC2Replay&#39;</span><span class="p">))</span>
+<span class="n">tms_test</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">RPS_PATH</span><span class="o">/</span><span class="s1">&#39;TMovesSelect.SC2Replay&#39;</span><span class="p">))</span>
+<span class="n">pms_test</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">RPS_PATH</span><span class="o">/</span><span class="s1">&#39;p_move_test.SC2Replay&#39;</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -113,8 +113,8 @@ In particular, I focus on two of the <code>GameEvent</code>'s sub-classes, <code
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_match</span> <span class="o">=</span> <span class="n">pa_test</span>
-<span class="n">match_ge</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">test_match</span><span class="o">.</span><span class="n">events</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">TEST_MATCH</span> <span class="o">=</span> <span class="n">pa_test</span>
+<span class="n">match_ge</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">TEST_MATCH</span><span class="o">.</span><span class="n">events</span> 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">GameEvent</span><span class="p">)]</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">match_ge</span><span class="p">)</span>
 </pre></div>
@@ -144,8 +144,8 @@ In particular, I focus on two of the <code>GameEvent</code>'s sub-classes, <code
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="CommandEvents">CommandEvents<a class="anchor-link" href="#CommandEvents"> </a></h2><p><code>CommandEvensts</code> are generated and recorded every time a player orders a unit to do something during a match. These orders include building orders, some basic common commands or the use of the player's units' special abilities. Based on these classes, I exclude building and upgrade orders from the micro-game analysis because they are already reflected on the macro-game analysis. Meanwhile, I group the common commands (i.e. move, stop, patrol, hold position, follow, collect, attack) to expose play patterns common to all units. Lastly, I review the use of special abilities because it can unveil some of the player's preferences regarding the unique potential of their play race.</p>
-<p>The following code shows how I can use the events' attributes to classify the command events. 
+<h2 id="CommandEvents">CommandEvents<a class="anchor-link" href="#CommandEvents"> </a></h2><p><code>CommandEvents</code> are generated and recorded every time a player orders a unit to do something during a match. These orders include building orders, some basic common commands or the use of the player's units' special abilities. Based on these classes, I exclude building and upgrade orders from the micro-game analysis because they are already reflected on the macro-game analysis. Meanwhile, I group the common commands (i.e. move, stop, patrol, hold position, follow, collect, attack) to expose play patterns common to all units. Lastly, I review the use of special abilities because it can unveil some of the player's preferences regarding the unique potential of their play race.</p>
+<p>The following code shows how I can use the events' attributes to classify the command events.
 {% include warning.html content='The following list of comprehensions build on each other. This relationship means that for the code to run correctly, the lists must be created following the order in which they are defined.' %}</p>
 
 </div>
@@ -158,14 +158,7 @@ In particular, I focus on two of the <code>GameEvent</code>'s sub-classes, <code
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">race_abilities</span> <span class="o">=</span> <span class="n">ab_lists</span><span class="p">[</span><span class="n">test_match</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">play_race</span><span class="p">]</span>
-<span class="n">common_abilities</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Attack&#39;</span><span class="p">,</span> 
-                    <span class="s1">&#39;Stop&#39;</span><span class="p">,</span> 
-                    <span class="s1">&#39;HoldPosition&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;Patrol&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;RightClick&#39;</span><span class="p">]</span>
-<span class="n">move_command</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;RightClick&#39;</span><span class="p">]</span>
-
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">race_abilities</span> <span class="o">=</span> <span class="n">ABILITIES</span><span class="p">[</span><span class="n">TEST_MATCH</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">play_race</span><span class="p">]</span>
 
 <span class="c1"># Firs, I can use the class to extract all command events appart from other </span>
 <span class="c1"># other GameEvents.</span>
@@ -179,7 +172,7 @@ In particular, I focus on two of the <code>GameEvent</code>'s sub-classes, <code
              <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">com_e</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">CommandEvent</span><span class="p">)</span>
              <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span>
              <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability_name</span> <span class="ow">in</span> <span class="n">race_abilities</span>
-             <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">common_abilities</span><span class="p">]</span>
+             <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">COMMON_ABILITIES</span><span class="p">]</span>
 
 <span class="c1"># I can also extract the commands related to upgrades and tech research.</span>
 <span class="n">upgrades</span> <span class="o">=</span> <span class="p">[</span><span class="n">com_e</span> <span class="k">for</span> <span class="n">com_e</span> <span class="ow">in</span> <span class="n">match_ge</span> 
@@ -188,7 +181,7 @@ In particular, I focus on two of the <code>GameEvent</code>'s sub-classes, <code
              <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">has_ability</span>
              <span class="ow">and</span> <span class="ow">not</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability</span><span class="o">.</span><span class="n">is_build</span>
              <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">race_abilities</span>
-             <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">common_abilities</span><span class="p">]</span>
+             <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">COMMON_ABILITIES</span><span class="p">]</span>
 
 
 <span class="c1"># I can list the common actions related to unit direction.</span>
@@ -196,8 +189,8 @@ In particular, I focus on two of the <code>GameEvent</code>'s sub-classes, <code
              <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">com_e</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">CommandEvent</span><span class="p">)</span>
              <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span>
              <span class="ow">and</span> <span class="ow">not</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability</span><span class="o">.</span><span class="n">is_build</span>
-             <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">common_abilities</span>
-             <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability_name</span> <span class="ow">in</span> <span class="n">common_abilities</span>
+             <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">COMMON_ABILITIES</span>
+             <span class="ow">and</span> <span class="n">com_e</span><span class="o">.</span><span class="n">ability_name</span> <span class="ow">in</span> <span class="n">COMMON_ABILITIES</span>
              <span class="p">]</span>
 
 <span class="c1"># And I can list the commands that are related to building.</span>
@@ -463,26 +456,226 @@ Total sum: 151
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="CommandEvents-Exportable-Functions">CommandEvents Exportable Functions<a class="anchor-link" href="#CommandEvents-Exportable-Functions"> </a></h2><p>In this section, I define this module's exportable functions. These functions use the <code>CommandEvent</code> classification discussed above to calculate several micro-game performance indicators.</p>
-<p>First, I use the special abilities list to calculate the ratio between them and the total commands executed by the player. With this ratio, I can quantify the use of these abilities. The measurement helps me separate players that use their race's unique capabilities from those who do not.
+<p>First, I define the function <a href="/sc_training/handle_game_events.html#calc_spe_abil_ratios"><code>calc_spe_abil_ratios</code></a>. In this function, I use the special abilities list to calculate the ratio between them and the total commands executed by the player. With this ratio, I can quantify the use of these abilities. The measurement helps me separate players that use their race's unique capabilities from those who do not.
 {% include note.html content='Following the logic set in previous modules, I define these functions to calculate all indicators for the early, mid, late and whole game. Although I do this to remain consistent, I also think this level of detail makes sense given how players have access to different units and abilities at various game stages.' %}</p>
 
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="calc_spe_abil_ratios" class="doc_header"><code>calc_spe_abil_ratios</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_game_events.py#L53" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_spe_abil_ratios</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_restult</span> <span class="o">=</span> <span class="n">calc_spe_abil_ratios</span><span class="p">(</span><span class="n">TEST_MATCH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">test_restult</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[0.18028169014084508,
+ 0.045454545454545456,
+ 0.09615384615384616,
+ 0.22007722007722008]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I also calculate the player's first and second preferred abilities, if they use any. This qualitative piece of information can indicate some aspects of the player's tactical preferences.</p>
+<p>Meawhile, below, I define the function <a href="/sc_training/handle_game_events.html#get_prefered_spec_abil"><code>get_prefered_spec_abil</code></a>. With this function, I can calculate the player's first and second preferred abilities, if they use any. This qualitative piece of information can indicate some aspects of the player's tactical preferences.</p>
 
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="get_prefered_spec_abil" class="doc_header"><code>get_prefered_spec_abil</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_game_events.py#L102" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_prefered_spec_abil</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prefered_abilities_test</span> <span class="o">=</span> <span class="n">get_prefered_spec_abil</span><span class="p">(</span><span class="n">TEST_MATCH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">prefered_abilities_test</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[(&#39;GravitonBeam&#39;, &#39;Feedback&#39;),
+ (&#39;ChronoBoostEnergyCost&#39;, None),
+ (&#39;GravitonBeam&#39;, &#39;AdeptPhaseShift&#39;),
+ (&#39;GravitonBeam&#39;, &#39;Feedback&#39;)]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Meanwhile, I define the following function to estimate a player's aggressiveness. For this purpose, the function calculates the ratio between attack commands and the number of common commands as a potential indicator of a player's aggressiveness.</p>
+<p>Meanwhile, I define <a href="/sc_training/handle_game_events.html#calc_attack_ratio"><code>calc_attack_ratio</code></a> to estimate a player's aggressiveness. This function calculates the ratio between attack commands and the number of common commands as a potential indicator of a player's aggressiveness.</p>
 
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="calc_attack_ratio" class="doc_header"><code>calc_attack_ratio</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_game_events.py#L126" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_attack_ratio</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_attack_ratios</span> <span class="o">=</span> <span class="n">calc_attack_ratio</span><span class="p">(</span><span class="n">TEST_MATCH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">test_attack_ratios</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[0.06666666666666667, 0.0, 0.030303030303030304, 0.08396946564885496]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 </div>
  
 

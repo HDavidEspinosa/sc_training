@@ -36,35 +36,6 @@ nb_path: "03_macro_econ_parser.ipynb"
 </div>
 </div>
 </div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">astuple</span><span class="p">,</span> <span class="n">field</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">fastcore</span> <span class="kn">import</span> <span class="n">test</span> <span class="k">as</span> <span class="n">ft</span>
-
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="kn">import</span> <span class="nn">sc2reader</span>
-
-<span class="kn">from</span> <span class="nn">sc_training</span> <span class="kn">import</span> <span class="o">*</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Next, I load a test <code>Replay</code> to use as a sample, and test case in this notebook, as <code>single_replay</code>. I store a list of all its events as <code>match_events</code> and a list of all the tracker events as <code>tracker_e</code>.</p>
@@ -103,7 +74,7 @@ nb_path: "03_macro_econ_parser.ipynb"
 <p>These events are generated for each player every ten seconds, regardless of the player's presence in the match. In other words, if one is analysing a match of more than two players and one is defeated, the game still generates <code>PlayerStatsEvents</code> for that player up until the end of the match.</p>
 <p>Additionally, the game generates a <code>PlayerStatEvent</code> when a player leaves (i.e., defeated or surrenders) and when the match ends.
 {% include note.html content='In 1v1 games, the above behaviour can cause the losing player to have two events generated at the end of the game. One for leaving and one for the end of the game. Source <a href="https://sc2reader.readthedocs.io/en/latest/events/tracker.html">(Kim, 2015, p. 24)</a>' %}
-  Note that the sample match lasted 590 seconds. Hence, there should be 59 <code>PlayerStatEvent</code>s per player, plus two or three for start and end events. Bellow, I show some important information about the <code>Replay</code> that can be useful for debugging and managing these events.</p>
+Note that the sample match lasted 590 seconds. Hence, there should be 59 <code>PlayerStatEvent</code>s per player, plus two or three for start and end events. Bellow, I show some important information about the <code>Replay</code> that can be useful for debugging and managing these events.</p>
 
 </div>
 </div>
@@ -117,8 +88,7 @@ nb_path: "03_macro_econ_parser.ipynb"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;Game length in seconds:&quot;</span><span class="si">:</span><span class="s1">&lt;27</span><span class="si">}{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_length</span><span class="o">.</span><span class="n">seconds</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;Game frames per second:&quot;</span><span class="si">:</span><span class="s1">&lt;27</span><span class="si">}{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_fps</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;Total frames in the match:&quot;</span><span class="si">:</span><span class="s1">&lt;27</span><span class="si">}</span><span class="se">\</span>
-<span class="si">{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_length</span><span class="o">.</span><span class="n">seconds</span> <span class="o">*</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">game_fps</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;Total frames in the match:&quot;</span><span class="si">:</span><span class="s1">&lt;27</span><span class="si">}{</span><span class="n">single_replay</span><span class="o">.</span><span class="n">game_length</span><span class="o">.</span><span class="n">seconds</span> <span class="o">*</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">game_fps</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -206,11 +176,9 @@ Total frames in the match: 9440.0
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Second recorded in the last event: </span><span class="se">\</span>
-<span class="si">{</span><span class="n">p_one_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_one_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Second recorded in the last event: </span><span class="si">{</span><span class="n">p_one_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_one_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frame recorded in the last event: </span><span class="se">\</span>
-<span class="si">{</span><span class="n">p_one_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_one_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">frame</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frame recorded in the last event: </span><span class="si">{</span><span class="n">p_one_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_one_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">frame</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -255,11 +223,9 @@ Frame recorded in the last event: 13224
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Number of events recorded for p2: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">p_two_state</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Second recorded in the last event: </span><span class="se">\</span>
-<span class="si">{</span><span class="n">p_two_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_two_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Second recorded in the last event: </span><span class="si">{</span><span class="n">p_two_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_two_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frame recorded in the last event: </span><span class="se">\</span>
-<span class="si">{</span><span class="n">p_two_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_two_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">frame</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Frame recorded in the last event: </span><span class="si">{</span><span class="n">p_two_state</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">p_two_state</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">frame</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -288,7 +254,7 @@ Frame recorded in the last event: 13224
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>{% include tip.html content='Since this inconsistency affects the recorded time in all TrackerEvents, I defined a <a href="/sc_training/handle_tracker_events.html#calc_realtime_index"><code>calc_realtime_index</code></a> method to address this problem.' %}
-  Let me plot the graph for one of the most common stats used in the game to measure a player's performance, the army value, in two different ways. I will plot this value with the time registered in the events and with the time index based on the match's duration.</p>
+Let me plot the graph for one of the most common stats used in the game to measure a player's performance, the army value, in two different ways. I will plot this value with the time registered in the events and with the time index based on the match's duration.</p>
 <p>Comparing these two graphs shows how this solution changes the information stored in these events.</p>
 
 </div>
@@ -306,15 +272,15 @@ Frame recorded in the last event: 13224
 <span class="c1"># Calculate the army value (a_value), adding the amounts of minerals and</span>
 <span class="c1"># vespene spent in the player&#39;s active army at each point during the game.</span>
 <span class="n">a_mineral_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">minerals_used_active_forces</span> 
-                            <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>  <span class="n">p_one_state</span><span class="p">])</span>
+                        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>  <span class="n">p_one_state</span><span class="p">])</span>
 <span class="n">a_vespene_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">vespene_used_active_forces</span> 
-                            <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>  <span class="n">p_one_state</span><span class="p">])</span>
+                        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>  <span class="n">p_one_state</span><span class="p">])</span>
 <span class="n">a_value</span> <span class="o">=</span> <span class="n">a_mineral_value</span> <span class="o">+</span> <span class="n">a_vespene_value</span>
 
 <span class="c1"># Generate a DataFrame of the army value at each point in the game using </span>
 <span class="c1"># the seconds as an index.</span>
 <span class="n">pstats_noprocess</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;second&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">second</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p_one_state</span><span class="p">],</span>
-                                 <span class="s1">&#39;army_value&#39;</span><span class="p">:</span> <span class="n">a_value</span><span class="p">})</span>
+                             <span class="s1">&#39;army_value&#39;</span><span class="p">:</span> <span class="n">a_value</span><span class="p">})</span>
 <span class="n">pstats_noprocess</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;second&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1">#print(pstats_noprocess.tail(10).to_markdown())</span>
 </pre></div>
@@ -643,15 +609,14 @@ Frame recorded in the last event: 13224
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Data-in-PlayStatsEvent">Data in <code>PlayStatsEvent</code><a class="anchor-link" href="#Data-in-PlayStatsEvent"> </a></h4><p>Having examined how to manipulate <code>PlayerStatsEvent</code> objects, I can examine the type of data they store. In general, this type of objects store macro-economic data.</p>
+<h3 id="Data-in-PlayStatsEvent">Data in <code>PlayStatsEvent</code><a class="anchor-link" href="#Data-in-PlayStatsEvent"> </a></h3><p>Having examined how to manipulate <code>PlayerStatsEvent</code> objects, I can examine the type of data they store. In general, this type of objects store macro-economic data.</p>
 <p>Here is a list of attributes and how they can be used to compose player stats.</p>
 <ul>
 <li><code>minerals_used_active_forces</code> and <code>vespene_used_active_forces</code>: As I show in the example above, these indicators can be used to calculate the players' army value.</li>
 <li><code>minerals_collection_rate</code>, <code>vespene_collection_rate</code>, <code>workers_active_count</code>: are important indicators about the rate of growth of the economy.</li>
 <li><code>minerals_current</code> and <code>vespene_current</code>: these attributes can be added and averaged over time to extract the average unspent resources. This information is critical because the game's macro strategy is built around growing an economy and spending resources. Thus, an unspent economy can signal missed opportunities.</li>
 <li><code>food_used</code> and <code>food_made</code>: these two attributes can be used to signal moments where the players' supply has been capped. Therefore the player is blocked, preventing players from training units.</li>
-<li><p>Economy use and lost indicators divide the players' resources into:</p>
-<ul>
+<li>Economy use and lost indicators divide the players' resources into:<ul>
 <li><em>used_in_progress</em>: resources that have been spent in elements (structures, units or research) under development.<ul>
 <li><code>minerals_used_in_progress</code></li>
 <li><code>vespene_used_in_progress</code></li>
@@ -670,15 +635,13 @@ Frame recorded in the last event: 13224
 <li><code>resources_lost</code></li>
 </ul>
 </li>
-<li><p><em>killed</em>: resources that an opponent had invested in elements that the player has killed.</p>
-<ul>
+<li><em>killed</em>: resources that an opponent had invested in elements that the player has killed.<ul>
 <li><code>minerals_killed</code></li>
 <li><code>vespene_killed</code></li>
 <li><code>resources_killed</code></li>
 </ul>
 </li>
-<li><p>Additionally, each mineral and vespene resource attribute has three more associated attributes, providing more detail into the economy. These extended attributes break each indicator into army, economy and technology indicators (buildings, units and research). For example, the <code>minerals_used_in_progress</code> attribute has the following attributes that disaggregate it:</p>
-<ul>
+<li>Additionally, each mineral and vespene resource attribute has three more associated attributes, providing more detail into the economy. These extended attributes break each indicator into army, economy and technology indicators (buildings, units and research). For example, the <code>minerals_used_in_progress</code> attribute has the following attributes that disaggregate it:<ul>
 <li><code>minerals_used_in_progress_army</code></li>
 <li><code>minerals_used_in_progress_economy</code></li>
 <li><code>minerals_used_in_progress_technology</code></li>
@@ -694,7 +657,7 @@ Frame recorded in the last event: 13224
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Helper-Functions">Helper Functions<a class="anchor-link" href="#Helper-Functions"> </a></h3><p>In this module, I define various helper functions that simplify the definition of the module's main exportable functions.
-  These functions include:</p>
+These functions include:</p>
 <ul>
 <li><a href="/sc_training/macro_econ_parser.html#get_pstatse"><code>get_pstatse</code></a> extracts a list of all the <code>PlayerStatsEvent</code> instances related to a player from a <code>Replay</code>.</li>
 <li><a href="/sc_training/macro_econ_parser.html#complete_pstatse_df"><code>complete_pstatse_df</code></a> expands the initial <code>DataFrame</code> that can be extracted directly from the PlayerStatsEvents with several relevant features. I use this function in the <a href="/sc_training/macro_econ_parser.html#get_player_macro_econ_df"><code>get_player_macro_econ_df</code></a> definition.</li>
@@ -706,14 +669,121 @@ Frame recorded in the last event: 13224
 <li><a href="/sc_training/macro_econ_parser.html#get_subdf_total"><code>get_subdf_total</code></a></li>
 <li><a href="/sc_training/macro_econ_parser.html#calculate_spending_coeficient"><code>calculate_spending_coeficient</code></a></li>
 </ul>
-<p>I use these last functions in the <a href="/sc_training/macro_econ_parser.html#get_player_macro_econ_stats"><code>get_player_macro_econ_stats</code></a> definition.
-{% include tip.html content='The implementation of these helper functions can be consulted in the module&#8217;s development jupyter notebook or source code.' %}{% include note.html content='these functions respond to the functional programming paradigm I am following for this package.' %}</p>
 </li>
 </ul>
+<p>I use these last functions in the <a href="/sc_training/macro_econ_parser.html#get_player_macro_econ_stats"><code>get_player_macro_econ_stats</code></a> definition.
+{% include tip.html content='The implementation of these helper functions can be consulted in the module&#8217;s development jupyter notebook or source code.' %}{% include note.html content='these functions respond to the functional programming paradigm I am following for this package.' %}</p>
 
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="gen_interval_sub_dfs" class="doc_header"><code>gen_interval_sub_dfs</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/macro_econ_parser.py#L109" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>gen_interval_sub_dfs</code>(<strong><code>rpl_length</code></strong>:<code>float</code>, <strong><code>df</code></strong>:<code>DataFrame</code>, <strong><code>column</code></strong>:<code>str</code>)</p>
+</blockquote>
+<p>Extract a set of DataFrames containing the records for a particular
+field of the PlayerStatsEvent.</p>
+<p>The function extracts the information of a particular column of the df
+DataFrame. It returns a list of four DataFrames for the whole, early,
+mid and late game intervals.</p>
+<p><em>Args</em></p>
+
+<pre><code>- df (pd.DataFrame)
+    DataFrame containing all PlayerStatsEvent instances of a
+    replay.
+- rpl_length (float)
+    Length of a match in seconds.
+- column (str)
+    Name of the column that should be extracted in the DataFrames
+
+</code></pre>
+<p><em>Returns</em></p>
+
+<pre><code>- list[DataFrame]
+    List of the DataFrames, containing the column information for
+    the whole, early, mid and late games in that order.</code></pre>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="list_attr_interval_values" class="doc_header"><code>list_attr_interval_values</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/macro_econ_parser.py#L224" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_attr_interval_values</code>(<strong><code>df</code></strong>:<code>DataFrame</code>, <strong><code>func</code></strong>:<code>Callable</code>[<code>DataFrame</code>, <code>Any</code>], <strong><code>df_attribute</code></strong>:<code>str</code>, <strong><code>rpl_length</code></strong>:<code>float</code>)</p>
+</blockquote>
+<p>Lists the result of a function it receives applied to the values of
+various listed DataFrames.</p>
+<p>This function receives a DataFrame, splits it into sub-DataFrames based
+on various game intervals, and then applies a function to those
+intervals listing the results.</p>
+<p><em>Args</em></p>
+
+<pre><code>- df (pandas.DataFrame)
+    A DataFrame of various attributes of a replay, including those
+    that must be processed.
+- func (callable)
+    A function that will be applied to each interval
+- df_attribute (str)
+    Name of the DataFrame's attribute (i.e. column) to which the
+    function must be applied.
+- rpl_length (float)
+    The duration of the Replay from which the DataFrame is
+    constructed in seconds.
+
+</code></pre>
+<p><em>Returns</em></p>
+
+<pre><code>-  List of the return values of the function func applied to the
+various game intervals.</code></pre>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Macroeconomic-Stats-Functions">Macroeconomic Stats Functions<a class="anchor-link" href="#Macroeconomic-Stats-Functions"> </a></h3><p>Here, I define two functions that can expand each player's performance information in specific matches.</p>
@@ -734,7 +804,7 @@ Frame recorded in the last event: 13224
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_player_macro_econ_df" class="doc_header"><code>get_player_macro_econ_df</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/macro_econ_parser.py#L248" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_player_macro_econ_df</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_player_macro_econ_df" class="doc_header"><code>get_player_macro_econ_df</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/macro_econ_parser.py#L258" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_player_macro_econ_df</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>This function organises the records of a player's major
 macroeconomic performance indicators.</p>
@@ -777,6 +847,14 @@ indicators at a specific moment during the game.</p>
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <a href="/sc_training/macro_econ_parser.html#get_player_macro_econ_df"><code>get_player_macro_econ_df</code></a> function organises a player's <code>PlayerStatsEvents</code> into a <code>DataFrame</code> where the columns represent each indicators' values. In said  <code>DataFrame</code> the rows represent the player's events.</p>
+<p>The code below shows the recorded data for the last event (i.e. row) of the DataFrame extracted from a sample replay using this function.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -785,208 +863,57 @@ indicators at a specific moment during the game.</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_df</span> <span class="o">=</span> <span class="n">get_player_macro_econ_df</span><span class="p">(</span><span class="n">single_replay</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="c1"># print(test_df.tail(5).to_markdown())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>real_time                      590.0
+second                           826
+minerals_current                2750
+vespene_current                  996
+unspent_rsrc                    3746
+minerals_used_active_forces        0
+vespene_used_active_forces         0
+army_value                         0
+minerals_collection_rate        1455
+vespene_collection_rate          447
+rsrc_collection_rate            1902
+workers_active_count              41
+minerals_used_in_progress          0
+vespene_used_in_progress           0
+resources_used_in_progress         0
+minerals_used_current           3875
+vespene_used_current               0
+resources_used_current          3875
+minerals_lost                   5000
+vespene_lost                    1250
+resources_lost                  6250
+minerals_killed                  900
+vespene_killed                   125
+resources_killed                1025
+food_used                       41.0
+food_made                       39.0
+supply_capped                   True
+Name: 83, dtype: object
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The following table shows the values extratcted from the last five recorded <code>PlayerStatsEvent</code>s organised in a DataFrame by the <a href="/sc_training/macro_econ_parser.html#get_player_macro_econ_df"><code>get_player_macro_econ_df</code></a> function. The columns represent all the major macroeconomic indicators for player 1 of the the sample match.</p>
-<table>
-<thead><tr>
-<th style="text-align:right"></th>
-<th style="text-align:right">real_time</th>
-<th style="text-align:right">second</th>
-<th style="text-align:right">minerals_current</th>
-<th style="text-align:right">vespene_current</th>
-<th style="text-align:right">unspent_rsrc</th>
-<th style="text-align:right">minerals_used_active_forces</th>
-<th style="text-align:right">vespene_used_active_forces</th>
-<th style="text-align:right">army_value</th>
-<th style="text-align:right">minerals_collection_rate</th>
-<th style="text-align:right">vespene_collection_rate</th>
-<th style="text-align:right">rsrc_collection_rate</th>
-<th style="text-align:right">workers_active_count</th>
-<th style="text-align:right">minerals_used_in_progress</th>
-<th style="text-align:right">vespene_used_in_progress</th>
-<th style="text-align:right">resources_used_in_progress</th>
-<th style="text-align:right">minerals_used_current</th>
-<th style="text-align:right">vespene_used_current</th>
-<th style="text-align:right">resources_used_current</th>
-<th style="text-align:right">minerals_lost</th>
-<th style="text-align:right">vespene_lost</th>
-<th style="text-align:right">resources_lost</th>
-<th style="text-align:right">minerals_killed</th>
-<th style="text-align:right">vespene_killed</th>
-<th style="text-align:right">resources_killed</th>
-<th style="text-align:right">food_used</th>
-<th style="text-align:right">food_made</th>
-<th style="text-align:left">supply_capped</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right">79</td>
-<td style="text-align:right">564.286</td>
-<td style="text-align:right">790</td>
-<td style="text-align:right">2170</td>
-<td style="text-align:right">912</td>
-<td style="text-align:right">3082</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">1427</td>
-<td style="text-align:right">335</td>
-<td style="text-align:right">1762</td>
-<td style="text-align:right">38</td>
-<td style="text-align:right">100</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">100</td>
-<td style="text-align:right">4850</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">4850</td>
-<td style="text-align:right">3575</td>
-<td style="text-align:right">1150</td>
-<td style="text-align:right">4725</td>
-<td style="text-align:right">800</td>
-<td style="text-align:right">125</td>
-<td style="text-align:right">925</td>
-<td style="text-align:right">40</td>
-<td style="text-align:right">77</td>
-<td style="text-align:left">False</td>
-</tr>
-<tr>
-<td style="text-align:right">80</td>
-<td style="text-align:right">571.429</td>
-<td style="text-align:right">800</td>
-<td style="text-align:right">2335</td>
-<td style="text-align:right">960</td>
-<td style="text-align:right">3295</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">1427</td>
-<td style="text-align:right">358</td>
-<td style="text-align:right">1785</td>
-<td style="text-align:right">38</td>
-<td style="text-align:right">100</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">100</td>
-<td style="text-align:right">4700</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">4700</td>
-<td style="text-align:right">3725</td>
-<td style="text-align:right">1150</td>
-<td style="text-align:right">4875</td>
-<td style="text-align:right">900</td>
-<td style="text-align:right">125</td>
-<td style="text-align:right">1025</td>
-<td style="text-align:right">40</td>
-<td style="text-align:right">77</td>
-<td style="text-align:left">False</td>
-</tr>
-<tr>
-<td style="text-align:right">81</td>
-<td style="text-align:right">578.571</td>
-<td style="text-align:right">810</td>
-<td style="text-align:right">2270</td>
-<td style="text-align:right">908</td>
-<td style="text-align:right">3178</td>
-<td style="text-align:right">250</td>
-<td style="text-align:right">100</td>
-<td style="text-align:right">350</td>
-<td style="text-align:right">1511</td>
-<td style="text-align:right">403</td>
-<td style="text-align:right">1914</td>
-<td style="text-align:right">40</td>
-<td style="text-align:right">100</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">100</td>
-<td style="text-align:right">4950</td>
-<td style="text-align:right">100</td>
-<td style="text-align:right">5050</td>
-<td style="text-align:right">3825</td>
-<td style="text-align:right">1150</td>
-<td style="text-align:right">4975</td>
-<td style="text-align:right">900</td>
-<td style="text-align:right">125</td>
-<td style="text-align:right">1025</td>
-<td style="text-align:right">46</td>
-<td style="text-align:right">69</td>
-<td style="text-align:left">False</td>
-</tr>
-<tr>
-<td style="text-align:right">82</td>
-<td style="text-align:right">585.714</td>
-<td style="text-align:right">820</td>
-<td style="text-align:right">2450</td>
-<td style="text-align:right">964</td>
-<td style="text-align:right">3414</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">1511</td>
-<td style="text-align:right">470</td>
-<td style="text-align:right">1981</td>
-<td style="text-align:right">40</td>
-<td style="text-align:right">100</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">100</td>
-<td style="text-align:right">4625</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">4625</td>
-<td style="text-align:right">4150</td>
-<td style="text-align:right">1250</td>
-<td style="text-align:right">5400</td>
-<td style="text-align:right">900</td>
-<td style="text-align:right">125</td>
-<td style="text-align:right">1025</td>
-<td style="text-align:right">42</td>
-<td style="text-align:right">69</td>
-<td style="text-align:left">False</td>
-</tr>
-<tr>
-<td style="text-align:right">83</td>
-<td style="text-align:right">590</td>
-<td style="text-align:right">826</td>
-<td style="text-align:right">2750</td>
-<td style="text-align:right">996</td>
-<td style="text-align:right">3746</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">1455</td>
-<td style="text-align:right">447</td>
-<td style="text-align:right">1902</td>
-<td style="text-align:right">41</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">3875</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">3875</td>
-<td style="text-align:right">5000</td>
-<td style="text-align:right">1250</td>
-<td style="text-align:right">6250</td>
-<td style="text-align:right">900</td>
-<td style="text-align:right">125</td>
-<td style="text-align:right">1025</td>
-<td style="text-align:right">41</td>
-<td style="text-align:right">39</td>
-<td style="text-align:left">True</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -998,7 +925,7 @@ indicators at a specific moment during the game.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_player_macro_econ_stats" class="doc_header"><code>get_player_macro_econ_stats</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/macro_econ_parser.py#L310" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_player_macro_econ_stats</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_player_macro_econ_stats" class="doc_header"><code>get_player_macro_econ_stats</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/macro_econ_parser.py#L321" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_player_macro_econ_stats</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>This function organises a player's major macroeconomic performance
 indicatorsinto a dictionary.</p>
@@ -1052,12 +979,11 @@ late games (paste minute 8).</p>
 <li>Average mineral, vespene and resource collection rate</li>
 <li>Average army value</li>
 <li>Total minerals and vespene lost</li>
-<li><p>Spending Quotient</p>
+<li>Spending Quotient</li>
+</ul>
 <p>Note that the spending quotient is a performance measurement that the community has adopted to compare and evaluate a player's macroeconomic performance (<a href="https://tl.net/forum/starcraft-2/266019-do-you-macro-like-a-pro">whatthefat, 2011</a>; <a href="https://liquipedia.net/starcraft2/Spending_quotient">Spending Quotient, 2020</a>).</p>
 <p>Moreover, I calculate each of these indicators for the entire match and the early (first 4 minutes), mid (minutes 4-8) and late game (past minute 8).</p>
 <p>The following are three sample results of this function used on a short, medium and long replays of the same player.</p>
-</li>
-</ul>
 
 </div>
 </div>
@@ -1334,6 +1260,23 @@ late games (paste minute 8).</p>
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 </div>
  
 

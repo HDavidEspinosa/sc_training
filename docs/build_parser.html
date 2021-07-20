@@ -1,13 +1,13 @@
 ---
 
-title: Chapter 04 - build_parser Outlining a player's army, base and tech builds
+title: Chapter 4 - build_parser
 
 
 keywords: fastai
 sidebar: home_sidebar
 
-
-
+summary: ": This module contains functions that developers can use to parse the players' build orders, and to inventory their army, base and technology upgrades."
+description: ": This module contains functions that developers can use to parse the players' build orders, and to inventory their army, base and technology upgrades."
 nb_path: "04_build_parser.ipynb"
 ---
 <!--
@@ -103,9 +103,13 @@ nb_path: "04_build_parser.ipynb"
 
 <span class="n">p2_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">sing_zerg</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
             <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
-<span class="s1">Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
-                <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p2_units</span><span class="p">[:</span><span class="mi">20</span><span class="p">])]:</span>
+
+<span class="n">sample_prints</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">            Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
+            <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p2_units</span><span class="p">[:</span><span class="mi">20</span><span class="p">])]</span>
+
+<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">sample_prints</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="c1"># This command shows the first 20 units of the player&#39;s </span>
                   <span class="c1"># units list.</span>
 </pre></div>
@@ -120,26 +124,26 @@ nb_path: "04_build_parser.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1   Name: Lair            Start:     0 End:  None
-2   Name: Drone           Start:     0 End:  5184
-3   Name: Drone           Start:     0 End:  3530
-4   Name: Drone           Start:     0 End:  2046
-5   Name: Drone           Start:     0 End:  None
-6   Name: Drone           Start:     0 End: 13011
-7   Name: Drone           Start:     0 End:  2739
-8   Name: Drone           Start:     0 End:  None
-9   Name: Drone           Start:     0 End:  None
-10  Name: Drone           Start:     0 End:  None
-11  Name: Drone           Start:     0 End:  None
-12  Name: Drone           Start:     0 End:  2226
-13  Name: Drone           Start:     0 End:  4969
-14  Name: Overlord        Start:     0 End:  None
-15  Name: Overlord        Start:   594 End:  None
-16  Name: Drone           Start:   675 End:  None
-17  Name: Drone           Start:   678 End:  None
-18  Name: Drone           Start:   976 End:  None
-19  Name: Drone           Start:   987 End:  None
-20  Name: SpawningPool    Start:  1186 End:  None
+<pre>1   Name: Lair                        Start:     0 End:  None
+2   Name: Drone                       Start:     0 End:  5184
+3   Name: Drone                       Start:     0 End:  3530
+4   Name: Drone                       Start:     0 End:  2046
+5   Name: Drone                       Start:     0 End:  None
+6   Name: Drone                       Start:     0 End: 13011
+7   Name: Drone                       Start:     0 End:  2739
+8   Name: Drone                       Start:     0 End:  None
+9   Name: Drone                       Start:     0 End:  None
+10  Name: Drone                       Start:     0 End:  None
+11  Name: Drone                       Start:     0 End:  None
+12  Name: Drone                       Start:     0 End:  2226
+13  Name: Drone                       Start:     0 End:  4969
+14  Name: Overlord                    Start:     0 End:  None
+15  Name: Overlord                    Start:   594 End:  None
+16  Name: Drone                       Start:   675 End:  None
+17  Name: Drone                       Start:   678 End:  None
+18  Name: Drone                       Start:   976 End:  None
+19  Name: Drone                       Start:   987 End:  None
+20  Name: SpawningPool                Start:  1186 End:  None
 </pre>
 </div>
 </div>
@@ -153,7 +157,7 @@ nb_path: "04_build_parser.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>{% include note.html content='each player&#8217;s unit list begins with thirteen or fourteen starting units. For example, if the players play with Protoss or Terran, they start with thirteen units (one main base plus twelve workers). If they play with Zerg, they begin with fourteen units (one main base, twelve workers, and one overlord). Because these elements are not built by the players, they should not count as part of the players&#8217; build strategy.' %}
- The following code extracts the unit lists for both players in the sample match, ignoring the starting units. In the examples, I print the first ten items in each list.</p>
+The following code extracts the unit lists for both players in the sample match, ignoring the starting units. In the examples, I print the first ten items in each list.</p>
 
 </div>
 </div>
@@ -169,15 +173,20 @@ nb_path: "04_build_parser.ipynb"
 <span class="n">p1_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">sing_zerg</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
             <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span><span class="p">]</span>
 
+
 <span class="c1"># The following expression stores a comy of the element list excludind</span>
 <span class="c1"># the starting elements according to the player&#39;s race</span>
 <span class="n">p1_units_no_inits</span> <span class="o">=</span> <span class="n">p1_units</span><span class="p">[(</span><span class="mi">13</span> <span class="k">if</span> <span class="n">p1_race</span> <span class="o">!=</span> <span class="s1">&#39;Zerg&#39;</span> <span class="k">else</span> <span class="mi">14</span><span class="p">):]</span>
 
+
 <span class="c1"># I print the list of the starting elements in the new list to show they</span>
 <span class="c1"># skip the starting elements.</span>
-<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
-<span class="s1">Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
-               <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p1_units_no_inits</span><span class="p">[:</span><span class="mi">10</span><span class="p">])]:</span>
+<span class="n">sample_prints_2</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">        Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p1_units_no_inits</span><span class="p">[:</span><span class="mi">10</span><span class="p">])]</span>
+
+<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">sample_prints_2</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
 </pre></div>
 
@@ -191,16 +200,16 @@ nb_path: "04_build_parser.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1   Name: SCV             Start:   305 End:  None
-2   Name: SCV             Start:   576 End:  None
-3   Name: SCV             Start:   847 End:  None
-4   Name: SCV             Start:  1239 End:  None
-5   Name: Refinery        Start:  1367 End:  None
-6   Name: Refinery        Start:  1385 End:  None
-7   Name: Barracks        Start:  1416 End:  None
-8   Name: SCV             Start:  1580 End:  None
-9   Name: SCV             Start:  1851 End:  None
-10  Name: SCV             Start:  2122 End:  None
+<pre>1   Name: SCV                     Start:   305 End:  None
+2   Name: SCV                     Start:   576 End:  None
+3   Name: SCV                     Start:   847 End:  None
+4   Name: SCV                     Start:  1239 End:  None
+5   Name: Refinery                Start:  1367 End:  None
+6   Name: Refinery                Start:  1385 End:  None
+7   Name: Barracks                Start:  1416 End:  None
+8   Name: SCV                     Start:  1580 End:  None
+9   Name: SCV                     Start:  1851 End:  None
+10  Name: SCV                     Start:  2122 End:  None
 </pre>
 </div>
 </div>
@@ -222,9 +231,13 @@ nb_path: "04_build_parser.ipynb"
 <span class="c1"># starting units.</span>
 <span class="n">p2_race</span> <span class="o">=</span> <span class="n">sing_zerg</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">play_race</span>
 <span class="n">p2_units_no_inits</span> <span class="o">=</span> <span class="n">p2_units</span><span class="p">[(</span><span class="mi">13</span> <span class="k">if</span> <span class="n">p2_race</span> <span class="o">!=</span> <span class="s1">&#39;Zerg&#39;</span> <span class="k">else</span> <span class="mi">14</span><span class="p">):]</span>
-<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
-<span class="s1">Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
-               <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p2_units_no_inits</span><span class="p">[:</span><span class="mi">10</span><span class="p">])]:</span>
+
+<span class="n">sample_prints_3</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s1">&lt;3</span><span class="si">}</span><span class="s1"> Name: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">        Start: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> End: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">died_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> 
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p2_units_no_inits</span><span class="p">[:</span><span class="mi">10</span><span class="p">])]</span>
+
+<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">sample_prints_3</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
 </pre></div>
 
@@ -238,16 +251,16 @@ nb_path: "04_build_parser.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1   Name: Overlord        Start:   594 End:  None
-2   Name: Drone           Start:   675 End:  None
-3   Name: Drone           Start:   678 End:  None
-4   Name: Drone           Start:   976 End:  None
-5   Name: Drone           Start:   987 End:  None
-6   Name: SpawningPool    Start:  1186 End:  None
-7   Name: Drone           Start:  1223 End:  None
-8   Name: Extractor       Start:  1566 End:  None
-9   Name: Drone           Start:  1675 End:  None
-10  Name: Drone           Start:  1878 End:  None
+<pre>1   Name: Overlord                Start:   594 End:  None
+2   Name: Drone                   Start:   675 End:  None
+3   Name: Drone                   Start:   678 End:  None
+4   Name: Drone                   Start:   976 End:  None
+5   Name: Drone                   Start:   987 End:  None
+6   Name: SpawningPool            Start:  1186 End:  None
+7   Name: Drone                   Start:  1223 End:  None
+8   Name: Extractor               Start:  1566 End:  None
+9   Name: Drone                   Start:  1675 End:  None
+10  Name: Drone                   Start:  1878 End:  None
 </pre>
 </div>
 </div>
@@ -331,8 +344,13 @@ nb_path: "04_build_parser.ipynb"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">u_init_done_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">])</span> \
                            <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_init_done_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> where initialised and done. </span><span class="se">\</span>
-<span class="s1">One was destructed before completion.&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_init_done_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> where initialised and done.&#39;</span><span class="p">)</span>
+
+<span class="n">u_init_done_diff</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">])</span> \
+                        <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_init_done_diff</span><span class="p">)</span><span class="si">}</span><span class="s1"> was destructed before completion.&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -345,7 +363,8 @@ nb_path: "04_build_parser.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>34 where initialised and done. One was destructed before completion.
+<pre>34 where initialised and done.
+1 was destructed before completion.
 </pre>
 </div>
 </div>
@@ -365,8 +384,8 @@ nb_path: "04_build_parser.ipynb"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">u_born_change_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uborn_e</span><span class="p">])</span> \
                              <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uchange_e</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_born_change_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> changed during the game, possibly </span><span class="se">\</span>
-<span class="s1">to another unti type.&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_born_change_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> changed during the game.&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -379,7 +398,7 @@ nb_path: "04_build_parser.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>0 changed during the game, possibly to another unti type.
+<pre>0 changed during the game.
 </pre>
 </div>
 </div>
@@ -397,12 +416,13 @@ nb_path: "04_build_parser.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">u_init_change_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">])</span> \
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">u_init_change_intersect</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">])</span> \
                              <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uchange_e</span><span class="p">])</span>
-<span class="n">u_done_change_intersection</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">])</span> \
+<span class="n">u_done_change_intersect</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">])</span> \
                              <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uchange_e</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_init_change_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> initialised and change, </span><span class="se">\</span>
-<span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_done_change_intersection</span><span class="p">)</span><span class="si">}</span><span class="s1"> complete their building and changed&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_init_change_intersect</span><span class="p">)</span><span class="si">}</span><span class="s1"> initialised and change&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">u_done_change_intersect</span><span class="p">)</span><span class="si">}</span><span class="s1"> complete their building and changed&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -415,7 +435,8 @@ nb_path: "04_build_parser.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>2 initialised and change, 2 complete their building and changed
+<pre>2 initialised and change
+2 complete their building and changed
 </pre>
 </div>
 </div>
@@ -442,9 +463,9 @@ nb_path: "04_build_parser.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UnitName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;13</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
-<span class="s1">Event_rec_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  U_rec_start_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
-<span class="s1">U_rec_finish_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uborn_e</span><span class="p">][</span><span class="mi">14</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UnitName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;10</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
+<span class="s1">Event_rec_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1">  U_rec_start_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">U_rec_finish_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uborn_e</span><span class="p">][</span><span class="mi">14</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span>
 </pre></div>
 
     </div>
@@ -459,12 +480,12 @@ nb_path: "04_build_parser.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;UnitName: Probe         Event_rec_sec:     69  Event_rec_frame:   1110  U_rec_start_frame:   1110 U_rec_finish_frame:   1110&#39;,
- &#39;UnitName: Probe         Event_rec_sec:    133  Event_rec_frame:   2143  U_rec_start_frame:   2143 U_rec_finish_frame:   2143&#39;,
- &#39;UnitName: Probe         Event_rec_sec:    156  Event_rec_frame:   2496  U_rec_start_frame:   2496 U_rec_finish_frame:   2496&#39;,
- &#39;UnitName: Probe         Event_rec_sec:    172  Event_rec_frame:   2767  U_rec_start_frame:   2767 U_rec_finish_frame:   2767&#39;,
- &#39;UnitName: Probe         Event_rec_sec:    199  Event_rec_frame:   3194  U_rec_start_frame:   3194 U_rec_finish_frame:   3194&#39;,
- &#39;UnitName: Probe         Event_rec_sec:    216  Event_rec_frame:   3465  U_rec_start_frame:   3465 U_rec_finish_frame:   3465&#39;]</pre>
+<pre>[&#39;UnitName: Probe      Event_rec_sec:    69  Event_rec_frame:  1110  U_rec_start_frame:  1110 U_rec_finish_frame:  1110&#39;,
+ &#39;UnitName: Probe      Event_rec_sec:   133  Event_rec_frame:  2143  U_rec_start_frame:  2143 U_rec_finish_frame:  2143&#39;,
+ &#39;UnitName: Probe      Event_rec_sec:   156  Event_rec_frame:  2496  U_rec_start_frame:  2496 U_rec_finish_frame:  2496&#39;,
+ &#39;UnitName: Probe      Event_rec_sec:   172  Event_rec_frame:  2767  U_rec_start_frame:  2767 U_rec_finish_frame:  2767&#39;,
+ &#39;UnitName: Probe      Event_rec_sec:   199  Event_rec_frame:  3194  U_rec_start_frame:  3194 U_rec_finish_frame:  3194&#39;,
+ &#39;UnitName: Probe      Event_rec_sec:   216  Event_rec_frame:  3465  U_rec_start_frame:  3465 U_rec_finish_frame:  3465&#39;]</pre>
 </div>
 
 </div>
@@ -489,10 +510,10 @@ nb_path: "04_build_parser.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
-<span class="s1">Event_rec_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
-<span class="s1">U_rec_start_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
-<span class="s1">U_rec_finish_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;6</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
+<span class="s1">Event_rec_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
+<span class="s1">U_rec_start_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">U_rec_finish_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;5</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_uinit_e</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
 </pre></div>
 
     </div>
@@ -507,16 +528,16 @@ nb_path: "04_build_parser.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;UName: Pylon           Event_rec_sec:    662  Event_rec_frame:  10604  U_rec_start_frame:  10604 U_rec_finish_frame:  11004&#39;,
- &#39;UName: Nexus           Event_rec_sec:    682  Event_rec_frame:  10921  U_rec_start_frame:  10921 U_rec_finish_frame:  12521&#39;,
- &#39;UName: PhotonCannon    Event_rec_sec:    693  Event_rec_frame:  11090  U_rec_start_frame:  11090 U_rec_finish_frame:  11730&#39;,
- &#39;UName: PhotonCannon    Event_rec_sec:    702  Event_rec_frame:  11243  U_rec_start_frame:  11243 U_rec_finish_frame:   None&#39;,
- &#39;UName: Zealot          Event_rec_sec:    705  Event_rec_frame:  11284  U_rec_start_frame:  11284 U_rec_finish_frame:  11540&#39;,
- &#39;UName: Zealot          Event_rec_sec:    706  Event_rec_frame:  11297  U_rec_start_frame:  11297 U_rec_finish_frame:  11553&#39;,
- &#39;UName: Stalker         Event_rec_sec:    755  Event_rec_frame:  12085  U_rec_start_frame:  12085 U_rec_finish_frame:  12166&#39;,
- &#39;UName: Stalker         Event_rec_sec:    755  Event_rec_frame:  12094  U_rec_start_frame:  12094 U_rec_finish_frame:  12175&#39;,
- &#39;UName: Stalker         Event_rec_sec:    803  Event_rec_frame:  12863  U_rec_start_frame:  12863 U_rec_finish_frame:  12944&#39;,
- &#39;UName: Stalker         Event_rec_sec:    804  Event_rec_frame:  12873  U_rec_start_frame:  12873 U_rec_finish_frame:  12954&#39;]</pre>
+<pre>[&#39;UName: Pylon           Event_rec_sec:   662  Event_rec_frame: 10604  U_rec_start_frame: 10604 U_rec_finish_frame: 11004&#39;,
+ &#39;UName: Nexus           Event_rec_sec:   682  Event_rec_frame: 10921  U_rec_start_frame: 10921 U_rec_finish_frame: 12521&#39;,
+ &#39;UName: PhotonCannon    Event_rec_sec:   693  Event_rec_frame: 11090  U_rec_start_frame: 11090 U_rec_finish_frame: 11730&#39;,
+ &#39;UName: PhotonCannon    Event_rec_sec:   702  Event_rec_frame: 11243  U_rec_start_frame: 11243 U_rec_finish_frame:  None&#39;,
+ &#39;UName: Zealot          Event_rec_sec:   705  Event_rec_frame: 11284  U_rec_start_frame: 11284 U_rec_finish_frame: 11540&#39;,
+ &#39;UName: Zealot          Event_rec_sec:   706  Event_rec_frame: 11297  U_rec_start_frame: 11297 U_rec_finish_frame: 11553&#39;,
+ &#39;UName: Stalker         Event_rec_sec:   755  Event_rec_frame: 12085  U_rec_start_frame: 12085 U_rec_finish_frame: 12166&#39;,
+ &#39;UName: Stalker         Event_rec_sec:   755  Event_rec_frame: 12094  U_rec_start_frame: 12094 U_rec_finish_frame: 12175&#39;,
+ &#39;UName: Stalker         Event_rec_sec:   803  Event_rec_frame: 12863  U_rec_start_frame: 12863 U_rec_finish_frame: 12944&#39;,
+ &#39;UName: Stalker         Event_rec_sec:   804  Event_rec_frame: 12873  U_rec_start_frame: 12873 U_rec_finish_frame: 12954&#39;]</pre>
 </div>
 
 </div>
@@ -542,10 +563,10 @@ nb_path: "04_build_parser.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
-<span class="s1">Event_rec_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
-<span class="s1">U_rec_start_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
-<span class="s1">U_rec_finish_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="si">:</span><span class="s1">&gt;6.0f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UName: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;15</span><span class="si">}</span><span class="s1"> Event_rec_sec: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">second</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
+<span class="s1">Event_rec_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">frame</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1">  </span><span class="se">\</span>
+<span class="s1">U_rec_start_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">U_rec_finish_frame: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">finished_at</span><span class="si">:</span><span class="s1">&gt;5.0f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">p1_udone_e</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
 </pre></div>
 
     </div>
@@ -560,16 +581,16 @@ nb_path: "04_build_parser.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;UName: Pylon           Event_rec_sec:    676  Event_rec_frame:  10828  U_rec_start_frame:  10428 U_rec_finish_frame:  10828&#39;,
- &#39;UName: Pylon           Event_rec_sec:    687  Event_rec_frame:  11004  U_rec_start_frame:  10604 U_rec_finish_frame:  11004&#39;,
- &#39;UName: Zealot          Event_rec_sec:    721  Event_rec_frame:  11540  U_rec_start_frame:  11284 U_rec_finish_frame:  11540&#39;,
- &#39;UName: Zealot          Event_rec_sec:    722  Event_rec_frame:  11553  U_rec_start_frame:  11297 U_rec_finish_frame:  11553&#39;,
- &#39;UName: PhotonCannon    Event_rec_sec:    733  Event_rec_frame:  11730  U_rec_start_frame:  11090 U_rec_finish_frame:  11730&#39;,
- &#39;UName: Stalker         Event_rec_sec:    760  Event_rec_frame:  12166  U_rec_start_frame:  12085 U_rec_finish_frame:  12166&#39;,
- &#39;UName: Stalker         Event_rec_sec:    760  Event_rec_frame:  12175  U_rec_start_frame:  12094 U_rec_finish_frame:  12175&#39;,
- &#39;UName: Nexus           Event_rec_sec:    782  Event_rec_frame:  12521  U_rec_start_frame:  10921 U_rec_finish_frame:  12521&#39;,
- &#39;UName: Stalker         Event_rec_sec:    809  Event_rec_frame:  12944  U_rec_start_frame:  12863 U_rec_finish_frame:  12944&#39;,
- &#39;UName: Stalker         Event_rec_sec:    809  Event_rec_frame:  12954  U_rec_start_frame:  12873 U_rec_finish_frame:  12954&#39;]</pre>
+<pre>[&#39;UName: Pylon           Event_rec_sec:   676  Event_rec_frame: 10828  U_rec_start_frame: 10428 U_rec_finish_frame: 10828&#39;,
+ &#39;UName: Pylon           Event_rec_sec:   687  Event_rec_frame: 11004  U_rec_start_frame: 10604 U_rec_finish_frame: 11004&#39;,
+ &#39;UName: Zealot          Event_rec_sec:   721  Event_rec_frame: 11540  U_rec_start_frame: 11284 U_rec_finish_frame: 11540&#39;,
+ &#39;UName: Zealot          Event_rec_sec:   722  Event_rec_frame: 11553  U_rec_start_frame: 11297 U_rec_finish_frame: 11553&#39;,
+ &#39;UName: PhotonCannon    Event_rec_sec:   733  Event_rec_frame: 11730  U_rec_start_frame: 11090 U_rec_finish_frame: 11730&#39;,
+ &#39;UName: Stalker         Event_rec_sec:   760  Event_rec_frame: 12166  U_rec_start_frame: 12085 U_rec_finish_frame: 12166&#39;,
+ &#39;UName: Stalker         Event_rec_sec:   760  Event_rec_frame: 12175  U_rec_start_frame: 12094 U_rec_finish_frame: 12175&#39;,
+ &#39;UName: Nexus           Event_rec_sec:   782  Event_rec_frame: 12521  U_rec_start_frame: 10921 U_rec_finish_frame: 12521&#39;,
+ &#39;UName: Stalker         Event_rec_sec:   809  Event_rec_frame: 12944  U_rec_start_frame: 12863 U_rec_finish_frame: 12944&#39;,
+ &#39;UName: Stalker         Event_rec_sec:   809  Event_rec_frame: 12954  U_rec_start_frame: 12873 U_rec_finish_frame: 12954&#39;]</pre>
 </div>
 
 </div>
@@ -599,10 +620,12 @@ nb_path: "04_build_parser.ipynb"
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitInitEvent</span><span class="p">)</span> 
             <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">control_pid</span> <span class="o">==</span> <span class="mi">2</span>
             <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span><span class="p">]</span>
+
 <span class="n">udone_e</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">events</span> 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">UnitDoneEvent</span><span class="p">)</span> 
             <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">2</span>
             <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span><span class="p">]</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;UnitsInit: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">uinit_e</span><span class="p">)</span><span class="si">}</span><span class="s1"> UnitsDone: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">udone_e</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -641,11 +664,13 @@ nb_path: "04_build_parser.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">incomplete_u</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;UNane: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;18</span><span class="si">}</span><span class="s1"> unitId: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="si">:</span><span class="s1">&lt;10.0f</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
-<span class="s1">u_start_frame: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;8.0f</span><span class="si">}</span><span class="s1"> u_finish_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">finished_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">&#39;</span>
-        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
-        <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span>
-        <span class="ow">and</span> <span class="n">u</span><span class="o">.</span><span class="n">finished_at</span> <span class="o">==</span> <span class="kc">None</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">incomplete_u</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">f</span><span class="s1">&#39;UNane: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;18</span><span class="si">}</span><span class="s1"> unitId: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="si">:</span><span class="s1">&lt;10.0f</span><span class="si">}</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">    u_start_frame: </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">started_at</span><span class="si">:</span><span class="s1">&gt;8.0f</span><span class="si">}</span><span class="s1"> u_finish_frame: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">finished_at</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
+    <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span>
+    <span class="ow">and</span> <span class="n">u</span><span class="o">.</span><span class="n">finished_at</span> <span class="o">==</span> <span class="kc">None</span><span class="p">]</span>
+
 <span class="n">incomplete_u</span>
 </pre></div>
 
@@ -661,9 +686,9 @@ nb_path: "04_build_parser.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;UNane: CommandCenter      unitId: 94109700   u_start_frame:    13111 u_finish_frame:     None&#39;,
- &#39;UNane: Refinery           unitId: 92012546   u_start_frame:    13175 u_finish_frame:     None&#39;,
- &#39;UNane: Refinery           unitId: 94633985   u_start_frame:    13213 u_finish_frame:     None&#39;]</pre>
+<pre>[&#39;UNane: CommandCenter      unitId: 94109700       u_start_frame:    13111 u_finish_frame:     None&#39;,
+ &#39;UNane: Refinery           unitId: 92012546       u_start_frame:    13175 u_finish_frame:     None&#39;,
+ &#39;UNane: Refinery           unitId: 94633985       u_start_frame:    13213 u_finish_frame:     None&#39;]</pre>
 </div>
 
 </div>
@@ -688,11 +713,11 @@ nb_path: "04_build_parser.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p1_incomplet_units_ids</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, </span><span class="se">\</span>
-<span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">, his unit was killed by player </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">killed_by</span><span class="o">.</span><span class="n">pid</span><span class="si">}</span><span class="s1">&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p1_incomplet_units_ids</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">u</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1"> &#39;</span>
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">units</span> 
         <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unit_names</span>
         <span class="ow">and</span> <span class="n">u</span><span class="o">.</span><span class="n">finished_at</span> <span class="o">==</span> <span class="kc">None</span><span class="p">]</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;List of incomplete units on player 1</span><span class="se">\&#39;</span><span class="s1">s </span><span class="se">\</span>
 <span class="s1">units-list </span><span class="si">{</span><span class="n">p1_incomplet_units_ids</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
@@ -735,7 +760,7 @@ nb_path: "04_build_parser.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>List of incomplete units on player 1&#39;s units-list [&#39;PhotonCannon, 78118917, his unit was killed by player 2&#39;]
+<pre>List of incomplete units on player 1&#39;s units-list [&#39;PhotonCannon, 78118917 &#39;]
 List of units in UnitDiedEvent for player 1 [&#39;PhotonCannon, 78118917&#39;]
 ------------------------------------------------
 List of incomplete units on player 2&#39;s units-list [&#39;CommandCenter, 94109700&#39;, &#39;Refinery, 92012546&#39;, &#39;Refinery, 94633985&#39;]
@@ -831,8 +856,8 @@ Sample Terran unit set in tustates replay.
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>However, an army composition should count these units in different stages as the same. Thus I need to account for how <strong>sc2reader</strong> stores the unit according to the state in which they finished or exited the game. In the following code, I use a unit types list and several conditions to demonstrate how one can filter the initial list. I also build a DataFrame with a Unit column that records the same name for units of the same type in multiple states to normalise the unit classification.</p>
-<p>Note that, if I count the units based on the type recorded by <strong>sc2reader</strong>, the count includes the different unit states. Meanwhile, the normalised count adds the units of the same type that are in different states.</p>
+<p>However, an army composition should count these units in different stages as the same. Thus I need to account for how <code>sc2reader</code> stores the unit according to the state in which they finished or exited the game. In the following code, I use a unit types list and several conditions to demonstrate how one can filter the initial list. I also build a DataFrame with a Unit column that records the same name for units of the same type in multiple states to normalise the unit classification.</p>
+<p>Note that, if I count the units based on the type recorded by <code>sc2reader</code>, the count includes the different unit states. Meanwhile, the normalised count adds the units of the same type that are in different states.</p>
 
 </div>
 </div>
@@ -850,6 +875,8 @@ Sample Terran unit set in tustates replay.
                                                <span class="c1"># to get all units in </span>
                                                <span class="c1"># different states</span>
                     <span class="ow">and</span> <span class="n">u</span><span class="o">.</span><span class="n">is_army</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+
+
 <span class="n">tpunits_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
         <span class="s1">&#39;Unit&#39;</span><span class="p">:[</span><span class="n">uname</span> <span class="k">for</span> <span class="n">uname</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">terran_player_units</span><span class="p">],</span>
         <span class="s1">&#39;Uname&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">uname</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">terran_player_units</span><span class="p">],</span>
@@ -868,7 +895,7 @@ Sample Terran unit set in tustates replay.
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This table shows the count based on <strong>sc2reader</strong> type register.</p>
+<p>This table shows the count based on <code>sc2reader</code> type register.</p>
 <table>
 <thead><tr>
 <th style="text-align:left">Uname</th>
@@ -980,6 +1007,7 @@ Sample Terran unit set in tustates replay.
                                                <span class="c1"># convention to get all units </span>
                                                <span class="c1"># in different states</span>
                     <span class="ow">and</span> <span class="n">u</span><span class="o">.</span><span class="n">is_building</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+
 <span class="n">tbunits_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
         <span class="s1">&#39;Unit&#39;</span><span class="p">:[</span><span class="n">uname</span> <span class="k">for</span> <span class="n">uname</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">terran_player_buildings</span><span class="p">],</span>
         <span class="s1">&#39;Uname&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">uname</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">terran_player_buildings</span><span class="p">],</span>
@@ -997,114 +1025,25 @@ Sample Terran unit set in tustates replay.
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>{% include note.html content='see the rows 9, 10, 14, 15, 20 and 21 of the table that results from the code above.' %}</p>
-<table>
-<thead><tr>
-<th style="text-align:right"></th>
-<th style="text-align:left">Unit</th>
-<th style="text-align:left">Uname</th>
-<th style="text-align:right">UnitID</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right">9</td>
-<td style="text-align:left">barracks</td>
-<td style="text-align:left">BarracksTechLab</td>
-<td style="text-align:right">67895297</td>
-</tr>
-<tr>
-<td style="text-align:right">10</td>
-<td style="text-align:left">techlab</td>
-<td style="text-align:left">BarracksTechLab</td>
-<td style="text-align:right">67895297</td>
-</tr>
-<tr>
-<td style="text-align:right">11</td>
-<td style="text-align:left">factory</td>
-<td style="text-align:left">Factory</td>
-<td style="text-align:right">68681729</td>
-</tr>
-<tr>
-<td style="text-align:right">12</td>
-<td style="text-align:left">supplydepot</td>
-<td style="text-align:left">SupplyDepot</td>
-<td style="text-align:right">71041026</td>
-</tr>
-<tr>
-<td style="text-align:right">13</td>
-<td style="text-align:left">supplydepot</td>
-<td style="text-align:left">SupplyDepot</td>
-<td style="text-align:right">74186754</td>
-</tr>
-<tr>
-<td style="text-align:right">14</td>
-<td style="text-align:left">factory</td>
-<td style="text-align:left">FactoryTechLab</td>
-<td style="text-align:right">74711042</td>
-</tr>
-<tr>
-<td style="text-align:right">15</td>
-<td style="text-align:left">techlab</td>
-<td style="text-align:left">FactoryTechLab</td>
-<td style="text-align:right">74711042</td>
-</tr>
-<tr>
-<td style="text-align:right">16</td>
-<td style="text-align:left">sensortower</td>
-<td style="text-align:left">SensorTower</td>
-<td style="text-align:right">76021761</td>
-</tr>
-<tr>
-<td style="text-align:right">17</td>
-<td style="text-align:left">refinery</td>
-<td style="text-align:left">Refinery</td>
-<td style="text-align:right">76546050</td>
-</tr>
-<tr>
-<td style="text-align:right">18</td>
-<td style="text-align:left">factory</td>
-<td style="text-align:left">Factory</td>
-<td style="text-align:right">77856769</td>
-</tr>
-<tr>
-<td style="text-align:right">19</td>
-<td style="text-align:left">refinery</td>
-<td style="text-align:left">Refinery</td>
-<td style="text-align:right">78381057</td>
-</tr>
-<tr>
-<td style="text-align:right">20</td>
-<td style="text-align:left">supplydepot</td>
-<td style="text-align:left">SupplyDepot</td>
-<td style="text-align:right">83099649</td>
-</tr>
-<tr>
-<td style="text-align:right">21</td>
-<td style="text-align:left">factory</td>
-<td style="text-align:left">FactoryReactor</td>
-<td style="text-align:right">83361793</td>
-</tr>
-<tr>
-<td style="text-align:right">22</td>
-<td style="text-align:left">reactor</td>
-<td style="text-align:left">FactoryReactor</td>
-<td style="text-align:right">83361793</td>
-</tr>
-<tr>
-<td style="text-align:right">23</td>
-<td style="text-align:left">armory</td>
-<td style="text-align:left">Armory</td>
-<td style="text-align:right">83623937</td>
-</tr>
-<tr>
-<td style="text-align:right">24</td>
-<td style="text-align:left">supplydepot</td>
-<td style="text-align:left">SupplyDepot</td>
-<td style="text-align:right">83886081</td>
-</tr>
-</tbody>
-</table>
+<p>{% include note.html content='see the rows 9, 10, 14, 15, 20 and 21 of the table that results from the code above.' %}
+|    | Unit        | Uname           |   UnitID |
+|---:|:------------|:----------------|---------:|
+|  9 | barracks    | BarracksTechLab | 67895297 |
+| 10 | techlab     | BarracksTechLab | 67895297 |
+| 11 | factory     | Factory         | 68681729 |
+| 12 | supplydepot | SupplyDepot     | 71041026 |
+| 13 | supplydepot | SupplyDepot     | 74186754 |
+| 14 | factory     | FactoryTechLab  | 74711042 |
+| 15 | techlab     | FactoryTechLab  | 74711042 |
+| 16 | sensortower | SensorTower     | 76021761 |
+| 17 | refinery    | Refinery        | 76546050 |
+| 18 | factory     | Factory         | 77856769 |
+| 19 | refinery    | Refinery        | 78381057 |
+| 20 | supplydepot | SupplyDepot     | 83099649 |
+| 21 | factory     | FactoryReactor  | 83361793 |
+| 22 | reactor     | FactoryReactor  | 83361793 |
+| 23 | armory      | Armory          | 83623937 |
+| 24 | supplydepot | SupplyDepot     | 83886081 |</p>
 
 </div>
 </div>
@@ -1133,120 +1072,26 @@ Sample Terran unit set in tustates replay.
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>{% include note.html content='in the following table the duplicates in lines 9, 14 and 21 have been filtered.' %}</p>
-<table>
-<thead><tr>
-<th style="text-align:right"></th>
-<th style="text-align:left">Unit</th>
-<th style="text-align:left">Uname</th>
-<th style="text-align:right">UnitID</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right">8</td>
-<td style="text-align:left">planetaryfortress</td>
-<td style="text-align:left">PlanetaryFortress</td>
-<td style="text-align:right">64749570</td>
-</tr>
-<tr>
-<td style="text-align:right">10</td>
-<td style="text-align:left">techlab</td>
-<td style="text-align:left">BarracksTechLab</td>
-<td style="text-align:right">67895297</td>
-</tr>
-<tr>
-<td style="text-align:right">11</td>
-<td style="text-align:left">factory</td>
-<td style="text-align:left">Factory</td>
-<td style="text-align:right">68681729</td>
-</tr>
-<tr>
-<td style="text-align:right">12</td>
-<td style="text-align:left">supplydepot</td>
-<td style="text-align:left">SupplyDepot</td>
-<td style="text-align:right">71041026</td>
-</tr>
-<tr>
-<td style="text-align:right">13</td>
-<td style="text-align:left">supplydepot</td>
-<td style="text-align:left">SupplyDepot</td>
-<td style="text-align:right">74186754</td>
-</tr>
-<tr>
-<td style="text-align:right">15</td>
-<td style="text-align:left">techlab</td>
-<td style="text-align:left">FactoryTechLab</td>
-<td style="text-align:right">74711042</td>
-</tr>
-<tr>
-<td style="text-align:right">16</td>
-<td style="text-align:left">sensortower</td>
-<td style="text-align:left">SensorTower</td>
-<td style="text-align:right">76021761</td>
-</tr>
-<tr>
-<td style="text-align:right">17</td>
-<td style="text-align:left">refinery</td>
-<td style="text-align:left">Refinery</td>
-<td style="text-align:right">76546050</td>
-</tr>
-<tr>
-<td style="text-align:right">18</td>
-<td style="text-align:left">factory</td>
-<td style="text-align:left">Factory</td>
-<td style="text-align:right">77856769</td>
-</tr>
-<tr>
-<td style="text-align:right">19</td>
-<td style="text-align:left">refinery</td>
-<td style="text-align:left">Refinery</td>
-<td style="text-align:right">78381057</td>
-</tr>
-<tr>
-<td style="text-align:right">20</td>
-<td style="text-align:left">supplydepot</td>
-<td style="text-align:left">SupplyDepot</td>
-<td style="text-align:right">83099649</td>
-</tr>
-<tr>
-<td style="text-align:right">22</td>
-<td style="text-align:left">reactor</td>
-<td style="text-align:left">FactoryReactor</td>
-<td style="text-align:right">83361793</td>
-</tr>
-<tr>
-<td style="text-align:right">23</td>
-<td style="text-align:left">armory</td>
-<td style="text-align:left">Armory</td>
-<td style="text-align:right">83623937</td>
-</tr>
-<tr>
-<td style="text-align:right">24</td>
-<td style="text-align:left">supplydepot</td>
-<td style="text-align:left">SupplyDepot</td>
-<td style="text-align:right">83886081</td>
-</tr>
-<tr>
-<td style="text-align:right">25</td>
-<td style="text-align:left">planetaryfortress</td>
-<td style="text-align:left">PlanetaryFortress</td>
-<td style="text-align:right">84672513</td>
-</tr>
-<tr>
-<td style="text-align:right">26</td>
-<td style="text-align:left">supplydepot</td>
-<td style="text-align:left">SupplyDepot</td>
-<td style="text-align:right">29097986</td>
-</tr>
-<tr>
-<td style="text-align:right">27</td>
-<td style="text-align:left">supplydepot</td>
-<td style="text-align:left">SupplyDepot</td>
-<td style="text-align:right">86507521</td>
-</tr>
-</tbody>
-</table>
+<p>{% include note.html content='in the following table the duplicates in lines 9, 14 and 21 have been filtered.' %}
+|    | Unit              | Uname             |   UnitID |
+|---:|:------------------|:------------------|---------:|
+|  8 | planetaryfortress | PlanetaryFortress | 64749570 |
+| 10 | techlab           | BarracksTechLab   | 67895297 |
+| 11 | factory           | Factory           | 68681729 |
+| 12 | supplydepot       | SupplyDepot       | 71041026 |
+| 13 | supplydepot       | SupplyDepot       | 74186754 |
+| 15 | techlab           | FactoryTechLab    | 74711042 |
+| 16 | sensortower       | SensorTower       | 76021761 |
+| 17 | refinery          | Refinery          | 76546050 |
+| 18 | factory           | Factory           | 77856769 |
+| 19 | refinery          | Refinery          | 78381057 |
+| 20 | supplydepot       | SupplyDepot       | 83099649 |
+| 22 | reactor           | FactoryReactor    | 83361793 |
+| 23 | armory            | Armory            | 83623937 |
+| 24 | supplydepot       | SupplyDepot       | 83886081 |
+| 25 | planetaryfortress | PlanetaryFortress | 84672513 |
+| 26 | supplydepot       | SupplyDepot       | 29097986 |
+| 27 | supplydepot       | SupplyDepot       | 86507521 |</p>
 
 </div>
 </div>
@@ -1255,8 +1100,8 @@ Sample Terran unit set in tustates replay.
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Functions">Functions<a class="anchor-link" href="#Functions"> </a></h2><p>In this section, I develop the functions this module exports. These functions allow for the extraction of various performance indicators relative to the units trained, buildings built and upgrades researched by players through a match.</p>
 <p>As is the case for other modules in this package, the exportable functions use several helper functions that can be consulted in the module's development notebooks or the module's source code. However, these helper functions are not included in this documentation.</p>
-<h3 id="Composition-functions">Composition functions<a class="anchor-link" href="#Composition-functions"> </a></h3><p>The following functions generate lists of dictionaries that describe a player's army or buildings composition (<a href="/sc_training/build_parser.html#count_composicion"><code>count_composicion</code></a>) and the number of units that started training or buildings that started construction (<a href="/sc_training/build_parser.html#count_started"><code>count_started</code></a>) during the whole match and through the early, mid and late games.
-  In this case, I define <em>composition</em> as the number of active units of different types a player has in the game. This count goes up every time a unit is created and down if they are killed. Meanwhile, <em>count_started</em> refers to the player's intended army, i.e. the number of units of different types they try to create at each interval of the game.</p>
+<h3 id="Composition-functions">Composition functions<a class="anchor-link" href="#Composition-functions"> </a></h3><p>The following functions generate lists of dictionaries that describe a player's army or buildings composition (<a href="/sc_training/build_parser.html#count_composicion"><code>count_composicion</code></a>) and the number of units that started training or buildings that started construction (<a href="/sc_training/build_parser.html#count_started"><code>count_started</code></a>) during the whole match and through the early, mid and late games.</p>
+<p>In this case, I define <em>composition</em> as the number of active units of different types a player has in the game. This count goes up every time a unit is created and down if they are killed. Meanwhile, <em>count_started</em> refers to the player's intended army, i.e. the number of units of different types they try to create at each interval of the game.</p>
 
 </div>
 </div>
@@ -1463,7 +1308,7 @@ Sample Terran unit set in tustates replay.
 <p>After calculating a player's army composition or unit started counts, I need to format the output of the functions so that I can process them with the results of other matches.</p>
 <p>In this regard, I considered two options. On the one hand, I could store counts for all units of all races for each player in every match. Following this approach, I would have a single set of replays for each player that would, by averaging all unit counts, express the general building preferences of each player. On the other hand, I could segregate the results by game race. This second option implies that I would have to keep three separate sets of replays per player. I would also have to process three profiles per player that express their preferences when playing each game race.</p>
 <p>Although initially, I was inclined to opt for the first option, I decided on the second because it seems closer to the actual game experience. For example, in StarCraft II, players are classified separately in leagues when playing with different game races. Similarly, many of the game's achievements are repeated for each race. Thus, it felt more akin to the game experience to provide threes profiles.
- This second approach also means that each match's record will contain fewer blanc data points when processing the profiles, which safes storage and processing memory.</p>
+This second approach also means that each match's record will contain fewer blanc data points when processing the profiles, which safes storage and processing memory.</p>
 <p>With this in mind, the last step of each module's functions is to complete their outcomes to include values for all the units or buildings of each player's race.</p>
 
 </div>
@@ -1471,54 +1316,64 @@ Sample Terran unit set in tustates replay.
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The following table demonstrates the result of the <a href="/sc_training/build_parser.html#complete_count"><code>complete_count</code></a> helper function as applyed to player 2's army composition for the whole game in the sample match.</p>
-<table>
-<thead><tr>
-<th style="text-align:left"></th>
-<th style="text-align:right">autoturret</th>
-<th style="text-align:right">banshee</th>
-<th style="text-align:right">battlecruiser</th>
-<th style="text-align:right">cyclone</th>
-<th style="text-align:right">ghost</th>
-<th style="text-align:right">hellion</th>
-<th style="text-align:right">marauder</th>
-<th style="text-align:right">marine</th>
-<th style="text-align:right">medivac</th>
-<th style="text-align:right">raven</th>
-<th style="text-align:right">reaper</th>
-<th style="text-align:right">siegetank</th>
-<th style="text-align:right">thor</th>
-<th style="text-align:right">viking</th>
-<th style="text-align:right">warhound</th>
-<th style="text-align:right">widowmine</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Player2_ArmyComp</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">3</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">2</td>
-<td style="text-align:right">5</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-<td style="text-align:right">0</td>
-</tr>
-</tbody>
-</table>
+<p>The following code demonstrates the result of the <a href="/sc_training/build_parser.html#complete_count"><code>complete_count</code></a> helper function as applyed to player 2's army composition for the whole game in the sample match.</p>
 
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">army_count_df_whole</span> <span class="o">=</span> <span class="n">count_active_units</span><span class="p">(</span><span class="n">army_df</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">700</span><span class="p">)</span>
+<span class="n">comp_test</span> <span class="o">=</span> <span class="n">complete_count</span><span class="p">([</span><span class="n">army_count_df_whole</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]],</span> <span class="s1">&#39;Terran&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">comp_test</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Player2_ArmyComp&#39;</span><span class="p">])</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>autoturret        0
+banshee           0
+battlecruiser     0
+cyclone           0
+ghost             0
+hellion           0
+marauder          5
+marine           27
+medivac           5
+raven             1
+reaper            0
+siegetank         0
+thor              0
+viking            0
+warhound          0
+widowmine         0
+Name: Player2_ArmyComp, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -1560,146 +1415,147 @@ Sample Terran unit set in tustates replay.
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;whole&#39;</span><span class="p">,</span> <span class="s1">&#39;early&#39;</span><span class="p">,</span> <span class="s1">&#39;mid&#39;</span><span class="p">,</span> <span class="s1">&#39;late&#39;</span><span class="p">]</span>
 <span class="n">test_army</span> <span class="o">=</span> <span class="n">count_composicion</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">army_comp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test_army</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
-<span class="n">army_comp_df</span>
+
+<span class="c1"># print(army_comp_df.T.to_markdown())</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>autoturret</th>
-      <th>banshee</th>
-      <th>battlecruiser</th>
-      <th>cyclone</th>
-      <th>ghost</th>
-      <th>hellion</th>
-      <th>marauder</th>
-      <th>marine</th>
-      <th>medivac</th>
-      <th>raven</th>
-      <th>reaper</th>
-      <th>siegetank</th>
-      <th>thor</th>
-      <th>viking</th>
-      <th>warhound</th>
-      <th>widowmine</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>whole</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>10</td>
-      <td>0</td>
-      <td>14</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>early</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>mid</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>7</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>late</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>10</td>
-      <td>0</td>
-      <td>14</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>4</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead><tr>
+<th style="text-align:left"></th>
+<th style="text-align:right">whole</th>
+<th style="text-align:right">early</th>
+<th style="text-align:right">mid</th>
+<th style="text-align:right">late</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">autoturret</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">banshee</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">battlecruiser</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">cyclone</td>
+<td style="text-align:right">10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">10</td>
+</tr>
+<tr>
+<td style="text-align:left">ghost</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">hellion</td>
+<td style="text-align:right">14</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">7</td>
+<td style="text-align:right">14</td>
+</tr>
+<tr>
+<td style="text-align:left">marauder</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">marine</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">medivac</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">raven</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td style="text-align:left">reaper</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">siegetank</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">thor</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">viking</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td style="text-align:left">warhound</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">widowmine</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">4</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -1709,151 +1565,154 @@ Sample Terran unit set in tustates replay.
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_buildings_comp</span> <span class="o">=</span> <span class="n">count_composicion</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">buildings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">buildings_comp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test_buildings_comp</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
-<span class="n">buildings_comp_df</span>
+
+<span class="c1">#print(buildings_comp_df.T.to_markdown())</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>armory</th>
-      <th>barracks</th>
-      <th>bunker</th>
-      <th>commandcenter</th>
-      <th>engineeringbay</th>
-      <th>factory</th>
-      <th>fusioncore</th>
-      <th>ghostacademy</th>
-      <th>missileturret</th>
-      <th>orbitalcommand</th>
-      <th>planetaryfortress</th>
-      <th>reactor</th>
-      <th>refinery</th>
-      <th>sensortower</th>
-      <th>starport</th>
-      <th>supplydepot</th>
-      <th>techlab</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>whole</th>
-      <td>3</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>6</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0</td>
-      <td>6</td>
-      <td>0</td>
-      <td>2</td>
-      <td>13</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>early</th>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>0</td>
-      <td>1</td>
-      <td>3</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>mid</th>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>6</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>4</td>
-      <td>0</td>
-      <td>1</td>
-      <td>8</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>late</th>
-      <td>3</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>6</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0</td>
-      <td>6</td>
-      <td>0</td>
-      <td>2</td>
-      <td>13</td>
-      <td>6</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead><tr>
+<th style="text-align:left"></th>
+<th style="text-align:right">whole</th>
+<th style="text-align:right">early</th>
+<th style="text-align:right">mid</th>
+<th style="text-align:right">late</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">armory</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">3</td>
+</tr>
+<tr>
+<td style="text-align:left">barracks</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td style="text-align:left">bunker</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">commandcenter</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td style="text-align:left">engineeringbay</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td style="text-align:left">factory</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">6</td>
+</tr>
+<tr>
+<td style="text-align:left">fusioncore</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">ghostacademy</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">missileturret</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">orbitalcommand</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">2</td>
+</tr>
+<tr>
+<td style="text-align:left">planetaryfortress</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td style="text-align:left">reactor</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">refinery</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">6</td>
+</tr>
+<tr>
+<td style="text-align:left">sensortower</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">starport</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">2</td>
+</tr>
+<tr>
+<td style="text-align:left">supplydepot</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">13</td>
+</tr>
+<tr>
+<td style="text-align:left">techlab</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">6</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -1894,166 +1753,175 @@ Sample Terran unit set in tustates replay.
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">army_training_count</span> <span class="o">=</span> <span class="n">count_started</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">atc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">army_training_count</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
-<span class="n">atc_df</span>
+
+<span class="c1"># print(atc_df.T.to_markdown())</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>baneling</th>
-      <th>broodling</th>
-      <th>broodlord</th>
-      <th>corruptor</th>
-      <th>hydralisk</th>
-      <th>infestedterran</th>
-      <th>infestor</th>
-      <th>infestorburrowed</th>
-      <th>locust</th>
-      <th>lurker</th>
-      <th>mutalisk</th>
-      <th>overlord</th>
-      <th>overseer</th>
-      <th>queen</th>
-      <th>ravager</th>
-      <th>roach</th>
-      <th>swarmhost</th>
-      <th>ultralisk</th>
-      <th>viper</th>
-      <th>zergling</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>whole</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>3</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>12</td>
-      <td>0</td>
-      <td>7</td>
-      <td>14</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>10</td>
-    </tr>
-    <tr>
-      <th>early</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>3</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>mid</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>7</td>
-      <td>0</td>
-      <td>4</td>
-      <td>13</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>late</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>3</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>10</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead><tr>
+<th style="text-align:left"></th>
+<th style="text-align:right">whole</th>
+<th style="text-align:right">early</th>
+<th style="text-align:right">mid</th>
+<th style="text-align:right">late</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">baneling</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">broodling</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">broodlord</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">corruptor</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">hydralisk</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">3</td>
+</tr>
+<tr>
+<td style="text-align:left">infestedterran</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">infestor</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">infestorburrowed</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">locust</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">lurker</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">mutalisk</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">overlord</td>
+<td style="text-align:right">12</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">7</td>
+<td style="text-align:right">2</td>
+</tr>
+<tr>
+<td style="text-align:left">overseer</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">queen</td>
+<td style="text-align:right">7</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">2</td>
+</tr>
+<tr>
+<td style="text-align:left">ravager</td>
+<td style="text-align:right">14</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">roach</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">swarmhost</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">ultralisk</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">viper</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">zergling</td>
+<td style="text-align:right">10</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">10</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -2063,155 +1931,11 @@ Sample Terran unit set in tustates replay.
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">buildings_started_count</span> <span class="o">=</span> <span class="n">count_started</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">buildings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">bsc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">buildings_started_count</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
-<span class="n">bsc_df</span>
+
+<span class="c1"># print(bsc_df.T.to_markdown())</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>banelingnest</th>
-      <th>creeptumor</th>
-      <th>evolutionchamber</th>
-      <th>extractor</th>
-      <th>greaterspire</th>
-      <th>hatchery</th>
-      <th>hive</th>
-      <th>hydraliskden</th>
-      <th>infestationpit</th>
-      <th>lair</th>
-      <th>lurkerden</th>
-      <th>nydusnetwork</th>
-      <th>nydusworm</th>
-      <th>roachwarren</th>
-      <th>spawningpool</th>
-      <th>spinecrawler</th>
-      <th>spire</th>
-      <th>sporecrawler</th>
-      <th>ultraliskcavern</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>whole</th>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>4</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>early</th>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>mid</th>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>late</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -2220,8 +1944,159 @@ Sample Terran unit set in tustates replay.
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead><tr>
+<th style="text-align:left"></th>
+<th style="text-align:right">whole</th>
+<th style="text-align:right">early</th>
+<th style="text-align:right">mid</th>
+<th style="text-align:right">late</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">banelingnest</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">creeptumor</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">evolutionchamber</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">extractor</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">2</td>
+</tr>
+<tr>
+<td style="text-align:left">greaterspire</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">hatchery</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">hive</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">hydraliskden</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td style="text-align:left">infestationpit</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">lair</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">lurkerden</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">nydusnetwork</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">nydusworm</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">roachwarren</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">spawningpool</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">spinecrawler</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">spire</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">sporecrawler</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">ultraliskcavern</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Base-Expansion">Base Expansion<a class="anchor-link" href="#Base-Expansion"> </a></h3><p>{% include warning.html content='UNDER DEVELOPMENT!!!' %}
- To build their economy, players will, in most cases, establish more than one base. These expansions allow them to collect resources faster and to prevent running out of resources. To be precise, here, I define <em>expansion</em> as building the main base structure for the player's play race. These main structures are a Nexus for Protoss, a Command Center for Terrans, or a Hatchery, Lair or Hive for the Zerg.</p>
+To build their economy, players will, in most cases, establish more than one base. These expansions allow them to collect resources faster and to prevent running out of resources. To be precise, here, I define <em>expansion</em> as building the main base structure for the player's play race. These main structures are a Nexus for Protoss, a Command Center for Terrans, or a Hatchery, Lair or Hive for the Zerg.</p>
 <p>Around expansions, I extract three performance indicators:</p>
 <ul>
 <li>The total number of expansions</li>
@@ -2318,8 +2193,8 @@ expansions, the rest of the expansions are ignored.</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Player-Tech-Update">Player Tech Update<a class="anchor-link" href="#Player-Tech-Update"> </a></h3><p>Beyond buildings and training units, the third way players can spend their resources is by researching tech updates.
- However, contrary to units and buildings, player objects do not store a list of tech upgrades. Thus, I use the match's  <code>UpgradeCompleteEvent</code> to build this list. Bear in mind that, instead of recording a count for each upgrade, I can record the second at which the update takes place. I can do this because each type of update can only occur once every game.
- In the player profile, I can average the times a player researched a particular update, ignoring any matches when they didn't, to get an approximate measure of when they prefer to make any update. I can also count the number of times they research each upgrade to see what upgrades they favour.</p>
+However, contrary to units and buildings, player objects do not store a list of tech upgrades. Thus, I use the match's <code>UpgradeCompleteEvent</code> to build this list. Bear in mind that, instead of recording a count for each upgrade, I can record the second at which the update takes place. I can do this because each type of update can only occur once every game.</p>
+<p>In the player profile, I can average the times a player researched a particular update, ignoring any matches when they didn't, to get an approximate measure of when they prefer to make any update. I can also count the number of times they research each upgrade to see what upgrades they favour.</p>
 
 </div>
 </div>

@@ -14,13 +14,11 @@ import fastcore.test as ft
 
 import sc2reader
 
-
-
 # Cell
 INTERVALS_BASE = 4*60
 
-
 # Cell
+
 def calc_realtime_index(registered_time: int,
                         rpl: sc2reader.resources.Replay) -> float:
     """Calculate the time index of an event based on the replay recorded

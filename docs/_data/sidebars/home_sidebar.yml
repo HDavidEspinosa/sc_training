@@ -16,13 +16,13 @@ entries:
       title: Chapter 2 - handle_tracker_events
       url: handle_tracker_events.html
     - output: web,pdf
-      title: Chapter 03 - macro_econ_parser Macroeconomic performance indicators
+      title: Chapter 3 - macro_econ_parser
       url: macro_econ_parser.html
     - output: web,pdf
       title: Chapter 4 - build_parser
       url: build_parser.html
     - output: web,pdf
-      title: Chapter 05 - handle_game_events
+      title: Chapter 5 - handle_game_events
       url: handle_game_events.html
     output: web
     title: sc_training

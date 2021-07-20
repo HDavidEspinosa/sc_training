@@ -18,9 +18,10 @@ import numpy as np
 import csv
 import json
 
-import sc2reader
+# Internal Cell
 
-from sc_training import *
+import sc2reader
+from .handle_tracker_event import *
 
 # Internal Cell
 

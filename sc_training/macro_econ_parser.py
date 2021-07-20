@@ -17,11 +17,13 @@ import numpy as np
 
 import sc2reader
 
-from sc_training import *
+from .handle_tracker_event import *
 
 
 # Internal Cell
+
 # The Following are the module's helper functions
+
 def get_pstatse(rpl: sc2reader.resources.Replay,
                 current_pid: int) \
                 -> list[sc2reader.events.tracker.PlayerStatsEvent]:
@@ -45,6 +47,7 @@ def get_pstatse(rpl: sc2reader.resources.Replay,
             and event.pid == current_pid]
 
 # Internal Cell
+
 def complete_pstatse_df(rpl: sc2reader.resources.Replay,
                         df: pd.DataFrame) -> pd.DataFrame:
     """Expands the initial DataFrame that can be extracted directly from
@@ -88,24 +91,24 @@ def complete_pstatse_df(rpl: sc2reader.resources.Replay,
 
     # Add columns for extra features
     df_no_loss_record.insert(4,'unspent_rsrc',
-                            (df_no_loss_record.minerals_current +
-                             df_no_loss_record.vespene_current))
+                            (df_no_loss_record.minerals_current
+                            + df_no_loss_record.vespene_current))
     df_no_loss_record.insert(7,'army_value',
-                            (df_no_loss_record.minerals_used_active_forces +
-                            df_no_loss_record.vespene_used_active_forces))
+                            (df_no_loss_record.minerals_used_active_forces
+                            +df_no_loss_record.vespene_used_active_forces))
     df_no_loss_record.insert(10,'rsrc_collection_rate',
-                            (df_no_loss_record.minerals_collection_rate +
-                             df_no_loss_record.vespene_collection_rate))
+                            (df_no_loss_record.minerals_collection_rate
+                            + df_no_loss_record.vespene_collection_rate))
 
     supply_capped_column = np.where(df_no_loss_record['food_made'] <=
                                     df_no_loss_record['food_used'],
                                     True, False)
+
     df_no_loss_record.insert(26, 'supply_capped', supply_capped_column)
     return df_no_loss_record
 
-
-
 # Cell
+
 def gen_interval_sub_dfs(rpl_length: float,
                         df: pd.DataFrame, column: str) -> pd.DataFrame:
     """Extract a set of DataFrames containing the records for a particular
@@ -152,8 +155,6 @@ def gen_interval_sub_dfs(rpl_length: float,
                for interval in time_intervals]
 
     return sub_dfs
-
-
 
 # Internal Cell
 # Functions for specific indicators
@@ -218,13 +219,11 @@ def calculate_spending_coeficient(unspent_rsrc: float,
     else:
         return None
 
-
-
 # Cell
+
 def list_attr_interval_values(df: pd.DataFrame,
-                              func: Callable[[pd.DataFrame], Any],
-                              df_attribute: str, rpl_length: float) \
-                              -> list[Any]:
+                            func: Callable[[pd.DataFrame], Any],
+                            df_attribute: str, rpl_length: float) -> list[Any]:
     """Lists the result of a function it receives applied to the values of
     various listed DataFrames.
 
@@ -253,8 +252,8 @@ def list_attr_interval_values(df: pd.DataFrame,
     return [func(subdf) if not subdf.empty else None
             for subdf in gen_interval_sub_dfs(rpl_length, df, df_attribute)]
 
-
 # Cell
+
 def get_player_macro_econ_df(rpl: sc2reader.resources.Replay,
                              pid: int) -> pd.DataFrame:
     """This function organises the records of a player's major
@@ -316,9 +315,10 @@ def get_player_macro_econ_df(rpl: sc2reader.resources.Replay,
     # Also, eliminate possible duplicate last record.
     return complete_pstatse_df(rpl, pstatse_df)
 
-
 # Cell
-def get_player_macro_econ_stats(rpl: sc2reader.resources.Replay, pid: int):
+
+def get_player_macro_econ_stats(rpl: sc2reader.resources.Replay,
+                                pid: int)-> dict:
     """This function organises a player's major macroeconomic performance
     indicatorsinto a dictionary.
 

@@ -14,8 +14,8 @@ from typing import *
 
 import sc2reader
 
-
 # Cell
+
 @dataclass(frozen=True)
 class Player_data:
     """
@@ -47,9 +47,8 @@ class Player_data:
                         in zip(headers, astuple(self)))
         return ''.join(print_lines)
 
-
-
 # Cell
+
 @dataclass(frozen=True)
 class Replay_data:
     """
@@ -107,9 +106,8 @@ class Replay_data:
                        for h, att in zip(headers, astuple(self)))
         return ''.join(print_lines)
 
-
-
 # Cell
+
 def get_players(player_dict: Dict[Any, Any]) -> List[Player_data]:
     """
     Extracts the players' data from a Participant Object, into a
@@ -127,8 +125,8 @@ def get_players(player_dict: Dict[Any, Any]) -> List[Player_data]:
     return [Player_data(p.pid, p.name, p.play_race, p.result)
             for p in player_dict.values()]
 
-
 # Cell
+
 def get_replay_info(replay: sc2reader.resources.Replay) -> Replay_data:
     '''
     Extracts a summary of a match's general information into a Replay_data

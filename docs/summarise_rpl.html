@@ -71,7 +71,7 @@ nb_path: "01_summarise_rpl.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x11f557e9070&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x1f1fe727ac0&gt;</pre>
 </div>
 
 </div>
@@ -113,7 +113,7 @@ nb_path: "01_summarise_rpl.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;generator object SC2Factory.load_all at 0x0000011F5746DAC0&gt;</pre>
+<pre>&lt;generator object SC2Factory.load_all at 0x000001F1FE7886D0&gt;</pre>
 </div>
 
 </div>
@@ -409,7 +409,7 @@ Player ID: 2
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Player_data" class="doc_header"><code>class</code> <code>Player_data</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Player_data</code>(<strong><code>player_number</code></strong>:<code>int</code>, <strong><code>username</code></strong>:<code>str</code>, <strong><code>race</code></strong>:<code>str</code>, <strong><code>result</code></strong>:<code>str</code>)</p>
+<h4 id="Player_data" class="doc_header"><code>class</code> <code>Player_data</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L18" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Player_data</code>(<strong><code>player_number</code></strong>:<code>int</code>, <strong><code>username</code></strong>:<code>str</code>, <strong><code>race</code></strong>:<code>str</code>, <strong><code>result</code></strong>:<code>str</code>)</p>
 </blockquote>
 <p>Immutable dataclass that contains Information that describes a
 player's attributes in a match.</p>
@@ -550,7 +550,7 @@ Result:              Loss
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Replay_data" class="doc_header"><code>class</code> <code>Replay_data</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L53" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Replay_data</code>(<strong><code>replay_name</code></strong>:<code>str</code>, <strong><code>replay_id</code></strong>:<code>str</code>, <strong><code>date_time</code></strong>:<code>datetime</code>, <strong><code>game_length</code></strong>:<code>int</code>, <strong><code>match_type</code></strong>:<code>str</code>, <strong><code>game_release</code></strong>:<code>str</code>, <strong><code>map_name</code></strong>:<code>str</code>, <strong><code>category</code></strong>:<code>str</code>, <strong><code>winner</code></strong>:<code>str</code>, <strong><code>players</code></strong>:<code>list</code>[<a href="/sc_training/summarise_rpl.html#Player_data"><code>Player_data</code></a>])</p>
+<h4 id="Replay_data" class="doc_header"><code>class</code> <code>Replay_data</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L50" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Replay_data</code>(<strong><code>replay_name</code></strong>:<code>str</code>, <strong><code>replay_id</code></strong>:<code>str</code>, <strong><code>date_time</code></strong>:<code>datetime</code>, <strong><code>game_length</code></strong>:<code>int</code>, <strong><code>match_type</code></strong>:<code>str</code>, <strong><code>game_release</code></strong>:<code>str</code>, <strong><code>map_name</code></strong>:<code>str</code>, <strong><code>category</code></strong>:<code>str</code>, <strong><code>winner</code></strong>:<code>str</code>, <strong><code>players</code></strong>:<code>list</code>[<a href="/sc_training/summarise_rpl.html#Player_data"><code>Player_data</code></a>])</p>
 </blockquote>
 <p>Immutable dataclass that contains information summarising a
 match's main attributes.</p>
@@ -607,7 +607,7 @@ match's main attributes.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_players" class="doc_header"><code>get_players</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L113" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_players</code>(<strong><code>player_dict</code></strong>:<code>Dict</code>[<code>Any</code>, <code>Any</code>])</p>
+<h4 id="get_players" class="doc_header"><code>get_players</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L108" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_players</code>(<strong><code>player_dict</code></strong>:<code>Dict</code>[<code>Any</code>, <code>Any</code>])</p>
 </blockquote>
 <p>Extracts the players' data from a Participant Object, into a
 Player_data instance.</p>
@@ -768,7 +768,7 @@ players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Lo
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_replay_info" class="doc_header"><code>get_replay_info</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L132" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_replay_info</code>(<strong><code>replay</code></strong>:<code>Replay</code>)</p>
+<h4 id="get_replay_info" class="doc_header"><code>get_replay_info</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/summarise_rpl.py#L126" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_replay_info</code>(<strong><code>replay</code></strong>:<code>Replay</code>)</p>
 </blockquote>
 <p>Extracts a summary of a match's general information into a Replay_data
 dataclass instance.</p>

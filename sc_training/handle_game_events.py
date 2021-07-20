@@ -5,7 +5,6 @@ __all__ = ['data_path', 'calc_spe_abil_ratios', 'get_prefered_spec_abil', 'calc_
 # Internal Cell
 
 # Load Module's dependencies
-
 from pathlib import Path
 from pprint import pprint
 from typing import *
@@ -15,9 +14,11 @@ import json
 import pandas as pd
 import fastcore.test as ft
 
-import sc2reader
+# Internal Cell
 
-from sc_training import *
+import sc2reader
+from .handle_tracker_event import *
+from .macro_econ_parser import *
 
 # Cell
 data_path = (Path(Path.cwd()/'data')
@@ -37,6 +38,7 @@ COMMON_ABILITIES = ['Attack',
 MOVE_COMMAND = ['RightClick']
 
 # Internal Cell
+
 def build_commands_df(rpl: sc2reader.resources.Replay,
                 events: list[sc2reader.events.game.GameEvent])-> pd.DataFrame:
 
@@ -50,6 +52,7 @@ def build_commands_df(rpl: sc2reader.resources.Replay,
     return commands_df
 
 # Cell
+
 def calc_spe_abil_ratios(rpl: sc2reader.resources.Replay, pid: int) \
                     -> list[float]:
 
@@ -78,8 +81,8 @@ def calc_spe_abil_ratios(rpl: sc2reader.resources.Replay, pid: int) \
             for total_abilities, total_commands
             in zip(map(len, abilities_dfs), map(len, commands_dfs))]
 
-
 # Internal Cell
+
 def get_top_abilities(abilities: pd.DataFrame) -> tuple[str,str]:
     prefered = None
     second = None
@@ -99,6 +102,7 @@ def get_top_abilities(abilities: pd.DataFrame) -> tuple[str,str]:
     return prefered, second
 
 # Cell
+
 def get_prefered_spec_abil(rpl: sc2reader.resources.Replay,
                            pid: int) -> list[tuple[str, int]]:
 
@@ -121,8 +125,8 @@ def get_prefered_spec_abil(rpl: sc2reader.resources.Replay,
 
     return preferences
 
-
 # Cell
+
 def calc_attack_ratio(rpl: sc2reader.resources.Replay, pid: int) -> list[float]:
 
     replay_lenght = rpl.length.seconds

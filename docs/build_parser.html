@@ -156,7 +156,8 @@ nb_path: "04_build_parser.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>{% include note.html content='each player&#8217;s unit list begins with thirteen or fourteen starting units. For example, if the players play with Protoss or Terran, they start with thirteen units (one main base plus twelve workers). If they play with Zerg, they begin with fourteen units (one main base, twelve workers, and one overlord). Because these elements are not built by the players, they should not count as part of the players&#8217; build strategy.' %}
+<p>{% include note.html content='each player&#8217;s unit list begins with thirteen or fourteen starting units. For example, if the players play with Protoss or Terran, they start with thirteen units (one main base plus twelve workers). If they play with Zerg, they begin with fourteen units (one main base, twelve workers, and one overlord). Because these elements are not built by the players, they should not count as part of the players&#8217; build strategy.
+' %}
 The following code extracts the unit lists for both players in the sample match, ignoring the starting units. In the examples, I print the first ten items in each list.</p>
 
 </div>
@@ -1025,25 +1026,115 @@ Sample Terran unit set in tustates replay.
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>{% include note.html content='see the rows 9, 10, 14, 15, 20 and 21 of the table that results from the code above.' %}
-|    | Unit        | Uname           |   UnitID |
-|---:|:------------|:----------------|---------:|
-|  9 | barracks    | BarracksTechLab | 67895297 |
-| 10 | techlab     | BarracksTechLab | 67895297 |
-| 11 | factory     | Factory         | 68681729 |
-| 12 | supplydepot | SupplyDepot     | 71041026 |
-| 13 | supplydepot | SupplyDepot     | 74186754 |
-| 14 | factory     | FactoryTechLab  | 74711042 |
-| 15 | techlab     | FactoryTechLab  | 74711042 |
-| 16 | sensortower | SensorTower     | 76021761 |
-| 17 | refinery    | Refinery        | 76546050 |
-| 18 | factory     | Factory         | 77856769 |
-| 19 | refinery    | Refinery        | 78381057 |
-| 20 | supplydepot | SupplyDepot     | 83099649 |
-| 21 | factory     | FactoryReactor  | 83361793 |
-| 22 | reactor     | FactoryReactor  | 83361793 |
-| 23 | armory      | Armory          | 83623937 |
-| 24 | supplydepot | SupplyDepot     | 83886081 |</p>
+<p>{% include note.html content='see the rows 9, 10, 14, 15, 20 and 21 of the table that results from the code above.
+' %}</p>
+<table>
+<thead><tr>
+<th style="text-align:right"></th>
+<th style="text-align:left">Unit</th>
+<th style="text-align:left">Uname</th>
+<th style="text-align:right">UnitID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">9</td>
+<td style="text-align:left">barracks</td>
+<td style="text-align:left">BarracksTechLab</td>
+<td style="text-align:right">67895297</td>
+</tr>
+<tr>
+<td style="text-align:right">10</td>
+<td style="text-align:left">techlab</td>
+<td style="text-align:left">BarracksTechLab</td>
+<td style="text-align:right">67895297</td>
+</tr>
+<tr>
+<td style="text-align:right">11</td>
+<td style="text-align:left">factory</td>
+<td style="text-align:left">Factory</td>
+<td style="text-align:right">68681729</td>
+</tr>
+<tr>
+<td style="text-align:right">12</td>
+<td style="text-align:left">supplydepot</td>
+<td style="text-align:left">SupplyDepot</td>
+<td style="text-align:right">71041026</td>
+</tr>
+<tr>
+<td style="text-align:right">13</td>
+<td style="text-align:left">supplydepot</td>
+<td style="text-align:left">SupplyDepot</td>
+<td style="text-align:right">74186754</td>
+</tr>
+<tr>
+<td style="text-align:right">14</td>
+<td style="text-align:left">factory</td>
+<td style="text-align:left">FactoryTechLab</td>
+<td style="text-align:right">74711042</td>
+</tr>
+<tr>
+<td style="text-align:right">15</td>
+<td style="text-align:left">techlab</td>
+<td style="text-align:left">FactoryTechLab</td>
+<td style="text-align:right">74711042</td>
+</tr>
+<tr>
+<td style="text-align:right">16</td>
+<td style="text-align:left">sensortower</td>
+<td style="text-align:left">SensorTower</td>
+<td style="text-align:right">76021761</td>
+</tr>
+<tr>
+<td style="text-align:right">17</td>
+<td style="text-align:left">refinery</td>
+<td style="text-align:left">Refinery</td>
+<td style="text-align:right">76546050</td>
+</tr>
+<tr>
+<td style="text-align:right">18</td>
+<td style="text-align:left">factory</td>
+<td style="text-align:left">Factory</td>
+<td style="text-align:right">77856769</td>
+</tr>
+<tr>
+<td style="text-align:right">19</td>
+<td style="text-align:left">refinery</td>
+<td style="text-align:left">Refinery</td>
+<td style="text-align:right">78381057</td>
+</tr>
+<tr>
+<td style="text-align:right">20</td>
+<td style="text-align:left">supplydepot</td>
+<td style="text-align:left">SupplyDepot</td>
+<td style="text-align:right">83099649</td>
+</tr>
+<tr>
+<td style="text-align:right">21</td>
+<td style="text-align:left">factory</td>
+<td style="text-align:left">FactoryReactor</td>
+<td style="text-align:right">83361793</td>
+</tr>
+<tr>
+<td style="text-align:right">22</td>
+<td style="text-align:left">reactor</td>
+<td style="text-align:left">FactoryReactor</td>
+<td style="text-align:right">83361793</td>
+</tr>
+<tr>
+<td style="text-align:right">23</td>
+<td style="text-align:left">armory</td>
+<td style="text-align:left">Armory</td>
+<td style="text-align:right">83623937</td>
+</tr>
+<tr>
+<td style="text-align:right">24</td>
+<td style="text-align:left">supplydepot</td>
+<td style="text-align:left">SupplyDepot</td>
+<td style="text-align:right">83886081</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
@@ -1072,26 +1163,121 @@ Sample Terran unit set in tustates replay.
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>{% include note.html content='in the following table the duplicates in lines 9, 14 and 21 have been filtered.' %}
-|    | Unit              | Uname             |   UnitID |
-|---:|:------------------|:------------------|---------:|
-|  8 | planetaryfortress | PlanetaryFortress | 64749570 |
-| 10 | techlab           | BarracksTechLab   | 67895297 |
-| 11 | factory           | Factory           | 68681729 |
-| 12 | supplydepot       | SupplyDepot       | 71041026 |
-| 13 | supplydepot       | SupplyDepot       | 74186754 |
-| 15 | techlab           | FactoryTechLab    | 74711042 |
-| 16 | sensortower       | SensorTower       | 76021761 |
-| 17 | refinery          | Refinery          | 76546050 |
-| 18 | factory           | Factory           | 77856769 |
-| 19 | refinery          | Refinery          | 78381057 |
-| 20 | supplydepot       | SupplyDepot       | 83099649 |
-| 22 | reactor           | FactoryReactor    | 83361793 |
-| 23 | armory            | Armory            | 83623937 |
-| 24 | supplydepot       | SupplyDepot       | 83886081 |
-| 25 | planetaryfortress | PlanetaryFortress | 84672513 |
-| 26 | supplydepot       | SupplyDepot       | 29097986 |
-| 27 | supplydepot       | SupplyDepot       | 86507521 |</p>
+<p>{% include note.html content='in the following table the duplicates in lines 9, 14 and 21 have been filtered.
+' %}</p>
+<table>
+<thead><tr>
+<th style="text-align:right"></th>
+<th style="text-align:left">Unit</th>
+<th style="text-align:left">Uname</th>
+<th style="text-align:right">UnitID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">8</td>
+<td style="text-align:left">planetaryfortress</td>
+<td style="text-align:left">PlanetaryFortress</td>
+<td style="text-align:right">64749570</td>
+</tr>
+<tr>
+<td style="text-align:right">10</td>
+<td style="text-align:left">techlab</td>
+<td style="text-align:left">BarracksTechLab</td>
+<td style="text-align:right">67895297</td>
+</tr>
+<tr>
+<td style="text-align:right">11</td>
+<td style="text-align:left">factory</td>
+<td style="text-align:left">Factory</td>
+<td style="text-align:right">68681729</td>
+</tr>
+<tr>
+<td style="text-align:right">12</td>
+<td style="text-align:left">supplydepot</td>
+<td style="text-align:left">SupplyDepot</td>
+<td style="text-align:right">71041026</td>
+</tr>
+<tr>
+<td style="text-align:right">13</td>
+<td style="text-align:left">supplydepot</td>
+<td style="text-align:left">SupplyDepot</td>
+<td style="text-align:right">74186754</td>
+</tr>
+<tr>
+<td style="text-align:right">15</td>
+<td style="text-align:left">techlab</td>
+<td style="text-align:left">FactoryTechLab</td>
+<td style="text-align:right">74711042</td>
+</tr>
+<tr>
+<td style="text-align:right">16</td>
+<td style="text-align:left">sensortower</td>
+<td style="text-align:left">SensorTower</td>
+<td style="text-align:right">76021761</td>
+</tr>
+<tr>
+<td style="text-align:right">17</td>
+<td style="text-align:left">refinery</td>
+<td style="text-align:left">Refinery</td>
+<td style="text-align:right">76546050</td>
+</tr>
+<tr>
+<td style="text-align:right">18</td>
+<td style="text-align:left">factory</td>
+<td style="text-align:left">Factory</td>
+<td style="text-align:right">77856769</td>
+</tr>
+<tr>
+<td style="text-align:right">19</td>
+<td style="text-align:left">refinery</td>
+<td style="text-align:left">Refinery</td>
+<td style="text-align:right">78381057</td>
+</tr>
+<tr>
+<td style="text-align:right">20</td>
+<td style="text-align:left">supplydepot</td>
+<td style="text-align:left">SupplyDepot</td>
+<td style="text-align:right">83099649</td>
+</tr>
+<tr>
+<td style="text-align:right">22</td>
+<td style="text-align:left">reactor</td>
+<td style="text-align:left">FactoryReactor</td>
+<td style="text-align:right">83361793</td>
+</tr>
+<tr>
+<td style="text-align:right">23</td>
+<td style="text-align:left">armory</td>
+<td style="text-align:left">Armory</td>
+<td style="text-align:right">83623937</td>
+</tr>
+<tr>
+<td style="text-align:right">24</td>
+<td style="text-align:left">supplydepot</td>
+<td style="text-align:left">SupplyDepot</td>
+<td style="text-align:right">83886081</td>
+</tr>
+<tr>
+<td style="text-align:right">25</td>
+<td style="text-align:left">planetaryfortress</td>
+<td style="text-align:left">PlanetaryFortress</td>
+<td style="text-align:right">84672513</td>
+</tr>
+<tr>
+<td style="text-align:right">26</td>
+<td style="text-align:left">supplydepot</td>
+<td style="text-align:left">SupplyDepot</td>
+<td style="text-align:right">29097986</td>
+</tr>
+<tr>
+<td style="text-align:right">27</td>
+<td style="text-align:left">supplydepot</td>
+<td style="text-align:left">SupplyDepot</td>
+<td style="text-align:right">86507521</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
@@ -1385,7 +1571,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_composicion" class="doc_header"><code>count_composicion</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L217" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composicion</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_composicion" class="doc_header"><code>count_composicion</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L218" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composicion</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -1724,7 +1910,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L254" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L255" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -2118,7 +2304,7 @@ To build their economy, players will, in most cases, establish more than one bas
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_expansion_time" class="doc_header"><code>get_expansion_time</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L279" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expansion_time</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_expansion_time" class="doc_header"><code>get_expansion_time</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L280" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expansion_time</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Gets a dictionary with the finished_at times for a player's first
 three expansions.</p>
@@ -2210,7 +2396,7 @@ However, contrary to units and buildings, player objects do not store a list of 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L331" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L332" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Lists the times at wich the player completed their updates</p>
 

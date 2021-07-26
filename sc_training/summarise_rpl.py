@@ -100,8 +100,8 @@ class Replay_data:
                    'Map:',
                    'Game category:',
                    'winner:',
-                   'players:'
-                   )
+                   'players:')
+
         print_lines = (f'{h:<28} {str(att)} \n'
                        for h, att in zip(headers, astuple(self)))
         return ''.join(print_lines)
@@ -152,6 +152,5 @@ def get_replay_info(replay: sc2reader.resources.Replay) -> Replay_data:
         map_name= replay.map_name,
         category= replay.category,
         winner= replay.winner,
-        players= get_players(replay.player) # note the use of the helper
-                                            # function here
-    )
+        players= get_players(replay.player)) # note the use of the helper
+                                             # function here

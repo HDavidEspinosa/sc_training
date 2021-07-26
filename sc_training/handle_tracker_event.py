@@ -4,7 +4,7 @@ __all__ = ['INTERVALS_BASE', 'calc_realtime_index']
 
 # Internal Cell
 
-# Load Module's dependencies
+#Load Module's dependencies
 
 from pathlib import Path
 from pprint import pprint

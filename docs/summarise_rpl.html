@@ -1,13 +1,13 @@
 ---
 
-title: Chapter 1 - summarise_rpl
+title: Chapter 1 - summarise_rpl
 
 
 keywords: fastai
 sidebar: home_sidebar
 
-summary: ": In this module, I explore the necessary elements to set up a `sc2reader`. I also review some of the data someone can extract using `sc2reader`."
-description: ": In this module, I explore the necessary elements to set up a `sc2reader`. I also review some of the data someone can extract using `sc2reader`."
+
+
 nb_path: "01_summarise_rpl.ipynb"
 ---
 <!--
@@ -31,17 +31,14 @@ nb_path: "01_summarise_rpl.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Setup">Setup<a class="anchor-link" href="#Setup"> </a></h2><ol>
-<li>Import <code>sc2reader</code> and libraries that you need in your project. For example, here, I use <code>pathlib.Path</code> to standardise the use of files and dirs.</li>
-<li>Locate the directory for the replay files.</li>
-</ol>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="File-loading">File loading<a class="anchor-link" href="#File-loading"> </a></h3><p>One can load one replay at a time using the <code>sc2replays.load_replay(&lt;str_file_path&gt;)</code> method.</p>
+<h2 id="The-Replay-Object">The <code>Replay</code> Object<a class="anchor-link" href="#The-Replay-Object"> </a></h2><p><code>sc2reader</code> loads replay files into <code>Repaly</code> objects. Once these objects are defined, users can access their data in two ways.</p>
+<ul>
+<li><p>The user can access descriptive information about a <code>Replay</code> by calling on some of the object's attributes. This data is useful for indexing and organising purposes.</p>
+</li>
+<li><p>Second, the <code>Replay</code> can provide access to other objects representing the different events, entities and behaviours that make up a StarCraft II match. This data is helpful to calculate and compose the player's performance indicators.</p>
+</li>
+</ul>
+<p>The following code shows how one can load a <code>Replay</code> into a variable.</p>
 
 </div>
 </div>
@@ -71,7 +68,7 @@ nb_path: "01_summarise_rpl.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x1ecb6871340&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x26bbcddcb80&gt;</pre>
 </div>
 
 </div>
@@ -84,83 +81,7 @@ nb_path: "01_summarise_rpl.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Alternatively, one can use the <code>sc2replays.load_replays(&lt;str_dir_path&gt;)</code> method, which returns a generator of replay objects.</p>
-
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rps_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./test_replays&quot;</span><span class="p">)</span>
-<span class="n">replays</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replays</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="p">))</span>
-<span class="n">replays</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;generator object SC2Factory.load_all at 0x000001ECB87AD970&gt;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">replays</span><span class="p">))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>sc2reader.resources.Replay</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Objects">Objects<a class="anchor-link" href="#Objects"> </a></h2><h3 id="The-Replay-Object">The <code>Replay</code> Object<a class="anchor-link" href="#The-Replay-Object"> </a></h3><p>From a <code>Replay</code> object, one can access a variety of attributes that can be usefull as meta-data for a particular match.</p>
-<p>Here, for example, I access most of the information about the replay calling different attributes of the <code>Replay</code> object.</p>
+<p>Having defined the object, I can summarise the match's descriptive information as shown in the following code.</p>
 
 </div>
 </div>
@@ -234,25 +155,16 @@ Winner : Team 2: Player 2 - MxChrisxM (Terran)
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>{% include note.html content='More detailed information about the match can be extracted from the events that compose a match. One can list all the events from a match calling the <code>events</code> attribute of the <code>Replay</code>. However, due to the complexity of this information I will cover it in more detail in later modules (see the <code>01_hand_event</code> notebook for more information).' %}</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="The-Participant-Object">The <code>Participant</code> Object<a class="anchor-link" href="#The-Participant-Object"> </a></h3><p>A lot of the information one could need from a <code>Replay</code> to build a summary could be drawn directly from its attributes. However, to summarise who where the players in the match, what races they played with and their results, I need to access the attributes of the match's <code>Participants</code>.</p>
-<p>Note that, as explained in <a href="https://sc2reader.readthedocs.io/en/latest/articles/conceptsinsc2reader.html">sc2reader documentation</a>:</p>
-<p>All entities in a replay fall into one of two overlapping buckets:</p>
-<ul>
-<li><strong>User</strong>: is a human entity. Only users have <em>game and message events</em>.</li>
-<li><strong>Player</strong>: is an entity that actively plays in the game. Only players have <em>tracker events</em>.</li>
-</ul>
-<p>As such, one can summarise the entities encountered in replays as follows:</p>
+<h2 id="The-Participant-Object">The <code>Participant</code> Object<a class="anchor-link" href="#The-Participant-Object"> </a></h2><p>Beyond the information contained in a <code>Replay's</code> attributes, users can call upon the <code>Participant</code> objects associated with it to complement this data. These <code>Participant</code> objects record the match's players, what races they played with, and their results.
+{% include tip.html content='All entities in a replay fall into one of two categories, i.e. <em>User</em> or <em>Player</em>. <em>Users</em> refer to human entities and use <em>game and message events</em> to record some of the entities&#8217; behaviours. <em>Players</em> actively play the game and use <em>tracker events</em> to record several performance indicators.
+' %}
+As such, one can summarise the entities encountered in replays as follows:</p>
 <ul>
 <li>A <strong>Participant</strong> is a Player and a User</li>
 <li>An <strong>Observer</strong> is a User and not a Player</li>
-<li>A <strong>Computer</strong> is a Player and not a User</li>
+<li>A <strong>Computer</strong> is a Player and not a User<blockquote><p>:Source <a href="https://sc2reader.readthedocs.io/en/latest/articles/conceptsinsc2reader.html#player-vs-user">Player vs User</a></p>
+</blockquote>
+</li>
 </ul>
 <p>With this in mind, here I access the match participans' information as follows:</p>
 
@@ -377,14 +289,7 @@ Player ID: 2
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>{% include note.html content='One can list all the events from a match associated with each player separately via the events attribute of each <code>Participant</code> (see the <code>01_hand_event</code> notebook for more information).' %}</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Functions">Functions<a class="anchor-link" href="#Functions"> </a></h2><p>Now that I know what data I can extract directly from the <code>Replay</code> and the <code>Participant</code> objects, I will compose a function that will summarise a 1v1 match. I will use frozen <code>dataclass</code> as the primary data structure where I store this summary to enforce immutability.</p>
+<h2 id="Functions">Functions<a class="anchor-link" href="#Functions"> </a></h2><p>Considering all of the above, I define a function that summarises the information I need to index and organise a set of replays.</p>
 
 </div>
 </div>
@@ -445,7 +350,7 @@ player's attributes in a match.</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This data class can store the information of each player as shown here.</p>
+<p>The following is an example of this class.</p>
 
 </div>
 </div>
@@ -457,53 +362,12 @@ player's attributes in a match.</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p_one</span> <span class="o">=</span> <span class="n">Player_data</span><span class="p">(</span>
-    <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> 
-    <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-    <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">play_race</span><span class="p">,</span>
-    <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">result</span>
-<span class="p">)</span>
-<span class="n">astuple</span><span class="p">(</span><span class="n">p_one</span><span class="p">)</span>
-</pre></div>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p_one</span> <span class="o">=</span> <span class="n">Player_data</span><span class="p">(</span><span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> 
+                    <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">play_race</span><span class="p">,</span>
+                    <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Loss&#39;)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>I have also implemented the <code>__str__()</code> function of the class to offer a user friendly representation of the <a href="/sc_training/summarise_rpl.html#Player_data"><code>Player_data</code></a> objects.</p>
-
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">p_one</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p_one</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -597,7 +461,7 @@ match's main attributes.</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Helper-Functions">Helper Functions<a class="anchor-link" href="#Helper-Functions"> </a></h3><p>To illustrate how this dataclass works, let me define a helper function (<a href="/sc_training/summarise_rpl.html#get_players"><code>get_players</code></a>) that I will use to iterate through the match's list of players (extracted as a <code>dict</code> calling on the replay's <code>player</code> attribute), converting each one into a <a href="/sc_training/summarise_rpl.html#Player_data"><code>Player_data</code></a> instance and returning a new list with this summaries.</p>
+<h3 id="Helper-Functions">Helper Functions<a class="anchor-link" href="#Helper-Functions"> </a></h3><p>To illustrate how this dataclass works, let me define a helper function (<a href="/sc_training/summarise_rpl.html#get_players"><code>get_players</code></a>) to iterate through the match's list of players converting each one into a <a href="/sc_training/summarise_rpl.html#Player_data"><code>Player_data</code></a> instance and returning a new list with this summaries.</p>
 
 </div>
 </div>
@@ -648,7 +512,7 @@ Player_data instance.</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>With this function and the attributes explored above I can store a summary of the matches meta-data in a <a href="/sc_training/summarise_rpl.html#Replay_data"><code>Replay_data</code></a> instance like this:</p>
+<p>With this function, I can store a summary of the matches meta-data in a <a href="/sc_training/summarise_rpl.html#Replay_data"><code>Replay_data</code></a> instance like this:</p>
 
 </div>
 </div>
@@ -670,9 +534,9 @@ Player_data instance.</p>
         <span class="n">map_name</span><span class="o">=</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">map_name</span><span class="p">,</span>
         <span class="n">category</span><span class="o">=</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
         <span class="n">winner</span><span class="o">=</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">winner</span><span class="p">,</span>
-        <span class="n">players</span><span class="o">=</span> <span class="n">get_players</span><span class="p">(</span><span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">)</span> <span class="c1"># note the use of the</span>
-                                                   <span class="c1"># helper function here</span>
-<span class="p">)</span>
+        <span class="n">players</span><span class="o">=</span> <span class="n">get_players</span><span class="p">(</span><span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">))</span> <span class="c1"># note the use of the</span>
+                                                    <span class="c1"># helper function here</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
 </pre></div>
 
@@ -709,56 +573,7 @@ players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Lo
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Again, I have implemented the class' <code>__str__()</code> method to provide a user friendly printy of the class.</p>
-
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>File path:                   test_replays\Jagannatha LE.SC2Replay 
-File name:                   Jagannatha LE.SC2Replay 
-Date (datetime.datetime):    2021-02-24 02:53:06 
-Duration (seconds):          590 
-Game type:                   1v1 
-Game release:                5.0.6.83830 
-Map:                         Jagannatha LE 
-Game category:               Ladder 
-winner:                      Team 2: Player 2 - MxChrisxM (Terran) 
-players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Loss&#39;), (2, &#39;MxChrisxM&#39;, &#39;Terran&#39;, &#39;Win&#39;)] 
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Exported-Functions">Exported Functions<a class="anchor-link" href="#Exported-Functions"> </a></h3><p>Having defined these data structures, I can define a simple function that receives a <code>Replay</code> and returns a replay summary as a <a href="/sc_training/summarise_rpl.html#Replay_data"><code>Replay_data</code></a> instance.</p>
-<p>Here is the documentation for that function.</p>
+<h3 id="Exported-Functions">Exported Functions<a class="anchor-link" href="#Exported-Functions"> </a></h3><p>Having defined these data structures, I define the <a href="/sc_training/summarise_rpl.html#get_replay_info"><code>get_replay_info</code></a> function which receives a <code>Replay</code> and returns its summary as a <a href="/sc_training/summarise_rpl.html#Replay_data"><code>Replay_data</code></a> instance.</p>
 
 </div>
 </div>
@@ -808,7 +623,8 @@ dataclass instance.</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Example-use-of-the-get_replay_info()-function">Example use of the <code>get_replay_info()</code> function<a class="anchor-link" href="#Example-use-of-the-get_replay_info()-function"> </a></h4>
+<p>The following code demonstrates the use of this function.</p>
+
 </div>
 </div>
 </div>

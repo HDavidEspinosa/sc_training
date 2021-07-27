@@ -563,11 +563,12 @@ Frame recorded in the last event:  13224
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Helper-Functions">Helper Functions<a class="anchor-link" href="#Helper-Functions"> </a></h3><p>In this module, I define various helper functions that simplify the definition of the module's main exportable functions.
-These functions include:</p>
+{% include note.html content='For brevity, I only expand the definition of exported functions in this documentation. The implementation of the helper functions that are not exported from the modules can be consulted in the modules&#8217; development jupyter notebook or source code.
+' %}
+<strong>Non-Exported Helper Functions</strong>:</p>
 <ul>
 <li><a href="/sc_training/macro_econ_parser.html#get_pstatse"><code>get_pstatse</code></a> extracts a list of all the <code>PlayerStatsEvent</code> instances related to a player from a <code>Replay</code>.</li>
-<li><a href="/sc_training/macro_econ_parser.html#complete_pstatse_df"><code>complete_pstatse_df</code></a> expands the initial <code>DataFrame</code> that can be extracted directly from the PlayerStatsEvents with several relevant features. I use this function in the <a href="/sc_training/macro_econ_parser.html#get_player_macro_econ_df"><code>get_player_macro_econ_df</code></a> definition.</li>
-<li><p><a href="/sc_training/macro_econ_parser.html#gen_interval_sub_dfs"><code>gen_interval_sub_dfs</code></a> and <a href="/sc_training/macro_econ_parser.html#list_attr_interval_values"><code>list_attr_interval_values</code></a>. These two functions facilitate the division of information so that stats can be calculated based on pandas.DataFrames for the whole match and the early, mid and late intervals of the game.</p>
+<li><p><a href="/sc_training/macro_econ_parser.html#complete_pstatse_df"><code>complete_pstatse_df</code></a> expands the initial <code>DataFrame</code> that can be extracted directly from the PlayerStatsEvents with several relevant features. I use this function in the <a href="/sc_training/macro_econ_parser.html#get_player_macro_econ_df"><code>get_player_macro_econ_df</code></a> definition.</p>
 </li>
 <li><p>Some functions that allow for the functional computation of various indicators:</p>
 <ul>
@@ -577,8 +578,10 @@ These functions include:</p>
 </ul>
 </li>
 </ul>
-<p>I use these last functions in the <a href="/sc_training/macro_econ_parser.html#get_player_macro_econ_stats"><code>get_player_macro_econ_stats</code></a> definition.
-{% include tip.html content='The implementation of these helper functions can be consulted in the module&#8217;s development jupyter notebook or source code.' %}{% include note.html content='these functions respond to the functional programming paradigm I am following for this package.' %}</p>
+<p><strong>Exported Helper Functions</strong>: I export the following functions given that they are usefull beyond this module.</p>
+<ul>
+<li><a href="/sc_training/macro_econ_parser.html#gen_interval_sub_dfs"><code>gen_interval_sub_dfs</code></a> and <a href="/sc_training/macro_econ_parser.html#list_attr_interval_values"><code>list_attr_interval_values</code></a>. These two functions facilitate the division of information so that stats can be calculated based on pandas.DataFrames for the whole match and the early, mid and late intervals of the game.</li>
+</ul>
 
 </div>
 </div>
@@ -840,7 +843,7 @@ calculate the player's major economic performance indicators. These
 indicators are calculated for the whole game, as well as for the early
 (first 4 minutes), mid (between minutes 4 and 8) and
 late games (paste minute 8).</p>
-<p><strong>Arguments</strong></p>
+<p><em>Arguments</em></p>
 
 <pre><code>- rpl (sc2reader.resources.Replay)
         Replay object generated with sc2reader containing a match's
@@ -851,7 +854,7 @@ late games (paste minute 8).</p>
         object through the pid attribute.
 
 </code></pre>
-<p><strong>Returns</strong></p>
+<p><em>Returns</em></p>
 
 <pre><code>- dict
     This dictionary contains the values for a player's major
@@ -1166,24 +1169,6 @@ late games (paste minute 8).</p>
 </div>
 </div>
 </div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from nbdev.export import notebook2script</span>
-<span class="c1"># notebook2script()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
 </div>
  
 

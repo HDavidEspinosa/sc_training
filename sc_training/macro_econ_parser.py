@@ -328,7 +328,7 @@ def get_player_macro_econ_stats(rpl: sc2reader.resources.Replay,
     (first 4 minutes), mid (between minutes 4 and 8) and
     late games (paste minute 8).
 
-    **Arguments**
+    *Arguments*
         - rpl (sc2reader.resources.Replay)
                 Replay object generated with sc2reader containing a match's
                 data.
@@ -337,7 +337,7 @@ def get_player_macro_econ_stats(rpl: sc2reader.resources.Replay,
                 players in a match. It can be extracted from a Participant
                 object through the pid attribute.
 
-    **Returns**
+    *Returns*
         - dict
             This dictionary contains the values for a player's major
             macroeconomic performance indicators. Each indicator is

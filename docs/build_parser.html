@@ -1,13 +1,13 @@
 ---
 
-title: Chapter 4 - Parsing Build Orders
+title: Chapter 4 - Parsing Build Orders
 
 
 keywords: fastai
 sidebar: home_sidebar
 
-summary: ": In this chapter, I review how to extract information on a player's build strategy. In accordance with this review I then  define the `build_parser` module. This module contains functions that developers can use to parse the players' build orders, and to inventory their army, base and technology upgrades."
-description: ": In this chapter, I review how to extract information on a player's build strategy. In accordance with this review I then  define the `build_parser` module. This module contains functions that developers can use to parse the players' build orders, and to inventory their army, base and technology upgrades."
+
+
 nb_path: "04_build_parser.ipynb"
 ---
 <!--
@@ -1622,7 +1622,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_composicion" class="doc_header"><code>count_composicion</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L218" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composicion</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_composicion" class="doc_header"><code>count_composicion</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L223" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composicion</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -1961,7 +1961,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L255" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L260" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -2333,12 +2333,12 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Base-Expansion">Base Expansion<a class="anchor-link" href="#Base-Expansion"> </a></h3><p>To build their economy, players will, in most cases, establish more than one base. These expansions allow them to more speedily and efficiently collect and prevent running out of resources. To be precise, I define <em>expansion</em> as building one of the main base structures for the player's play race in a location that allows for exploiting complementary reservoirs of resources. These main structures are a Nexus for Protoss, a Command Center for Terrans, or a Hatchery, Lair or Hive for the Zerg.</p>
-<p>In this regard, I extract two performance indicators:</p>
-<ul>
-<li>The total number of expansions at the different game stages</li>
-<li>The time of the first three expansions</li>
-</ul>
 <p>In this case, I am using the speed with which players build their expansions and the amounts they maintain at each stage as indicators for their economic development strategy.</p>
+<p>In this regard, I define two exportable functions that extract two performance indicators:</p>
+<ul>
+<li><a href="/sc_training/build_parser.html#get_expan_times"><code>get_expan_times</code></a> extracts the time of the first three expansions</li>
+<li><code>get_expan_counts</code> exports a dictionary containing the expansion counts for the differt game stages.</li>
+</ul>
 
 </div>
 </div>
@@ -2354,7 +2354,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_expansion_time" class="doc_header"><code>get_expansion_time</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L280" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expansion_time</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_expan_times" class="doc_header"><code>get_expan_times</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L285" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_times</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Gets a dictionary with the finished_at times for a player's first
 three expansions.</p>
@@ -2395,6 +2395,13 @@ expansions, the rest of the expansions are ignored.</p>
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The code bellow shows how <a href="/sc_training/build_parser.html#get_expan_times"><code>get_expan_times</code></a> works.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -2402,7 +2409,7 @@ expansions, the rest of the expansions are ignored.</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">get_expansion_time</span><span class="p">(</span><span class="n">zustates</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">get_expan_times</span><span class="p">(</span><span class="n">zustates</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -2433,9 +2440,48 @@ expansions, the rest of the expansions are ignored.</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_expansion_count</span><span class="p">(</span><span class="n">rpl</span><span class="p">:</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">resources</span><span class="o">.</span><span class="n">Replay</span><span class="p">,</span>
-                        <span class="n">pid</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-    <span class="k">pass</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_expan_counts</span><span class="p">(</span><span class="n">rpl</span><span class="p">:</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">resources</span><span class="o">.</span><span class="n">Replay</span><span class="p">,</span>
+                        <span class="n">pid</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="sd">&#39;&#39;&#39;The function counts the number of base structures a player built at each game stage.</span>
+
+<span class="sd">    *Args*</span>
+<span class="sd">        - rpl (sc2reader.resources.Replay)</span>
+<span class="sd">            Replay containing a match&#39;s information.</span>
+<span class="sd">        - pid (int)</span>
+<span class="sd">            The match player ID for the player being consider in the </span>
+<span class="sd">            analysis.</span>
+
+<span class="sd">    *Returns*</span>
+<span class="sd">        - dict[str, int]</span>
+<span class="sd">            Dictionary containing the base count for the whole, early, </span>
+<span class="sd">            mid and late stages of the game.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">units_df</span> <span class="o">=</span> <span class="n">composition_df</span><span class="p">(</span><span class="n">rpl</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">buildings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">units_df</span><span class="p">[</span><span class="s1">&#39;real_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">units_df</span><span class="p">[</span><span class="s1">&#39;enter_game_time&#39;</span><span class="p">]</span>
+
+    <span class="n">interval_units_dfs</span> <span class="o">=</span> <span class="n">gen_interval_sub_dfs</span><span class="p">(</span><span class="n">rpl</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">seconds</span><span class="p">,</span>
+                                              <span class="n">units_df</span><span class="p">,</span>
+                                              <span class="p">[</span><span class="s1">&#39;Unit&#39;</span><span class="p">,</span><span class="s1">&#39;enter_game_time&#39;</span><span class="p">])</span>
+    
+    <span class="n">expansion_count_names</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;total_expan&#39;</span><span class="p">,</span>
+                              <span class="s1">&#39;earlyg_expan&#39;</span><span class="p">,</span> 
+                              <span class="s1">&#39;midg_expan&#39;</span><span class="p">,</span> 
+                              <span class="s1">&#39;lateg_expan&#39;</span><span class="p">]</span>
+
+    <span class="n">expansion_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">in_name</span><span class="p">,</span> <span class="n">in_df</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">expansion_count_names</span><span class="p">,</span> <span class="n">interval_units_dfs</span><span class="p">):</span>
+        <span class="n">interval_df</span> <span class="o">=</span> <span class="n">in_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">units_df</span><span class="p">[</span><span class="s1">&#39;Unit&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">BASES</span><span class="p">[</span><span class="n">rpl</span><span class="o">.</span>
+                                                        <span class="n">player</span><span class="p">[</span><span class="n">pid</span><span class="p">]</span><span class="o">.</span>
+                                                        <span class="n">play_race</span><span class="p">])</span>
+                                <span class="o">&amp;</span> <span class="n">units_df</span><span class="p">[</span><span class="s1">&#39;enter_game_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ne</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span>
+
+        <span class="n">expansion_counts</span><span class="p">[</span><span class="n">in_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">interval_df</span><span class="p">)</span>
+
+
+    <span class="k">return</span> <span class="n">expansion_counts</span>
+    
 </pre></div>
 
     </div>
@@ -2447,9 +2493,85 @@ expansions, the rest of the expansions are ignored.</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Player-Tech-Update">Player Tech Update<a class="anchor-link" href="#Player-Tech-Update"> </a></h3><p>Beyond buildings and training units, the third way players can spend their resources is by researching tech updates.
-However, contrary to units and buildings, player objects do not store a list of tech upgrades. Thus, I use the match's <code>UpgradeCompleteEvent</code> to build this list. Bear in mind that, instead of recording a count for each upgrade, I can record the second at which the update takes place. I can do this because each type of update can only occur once every game.</p>
-<p>In the player profile, I can average the times a player researched a particular update, ignoring any matches when they didn't, to get an approximate measure of when they prefer to make any update. I can also count the number of times they research each upgrade to see what upgrades they favour.</p>
+<p>The following are two examples of the use of <code>get_expan_counts</code>.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">exp_counts</span> <span class="o">=</span> <span class="n">get_expan_counts</span><span class="p">(</span><span class="n">zustates</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">exp_counts</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;total_expan&#39;: 3, &#39;earlyg_expan&#39;: 0, &#39;midg_expan&#39;: 1, &#39;lateg_expan&#39;: 2}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">exp_counts</span> <span class="o">=</span> <span class="n">get_expan_counts</span><span class="p">(</span><span class="n">sing_protoss</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">exp_counts</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;total_expan&#39;: 2, &#39;earlyg_expan&#39;: 1, &#39;midg_expan&#39;: 0, &#39;lateg_expan&#39;: 1}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Player-Tech-Update">Player Tech Update<a class="anchor-link" href="#Player-Tech-Update"> </a></h3><p>Beyond buildings and training units, the third way players can spend their resources is by researching tech updates.</p>
+<p>However, contrary to units and buildings, player objects do not store a list of tech upgrades. Thus, I need to use the match's <code>UpgradeCompleteEvents</code> to build this list.</p>
+<p>Another difference between tracking units and upgrades is that it makes no sense to count the occurrences of each update because players can only 'buy' them once during each match. For this reason, I record the second at which the update takes place instead. Based on this record, when building the player profiles, I can average the times a player researched each update to get a rough measurement of the game stage when they prefer to use them. At that moment, I can also count the number of times they research each upgrade to see what upgrades they favour.</p>
+<p>Bellow, I define the <a href="/sc_training/build_parser.html#list_player_upgrades"><code>list_player_upgrades</code></a> function, which returns a dictionary of all the player's race upgrades and when they were completed.</p>
 
 </div>
 </div>
@@ -2465,7 +2587,7 @@ However, contrary to units and buildings, player objects do not store a list of 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L332" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L334" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Lists the times at wich the player completed their updates</p>
 
@@ -2486,6 +2608,13 @@ However, contrary to units and buildings, player objects do not store a list of 
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The following table shows a sample result from applaying <a href="/sc_training/build_parser.html#list_player_upgrades"><code>list_player_upgrades</code></a> on a replay.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -2493,7 +2622,8 @@ However, contrary to units and buildings, player objects do not store a list of 
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># player1_upgrades, index=[&#39;Player1_upgrades&#39;]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">player1_upgrades</span> <span class="o">=</span> <span class="n">list_player_upgrades</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1">#print(pd.DataFrame(player1_upgrades, index=[&#39;P_1 Upgrdes&#39;]).T.to_markdown())</span>
 </pre></div>
 
     </div>
@@ -2503,6 +2633,149 @@ However, contrary to units and buildings, player objects do not store a list of 
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead><tr>
+<th style="text-align:left"></th>
+<th style="text-align:right">P_1 Upgrdes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">BansheeCloak</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">BansheeSpeed</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">BattlecruiserEnableSpecializations</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">CycloneLockOnDamageUpgrade</td>
+<td style="text-align:right">546.304</td>
+</tr>
+<tr>
+<td style="text-align:left">DrillClaws</td>
+<td style="text-align:right">427.76</td>
+</tr>
+<tr>
+<td style="text-align:left">EnhancedShockwaves</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">HiSecAutoTracking</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">HighCapacityBarrels</td>
+<td style="text-align:right">347.778</td>
+</tr>
+<tr>
+<td style="text-align:left">LiberatorAGRangeUpgrade</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">MedivacIncreaseSpeedBoost</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">PersonalCloaking</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">PunisherGrenades</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">RavenCorvidReactor</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">ShieldWall</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">SmartServos</td>
+<td style="text-align:right">526.309</td>
+</tr>
+<tr>
+<td style="text-align:left">Stimpack</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranBuildingArmor</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranInfantryArmorsLevel1</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranInfantryArmorsLevel2</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranInfantryArmorsLevel3</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranInfantryWeaponsLevel1</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranInfantryWeaponsLevel2</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranInfantryWeaponsLevel3</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranShipWeaponsLevel1</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranShipWeaponsLevel2</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranShipWeaponsLevel3</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranVehicleAndShipArmorsLevel1</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranVehicleAndShipArmorsLevel2</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranVehicleAndShipArmorsLevel3</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranVehicleWeaponsLevel1</td>
+<td style="text-align:right">574.155</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranVehicleWeaponsLevel2</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:left">TerranVehicleWeaponsLevel3</td>
+<td style="text-align:right">0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </div>
  
 

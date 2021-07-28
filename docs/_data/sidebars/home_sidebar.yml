@@ -22,8 +22,11 @@ entries:
       title: Chapter 4 - Parsing Build Orders
       url: build_parser.html
     - output: web,pdf
-      title: Chapter 5 - handle_game_events
-      url: handle_game_events.html
+      title: Chapter 5 - Handling Command Events
+      url: handle_command_events.html
+    - output: web,pdf
+      title: Chapter 6 - Tracking Control Groups
+      url: control_group_parser.html
     output: web
     title: sc_training
   output: web

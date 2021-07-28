@@ -41,9 +41,8 @@ COMMON_ABILITIES = ['Attack',
 MOVE_COMMAND = ['RightClick']
 
 # Internal Cell
-
 def build_commands_df(rpl: sc2reader.resources.Replay,
-                events: list[sc2reader.events.game.GameEvent])-> pd.DataFrame:
+                events: list[sc2reader.events.game.GameEvent]) -> pd.DataFrame:
 
     df_columns =  ['real_time', 'second', 'ability_name']
 
@@ -56,8 +55,28 @@ def build_commands_df(rpl: sc2reader.resources.Replay,
 
 # Cell
 
-def calc_spe_abil_ratios(rpl: sc2reader.resources.Replay, pid: int) \
-                    -> list[float]:
+def calc_spe_abil_ratios(rpl: sc2reader.resources.Replay,
+                         pid: int) -> dict[float]:
+    '''
+    Extracts a ratio from 0 to 1 that quantifies the use use of special
+    abilities.
+
+    The special abilities ratio (sar) indicates the proportion of special
+    abilities to general commands executed by the player.
+
+    *Args*
+        - rpl (sc2reader.resources.Replay)
+            The replay being analysed.
+        - pid (int)
+            In-game player ID of the player being considered in the
+            analysis.
+
+    *Returns*
+        - dict[float]
+            A dictionary containing the special abilities ratio (sar)
+            values for the whole, early, mid and late game.
+
+    '''
 
     replay_lenght = rpl.length.seconds
     player_race = rpl.player[pid].play_race
@@ -80,9 +99,12 @@ def calc_spe_abil_ratios(rpl: sc2reader.resources.Replay, pid: int) \
     abilities_dfs = gen_interval_sub_dfs(replay_lenght, abilities_commands,
                                         ['real_time', 'ability_name'])
 
-    return [total_abilities / total_commands if total_commands != 0 else 0
-            for total_abilities, total_commands
-            in zip(map(len, abilities_dfs), map(len, commands_dfs))]
+    ratios = [total_abilities / total_commands if total_commands != 0 else 0
+              for total_abilities, total_commands
+              in zip(map(len, abilities_dfs), map(len, commands_dfs))]
+    ratios_names = ['whole_sar', 'early_sar', 'mid_sar', 'late_sar']
+
+    return {nam: rat for nam, rat in zip(ratios_names, ratios)}
 
 # Internal Cell
 
@@ -107,8 +129,25 @@ def get_top_abilities(abilities: pd.DataFrame) -> tuple[str,str]:
 # Cell
 
 def get_prefered_spec_abil(rpl: sc2reader.resources.Replay,
-                           pid: int) -> list[tuple[str, int]]:
+                           pid: int) -> dict[str, tuple[str, int]]:
 
+    '''Extracts the names of the two special abilities a player uses the
+    most during the whole, early, mid and late games.
+
+    *Args*
+        - rpl (sc2reader.resources.Replay)
+            The replay being analysed.
+        - pid (int)
+            In-game player ID of the player being considered in the
+            analysis.
+
+    *Returns*
+        - dict[str, tuple[str, int]]
+            The keys of the dictionary separate the preferences according
+            to the game stages. The dictionary values contain a tuple with
+            the first and second abilities the player uses the most in
+            that order.
+    '''
     replay_lenght = rpl.length.seconds
     player_race = rpl.player[pid].play_race
 
@@ -124,14 +163,34 @@ def get_prefered_spec_abil(rpl: sc2reader.resources.Replay,
     abilities_dfs = gen_interval_sub_dfs(replay_lenght, abilities_commands,
                                         ['real_time', 'ability_name'])
 
+    stage_names = ['whole_pref_sab', 'early_pref_sab',
+                   'mid_pref_sab', 'late_pref_sab']
     preferences = [get_top_abilities(df) for df in abilities_dfs]
 
-    return preferences
+    return {nam: pref for nam, pref in zip(stage_names, preferences)}
 
 # Cell
+def calc_attack_ratio(rpl: sc2reader.resources.Replay,
+                      pid: int) -> dict[str, float]:
+    '''Calculates the ratio between a player's attack orders and their
+    common commands.
 
-def calc_attack_ratio(rpl: sc2reader.resources.Replay, pid: int) -> list[float]:
+    Offers a ratio between attacks and other common commands such as move,
+    follow, stop, and hold position as a measurement of a player's tactical
+    aggresiveness.
 
+    *Args*
+        - rpl (sc2reader.resources.Replay)
+            The replay being analysed.
+        - pid (int)
+            In-game player ID of the player being considered in the
+            analysis.
+
+    *Returns*
+        - dict[str, float]
+            A dictionary that separates a player's attack ratios for the
+            different stages of a match.
+    '''
     replay_lenght = rpl.length.seconds
 
     common_comms = [com_e for com_e in rpl.events
@@ -153,6 +212,11 @@ def calc_attack_ratio(rpl: sc2reader.resources.Replay, pid: int) -> list[float]:
     ca_subdf_list = gen_interval_sub_dfs(replay_lenght, attack_comms_dfs,
                                         ['real_time', 'ability_name'])
 
-    return [len(att) / len(comm) if len(comm) != 0 else 0
-            for att, comm
-            in zip(ca_subdf_list, cc_subdf_list)]
+
+    ratios_names = ['whole_att_ratio', 'early_att_ratio',
+                   'mid_att_ratio', 'late_att_ratio']
+    att_ratios = [round(len(att) / len(comm), ndigits=3)
+                  if len(comm) != 0 else 0
+                  for att, comm in zip(ca_subdf_list, cc_subdf_list)]
+
+    return {nam: rat for nam, rat in zip(ratios_names, att_ratios)}

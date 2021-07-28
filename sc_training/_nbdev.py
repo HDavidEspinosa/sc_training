@@ -18,7 +18,7 @@ index = {"Player_data": "01_summarise_rpl.ipynb",
          "list_attr_interval_values": "03_macro_econ_parser.ipynb",
          "get_player_macro_econ_df": "03_macro_econ_parser.ipynb",
          "get_player_macro_econ_stats": "03_macro_econ_parser.ipynb",
-         "data_path": "05_handle_game_events.ipynb",
+         "data_path": "05_handle_command_events.ipynb",
          "BASES": "04_build_parser.ipynb",
          "composition_df": "04_build_parser.ipynb",
          "count_active_units": "04_build_parser.ipynb",
@@ -27,19 +27,19 @@ index = {"Player_data": "01_summarise_rpl.ipynb",
          "count_started": "04_build_parser.ipynb",
          "get_expan_times": "04_build_parser.ipynb",
          "list_player_upgrades": "04_build_parser.ipynb",
-         "COMMON_ABILITIES": "05_handle_game_events.ipynb",
-         "MOVE_COMMAND": "05_handle_game_events.ipynb",
-         "build_commands_df": "05_handle_game_events.ipynb",
-         "calc_spe_abil_ratios": "05_handle_game_events.ipynb",
-         "get_top_abilities": "05_handle_game_events.ipynb",
-         "get_prefered_spec_abil": "05_handle_game_events.ipynb",
-         "calc_attack_ratio": "05_handle_game_events.ipynb"}
+         "COMMON_ABILITIES": "05_handle_command_events.ipynb",
+         "MOVE_COMMAND": "05_handle_command_events.ipynb",
+         "build_commands_df": "05_handle_command_events.ipynb",
+         "calc_spe_abil_ratios": "05_handle_command_events.ipynb",
+         "get_top_abilities": "05_handle_command_events.ipynb",
+         "get_prefered_spec_abil": "05_handle_command_events.ipynb",
+         "calc_attack_ratio": "05_handle_command_events.ipynb"}
 
 modules = ["summarise_rpl.py",
            "handle_tracker_event.py",
            "macro_econ_parser.py",
            "build_parser.py",
-           "handle_game_events.py"]
+           "handle_command_events.py"]
 
 doc_url = "https://HDavidEspinosa.github.io/sc_training/"
 

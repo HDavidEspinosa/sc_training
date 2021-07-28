@@ -1,4 +1,4 @@
-# sc_training
+# SC2 Training Grounds technical specification document
 
 
 
@@ -100,7 +100,7 @@ single_replay
 
 
 
-    <sc2reader.resources.Replay at 0x2ccb1f5abb0>
+    <sc2reader.resources.Replay at 0x2b051e802e0>
 
 
 
@@ -114,7 +114,7 @@ replays
 
 
 
-    <generator object SC2Factory.load_all at 0x000002CCB1FBE580>
+    <generator object SC2Factory.load_all at 0x000002B058019D60>
 
 
 
@@ -147,7 +147,7 @@ with open(data_path/'upgrades.json') as f:
 
 As I pointed out before, in each module, I include a section where I compile all the exportable functions that respond to the challenges summarise by each module. Once exported, other modules can call these functions by importing the module that exported them in the first place.
 
-For example, in the following code, I demonstrate how to call the `get_replay_info` function developed in the `summarise_rpl` module (see <<Chapter 01 summarise_rpl>>).
+For example, in the following code, I demonstrate how to call the `get_replay_info` function from the `summarise_rpl` module (see <<Chapter 1 - Summarising Replays>>).
 
 ```python
 from sc_training.summarise_rpl import *
@@ -205,7 +205,7 @@ single_replay
 
 
 
-    <sc2reader.resources.Replay at 0x2ccb14d34f0>
+    <sc2reader.resources.Replay at 0x2b051e858e0>
 
 
 
@@ -227,3 +227,11 @@ p1.units[:5]
      BeaconIdle [2740001]]
 
 
+
+## References
+
+- Howard, J. (2019) nbdev: use Jupyter Notebooks for everything · fast.ai, fast.ai. Available at: https://www.fast.ai/2019/12/02/nbdev/ (Accessed: 8 July 2021).
+- Kery, M. B. et al. (2018) ‘The Story in the Notebook’, in Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems. New York, NY, USA: ACM, pp. 1–11. doi: 10.1145/3173574.3173748.
+- Knuth, D. E. (1984) ‘Literate Programming’, The Computer Journal, 27(2), pp. 97–111. doi: 10.1093/comjnl/27.2.97.
+- Literate Programming (2014) WikiWiki. Available at: https://wiki.c2.com/?LiterateProgramming (Accessed: 6 July 2021).
+- Ramsey, N. (1994) ‘Literate programming simplified’, IEEE Software, 11(5), pp. 97–105. doi: 10.1109/52.311070.

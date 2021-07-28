@@ -10,16 +10,16 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: Chapter 1 - summarise_rpl
+      title: Chapter 1 - Summarising Replays
       url: summarise_rpl.html
     - output: web,pdf
-      title: Chapter 2 - handle_tracker_events
+      title: Chapter 2 - Handling Tracker Events
       url: handle_tracker_events.html
     - output: web,pdf
-      title: Chapter 3 - macro_econ_parser
+      title: Chapter 3 - Parsing Macroeconomic Indicators
       url: macro_econ_parser.html
     - output: web,pdf
-      title: Chapter 4 - build_parser
+      title: Chapter 4 - Parsing Build Orders
       url: build_parser.html
     - output: web,pdf
       title: Chapter 5 - handle_game_events

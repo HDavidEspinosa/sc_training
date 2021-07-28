@@ -1,6 +1,6 @@
 ---
 
-title: sc_training
+title: SC2 Training Grounds technical specification document
 
 
 keywords: fastai
@@ -25,6 +25,23 @@ nb_path: "index.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sc_training</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
     {% endraw %}
@@ -148,7 +165,7 @@ The development of all modules starts with two elements: importing the module's 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x2ccb1f5abb0&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x2b051e802e0&gt;</pre>
 </div>
 
 </div>
@@ -189,7 +206,7 @@ The development of all modules starts with two elements: importing the module's 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;generator object SC2Factory.load_all at 0x000002CCB1FBE580&gt;</pre>
+<pre>&lt;generator object SC2Factory.load_all at 0x000002B058019D60&gt;</pre>
 </div>
 
 </div>
@@ -246,7 +263,7 @@ The development of all modules starts with two elements: importing the module's 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Exportable-functions">Exportable functions<a class="anchor-link" href="#Exportable-functions"> </a></h2><p>As I pointed out before, in each module, I include a section where I compile all the exportable functions that respond to the challenges summarise by each module. Once exported, other modules can call these functions by importing the module that exported them in the first place.</p>
-<p>For example, in the following code, I demonstrate how to call the <a href="/sc_training/summarise_rpl.html#get_replay_info"><code>get_replay_info</code></a> function developed in the <code>summarise_rpl</code> module (see &lt;&lt;Chapter 01 summarise_rpl&gt;&gt;).</p>
+<p>For example, in the following code, I demonstrate how to call the <a href="/sc_training/summarise_rpl.html#get_replay_info"><code>get_replay_info</code></a> function from the <code>summarise_rpl</code> module (see &lt;&lt;Chapter 1 - Summarising Replays&gt;&gt;).</p>
 
 </div>
 </div>
@@ -374,7 +391,7 @@ If time allows I will cover the package intallation process and a sample run of 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x2ccb14d34f0&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x2b051e858e0&gt;</pre>
 </div>
 
 </div>
@@ -431,6 +448,56 @@ If time allows I will cover the package intallation process and a sample run of 
  BeaconIdle [2740001]]</pre>
 </div>
 
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="References">References<a class="anchor-link" href="#References"> </a></h2><ul>
+<li>Howard, J. (2019) nbdev: use Jupyter Notebooks for everything · fast.ai, fast.ai. Available at: <a href="https://www.fast.ai/2019/12/02/nbdev/">https://www.fast.ai/2019/12/02/nbdev/</a> (Accessed: 8 July 2021).</li>
+<li>Kery, M. B. et al. (2018) ‘The Story in the Notebook’, in Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems. New York, NY, USA: ACM, pp. 1–11. doi: 10.1145/3173574.3173748.</li>
+<li>Knuth, D. E. (1984) ‘Literate Programming’, The Computer Journal, 27(2), pp. 97–111. doi: 10.1093/comjnl/27.2.97.</li>
+<li>Literate Programming (2014) WikiWiki. Available at: <a href="https://wiki.c2.com/?LiterateProgramming">https://wiki.c2.com/?LiterateProgramming</a> (Accessed: 6 July 2021).</li>
+<li>Ramsey, N. (1994) ‘Literate programming simplified’, IEEE Software, 11(5), pp. 97–105. doi: 10.1109/52.311070.</li>
+</ul>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">nbdev.export</span> <span class="kn">import</span> <span class="n">notebook2script</span>
+<span class="n">notebook2script</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Converted 01_summarise_rpl.ipynb.
+Converted 02_handle_tracker_events.ipynb.
+Converted 03_macro_econ_parser.ipynb.
+Converted 04_build_parser.ipynb.
+Converted 05_handle_game_events.ipynb.
+Converted index.ipynb.
+</pre>
+</div>
 </div>
 
 </div>

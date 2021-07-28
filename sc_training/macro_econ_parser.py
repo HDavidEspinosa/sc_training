@@ -19,7 +19,6 @@ import sc2reader
 
 from .handle_tracker_event import *
 
-
 # Internal Cell
 
 # The Following are the module's helper functions
@@ -121,7 +120,9 @@ def gen_interval_sub_dfs(rpl_length: float,
     *Args*
         - df (pd.DataFrame)
             DataFrame containing all PlayerStatsEvent instances of a
-            replay.
+            replay. The DataFrame must have a 'real_time' column that
+            indexes the events in the data frame in time in a manner that
+            consistent with the replays length.
         - rpl_length (float)
             Length of a match in seconds.
         - column (str)
@@ -135,7 +136,6 @@ def gen_interval_sub_dfs(rpl_length: float,
     process_df = df.copy()
     early_mark = INTERVALS_BASE
     mid_mark = early_mark * 2
-    late_mark = rpl_length
 
 
     if rpl_length > mid_mark:

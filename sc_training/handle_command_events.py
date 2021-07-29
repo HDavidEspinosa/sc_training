@@ -8,7 +8,6 @@ __all__ = ['calc_spe_abil_ratios', 'get_prefered_spec_abil', 'calc_attack_ratio'
 from pathlib import Path
 from pprint import pprint
 from typing import *
-from itertools import zip_longest
 
 import json
 import pandas as pd

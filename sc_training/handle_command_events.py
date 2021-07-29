@@ -127,7 +127,6 @@ def get_top_abilities(abilities: pd.DataFrame) -> tuple[str,str]:
     return prefered, second
 
 # Cell
-
 def get_prefered_spec_abil(rpl: sc2reader.resources.Replay,
                            pid: int) -> dict[str, tuple[str, int]]:
 

@@ -31,7 +31,7 @@ nb_path: "05_handle_command_events.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this chapter I review the <code>GameEvent</code> and <code>CommandEvent</code> objects as sources of information about the players' tactical characteristics. Here I also develop the functions contained in <code>handle_command_events</code> module. The module can be used to process some of the player's tactical performance indicators.</p>
+<p>In this chapter, I review the <code>GameEvent</code> and <code>CommandEvent</code> objects as sources of information about the players' tactical characteristics. Here I also develop the functions contained in <code>handle_command_events</code> module. The module can be used to process some of the player's tactical performance indicators.</p>
 <p>In the previous modules, I focussed on the indicators I could extract and build based on the information in a replay's <code>PlayerStatsEvents</code>. For the most part, these indicators revolve around economic and building indicators, which point to the game's strategic (i.e. macro) dimension. Meanwhile, beyond what a player's build orders and army composition may tangentially suggest, these indicators don't seem to reveal much about the game's tactical (i.e. micro) dimension. Moreover, the game itself and other applications like <a href="https://sc2replaystats.com/">sc2replaystats</a> offer players little information in this regard.</p>
 <p>One indicator gets some attention in this respect, the average actions per minute (APM). This indicator points to how fast players can play. The assumption around this marker is that if players have high APMs, this indicates that they use many of the game commands directly to control their unit's actions. Thus, I will take this indicator into account when building the player's profiles. Thankfully, sc2reader includes the <code>APMTracker</code> pug-in that facilitates the collection of this information <a href="https://sc2reader.readthedocs.io/en/latest/plugins.html#apmtracker">(Kim, 2015, p. 16-17)</a>.
 {% include tip.html content='To activate <code>APMTracker</code> one has to import it into the module and setit up as part of sc2reader&#8217;s engine, as shown in the following code:' %}</p>
@@ -522,7 +522,7 @@ Total sum: 151
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="calc_spe_abil_ratios" class="doc_header"><code>calc_spe_abil_ratios</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L59" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_spe_abil_ratios</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="calc_spe_abil_ratios" class="doc_header"><code>calc_spe_abil_ratios</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L58" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_spe_abil_ratios</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Extracts a ratio from 0 to 1 that quantifies the use use of special
 abilities.</p>
@@ -614,7 +614,7 @@ abilities to general commands executed by the player.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_prefered_spec_abil" class="doc_header"><code>get_prefered_spec_abil</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L132" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_prefered_spec_abil</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_prefered_spec_abil" class="doc_header"><code>get_prefered_spec_abil</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L130" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_prefered_spec_abil</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Extracts the names of the two special abilities a player uses the
 most during the whole, early, mid and late games.</p>
@@ -708,7 +708,7 @@ most during the whole, early, mid and late games.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="calc_attack_ratio" class="doc_header"><code>calc_attack_ratio</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L174" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_attack_ratio</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="calc_attack_ratio" class="doc_header"><code>calc_attack_ratio</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L172" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_attack_ratio</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Calculates the ratio between a player's attack orders and their
 common commands.</p>

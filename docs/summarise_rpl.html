@@ -1,6 +1,6 @@
 ---
 
-title: Chapter 1 - Summarising Replays
+title: Chapter 1 - Summarising Replays
 
 
 keywords: fastai
@@ -31,6 +31,7 @@ nb_path: "01_summarise_rpl.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>In this chapter I define the module <code>summarise_rpl</code> and I reviews how to extract a <code>Replay's</code> metadata with <code>sc2reader</code>. This metadata will allow me to index the replays when they are processed to group them by player and race to construct the players' profiles.</p>
 <h2 id="The-Replay-Object">The <code>Replay</code> Object<a class="anchor-link" href="#The-Replay-Object"> </a></h2><p><code>sc2reader</code> loads replay files into <code>Repaly</code> objects. Once these objects are defined, users can access their data in two ways.</p>
 <ul>
 <li><p>The user can access descriptive information about a <code>Replay</code> by calling on some of the object's attributes. This data is useful for indexing and organising purposes.</p>
@@ -68,7 +69,7 @@ nb_path: "01_summarise_rpl.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x205334bc3a0&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x15a73579130&gt;</pre>
 </div>
 
 </div>

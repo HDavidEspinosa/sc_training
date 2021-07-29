@@ -1,6 +1,6 @@
 ---
 
-title: Chapter 3 - Parsing Macroeconomic Indicators
+title: Chapter 3 - Parsing Macroeconomic Indicators
 
 
 keywords: fastai
@@ -31,10 +31,12 @@ nb_path: "03_macro_econ_parser.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>In this chapter, I explore how to use a <code>Replay</code>'s <code>PlayerStatsEvent</code> data to infer a player's macroeconomic performance indicators in a match. Based on this indicators I export the module <code>macro_econ_parser</code>, which exports functions that facilitate the rapid extraction of thsi indicators from a <code>Replay</code>.</p>
 <h2 id="PlayerStatsEvents">PlayerStatsEvents<a class="anchor-link" href="#PlayerStatsEvents"> </a></h2><p>Of the different types of <code>TrackerEvents</code> (see &lt;&lt;Chapter 2 - Handling Tracker Events&gt;&gt;), <code>PlayerStatsEvents</code> contain several pieces of information I can use as the players' macroeconomic performance indicators in a match.</p>
 <p>In each <code>Replay</code>, StarCraft II registers a <code>PlayerStatsEvent</code> for each player every ten seconds, regardless of the player's presence in the match. In other words, if a player leaves a game without terminating it, the <code>Replay</code> still records<code>PlayerStatsEvents</code> for that player up until the end of the match.</p>
 <p>Additionally, the game generates a <code>PlayerStatEvent</code> when the game starts, each time a player leaves (i.e., is defeated or surrenders) and when the match ends.
-{% include note.html content='In 1v1 games, the above behaviour can cause the losing player to have two events generated at the end of the game; one for leaving and one for the end of the game <a href="https://sc2reader.readthedocs.io/en/latest/events/tracker.html">(Kim, 2015, p. 24)</a>.' %}
+{% include note.html content='In 1v1 games, the above behaviour can cause the losing player to have two events generated at the end of the game; one for leaving and one for the end of the game <a href="https://sc2reader.readthedocs.io/en/latest/events/tracker.html">(Kim, 2015, p. 24)</a>.
+' %}
 In this section, I examine how to handle this events. The example follows the analysis of the replay I loaded in the following code.</p>
 
 </div>

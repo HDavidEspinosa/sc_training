@@ -25,7 +25,8 @@ from .handle_tracker_event import *
 from .macro_econ_parser import *
 
 # Internal Cell
-#Internal constants
+#
+# Internal constants
 data_path = (Path(Path.cwd()/'data')
              if Path('data').exists() else Path('../data'))
 

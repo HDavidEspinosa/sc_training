@@ -1,6 +1,6 @@
 ---
 
-title: Chapter 5 - Handling Command Events
+title: Chapter 5 - Handling Command Events
 
 
 keywords: fastai
@@ -31,8 +31,8 @@ nb_path: "05_handle_command_events.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In the previous modules, I focussed on the indicators I could extract and build based on the information in a replay's <code>PlayerStatsEvents</code>. For the most part, these indicators revolve around economic and building indicators, which point to the game's strategic (i.e. macro) dimension. Meanwhile, beyond what a player's build orders and army composition may tangentially suggest, these indicators don't seem to reveal much about the game's tactical (i.e. micro) dimension.
-Moreover, the game itself and other applications like <a href="https://sc2replaystats.com/">sc2replaystats</a> offer players little information in this regard.</p>
+<p>In this chapter I review the <code>GameEvent</code> and <code>CommandEvent</code> objects as sources of information about the players' tactical characteristics. Here I also develop the functions contained in <code>handle_command_events</code> module. The module can be used to process some of the player's tactical performance indicators.</p>
+<p>In the previous modules, I focussed on the indicators I could extract and build based on the information in a replay's <code>PlayerStatsEvents</code>. For the most part, these indicators revolve around economic and building indicators, which point to the game's strategic (i.e. macro) dimension. Meanwhile, beyond what a player's build orders and army composition may tangentially suggest, these indicators don't seem to reveal much about the game's tactical (i.e. micro) dimension. Moreover, the game itself and other applications like <a href="https://sc2replaystats.com/">sc2replaystats</a> offer players little information in this regard.</p>
 <p>One indicator gets some attention in this respect, the average actions per minute (APM). This indicator points to how fast players can play. The assumption around this marker is that if players have high APMs, this indicates that they use many of the game commands directly to control their unit's actions. Thus, I will take this indicator into account when building the player's profiles. Thankfully, sc2reader includes the <code>APMTracker</code> pug-in that facilitates the collection of this information <a href="https://sc2reader.readthedocs.io/en/latest/plugins.html#apmtracker">(Kim, 2015, p. 16-17)</a>.
 {% include tip.html content='To activate <code>APMTracker</code> one has to import it into the module and setit up as part of sc2reader&#8217;s engine, as shown in the following code:' %}</p>
 
@@ -71,7 +71,8 @@ Moreover, the game itself and other applications like <a href="https://sc2replay
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">RPS_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./test_replays&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Load sample replays</span>
+<span class="n">RPS_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./test_replays&quot;</span><span class="p">)</span>
 
 <span class="n">game_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">RPS_PATH</span><span class="o">/</span><span class="s2">&quot;Jagannatha LE.SC2Replay&quot;</span><span class="p">)</span>
 <span class="n">single_replay</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="n">game_path</span><span class="p">)</span>
@@ -98,7 +99,8 @@ Moreover, the game itself and other applications like <a href="https://sc2replay
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p1_avg_apm</span> <span class="o">=</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">avg_apm</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Given APMTracker is enable Player objects have a avg_apm attribute</span>
+<span class="n">p1_avg_apm</span> <span class="o">=</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">avg_apm</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">p1_avg_apm</span><span class="p">)</span>
 </pre></div>
 
@@ -112,7 +114,7 @@ Moreover, the game itself and other applications like <a href="https://sc2replay
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>79.32203389830521
+<pre>39.661016949152604
 </pre>
 </div>
 </div>
@@ -192,7 +194,8 @@ For my analysis, I group the common commands (i.e. move, stop, patrol, hold posi
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">race_abilities</span> <span class="o">=</span> <span class="n">ABILITIES</span><span class="p">[</span><span class="n">TEST_MATCH</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">play_race</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># The following is a temporary variable for the examples.</span>
+<span class="n">race_abilities</span> <span class="o">=</span> <span class="n">ABILITIES</span><span class="p">[</span><span class="n">TEST_MATCH</span><span class="o">.</span><span class="n">players</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">play_race</span><span class="p">]</span>
 
 <span class="c1"># First, I can use the events&#39; types to extract all CommandEvents appart </span>
 <span class="c1"># from other GameEvents.</span>
@@ -373,7 +376,8 @@ Total Commands: 355
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">attacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">att</span> <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">common_comm</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Group attack orders</span>
+<span class="n">attacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">att</span> <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">common_comm</span>
         <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">ability</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;Attack&#39;</span><span class="p">]</span>
 
 <span class="c1"># Collection orders</span>
@@ -518,7 +522,7 @@ Total sum: 151
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="calc_spe_abil_ratios" class="doc_header"><code>calc_spe_abil_ratios</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L58" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_spe_abil_ratios</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="calc_spe_abil_ratios" class="doc_header"><code>calc_spe_abil_ratios</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L59" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_spe_abil_ratios</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Extracts a ratio from 0 to 1 that quantifies the use use of special
 abilities.</p>
@@ -563,7 +567,8 @@ abilities to general commands executed by the player.</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_restult</span> <span class="o">=</span> <span class="n">calc_spe_abil_ratios</span><span class="p">(</span><span class="n">TEST_MATCH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># calc_spe_abil_ratios sample run</span>
+<span class="n">test_restult</span> <span class="o">=</span> <span class="n">calc_spe_abil_ratios</span><span class="p">(</span><span class="n">TEST_MATCH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">test_restult</span><span class="p">)</span>
 </pre></div>
 
@@ -609,7 +614,7 @@ abilities to general commands executed by the player.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_prefered_spec_abil" class="doc_header"><code>get_prefered_spec_abil</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L131" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_prefered_spec_abil</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_prefered_spec_abil" class="doc_header"><code>get_prefered_spec_abil</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L132" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_prefered_spec_abil</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Extracts the names of the two special abilities a player uses the
 most during the whole, early, mid and late games.</p>
@@ -654,7 +659,8 @@ most during the whole, early, mid and late games.</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">prefered_abilities_test</span> <span class="o">=</span> <span class="n">get_prefered_spec_abil</span><span class="p">(</span><span class="n">TEST_MATCH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># get_prefered_spec_abil sample run</span>
+<span class="n">prefered_abilities_test</span> <span class="o">=</span> <span class="n">get_prefered_spec_abil</span><span class="p">(</span><span class="n">TEST_MATCH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">prefered_abilities_test</span>
 </pre></div>
 
@@ -702,7 +708,7 @@ most during the whole, early, mid and late games.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="calc_attack_ratio" class="doc_header"><code>calc_attack_ratio</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L173" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_attack_ratio</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="calc_attack_ratio" class="doc_header"><code>calc_attack_ratio</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/handle_command_events.py#L174" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_attack_ratio</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Calculates the ratio between a player's attack orders and their
 common commands.</p>
@@ -748,7 +754,8 @@ aggresiveness.</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_attack_ratios</span> <span class="o">=</span> <span class="n">calc_attack_ratio</span><span class="p">(</span><span class="n">TEST_MATCH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># calc_attack_ratio sample run</span>
+<span class="n">test_attack_ratios</span> <span class="o">=</span> <span class="n">calc_attack_ratio</span><span class="p">(</span><span class="n">TEST_MATCH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">test_attack_ratios</span>
 </pre></div>
 
@@ -778,6 +785,15 @@ aggresiveness.</p>
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="References">References<a class="anchor-link" href="#References"> </a></h2><ul>
+<li>Kim, G. (2015) 'sc2reader Documentation'. Available at: <a href="https://sc2reader.readthedocs.io/_/downloads/en/latest/pdf/">https://sc2reader.readthedocs.io/_/downloads/en/latest/pdf/</a>.</li>
+</ul>
+
+</div>
+</div>
+</div>
 </div>
  
 

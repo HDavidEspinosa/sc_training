@@ -1,6 +1,6 @@
 ---
 
-title: Chapter 4 - Parsing Build Orders
+title: Chapter 4 - Parsing Build Orders
 
 
 keywords: fastai
@@ -31,6 +31,7 @@ nb_path: "04_build_parser.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>In this chapter, I review how to extract information on a player's build strategy. In accordance with this review I then  define the <code>build_parser</code> module. This module contains functions that developers can use to parse the players' build orders, and to inventory their army, base and technology upgrades.</p>
 <h2 id="Builds-orders">Builds-orders<a class="anchor-link" href="#Builds-orders"> </a></h2><p>A crucial part of how players execute a strategy is how they construct their bases and their armies. Currently, in the game, players can review the order in which the game participants build their first 40 elements once a match is over. These build-orders include buildings (built, upgraded, expanded), units (trained, mutated, warped, merged), and any tech researched.</p>
 <p>Since this package is meant to build player profiles based on the players' performance indicators, I need to find a way to capture the overall composition of the players' bases and armies. Moreover, afterwards, I must be able to generalise this composition data to build the players profiles.</p>
 <p>Initially, my first instinct was to store the build orders as a time series. I thought of recording a sequence of snapshots, evenly spaced over time, that marked the time and order in which each element entered the game. However, storing the build-orders as a time series is too detailed and is not suited to practical generalisation. Hence, I am opting to extract units, buildings and research compositions at four different game intervals, i.e. whole, early, mid, and late games. These intervals match the measures that I take for macroeconomic indicators in &lt;&lt;Chapter 3 - Parsing Macroeconomic Indicators&gt;&gt;.</p>

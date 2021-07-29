@@ -1,6 +1,6 @@
 ---
 
-title: Chapter 2 - Handling Tracker Events
+title: Chapter 2 - Handling Tracker Events
 
 
 keywords: fastai
@@ -31,6 +31,7 @@ nb_path: "02_handle_tracker_events.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>In this chapter, I analyse the common elements of all <code>TrackerEvents</code> and build the <code>handle_tracker_event</code> module. This module exports some general-purpose functions that facilitate the processing of these events.</p>
 <h2 id="Events">Events<a class="anchor-link" href="#Events"> </a></h2><p>In the previous module (&lt;&lt;Chapter 1 - Summarising Replays&gt;&gt;), I discuss how <code>sc2reader</code> packs all information necessary to reproduce a match in a <code>Replay</code> object. I also showed how to obtain some descriptive information about the game from this object and the <code>Players</code> linked to it.</p>
 <p>Here, I review the data contained in the <code>Replay</code>'s <code>Event</code> objects. These objects are crucial, given how</p>
 <blockquote><p>:All of the gameplay and state information contained in the replay is packed into events. <a href="https://sc2reader.readthedocs.io/en/latest/events/index.html">(Kim, 2015, p. 22)</a></p>

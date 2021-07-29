@@ -33,13 +33,15 @@ index = {"Player_data": "01_summarise_rpl.ipynb",
          "calc_spe_abil_ratios": "05_handle_command_events.ipynb",
          "get_top_abilities": "05_handle_command_events.ipynb",
          "get_prefered_spec_abil": "05_handle_command_events.ipynb",
-         "calc_attack_ratio": "05_handle_command_events.ipynb"}
+         "calc_attack_ratio": "05_handle_command_events.ipynb",
+         "CtrlGrpPlugin": "06_control_group_parser.ipynb"}
 
 modules = ["summarise_rpl.py",
            "handle_tracker_event.py",
            "macro_econ_parser.py",
            "build_parser.py",
-           "handle_command_events.py"]
+           "handle_command_events.py",
+           "controlgroup_parser.py"]
 
 doc_url = "https://HDavidEspinosa.github.io/sc_training/"
 

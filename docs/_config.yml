@@ -64,3 +64,4 @@ plugins:
     
 remote_theme: fastai/nbdev-jekyll-theme
 baseurl: /sc_training/
+theme: jekyll-theme-slate

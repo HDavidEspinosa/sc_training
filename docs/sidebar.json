@@ -6,6 +6,6 @@
     "Chapter 3 - Parsing Macroeconomic Indicators": "macro_econ_parser.html",
     "Chapter 4 - Parsing Build Orders": "build_parser.html",
     "Chapter 5 - Handling Command Events": "handle_command_events.html",
-    "Chapter 6 - Tracking Control Groups": "control_group_parser.html"
+    "Chapter 6 - Tracking Control Groups": "selection_parser.html"
   }
 }

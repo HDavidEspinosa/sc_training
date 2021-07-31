@@ -131,7 +131,7 @@ nb_path: "05_handle_command_events.ipynb"
 <p>As explained in sc2reader's documentation:</p>
 <blockquote><p>:Game events are what the Starcraft II engine uses to reconstruct games <a href="https://sc2reader.readthedocs.io/en/latest/events/game.html">(Kim, 2015, p. 22)</a>.</p>
 </blockquote>
-<p>In particular, I focus on two of the <code>GameEvent</code>'s sub-classes, <code>CommandEvents</code> and <code>ControlGroupEvents</code> (see &lt;&lt;Chapter 6 - Tracking Control Groups&gt;&gt;).</p>
+<p>In particular, I focus on three of the <code>GameEvent</code>'s sub-classes, <code>CommandEvents</code> and, <code>SelectionEvents</code> and <code>ControlGroupEvents</code> (see &lt;&lt;Chapter 6 - Tracking Control Groups&gt;&gt;).</p>
 <p>First, I use the information stored in the <code>CommandEvents</code> to measure two elements: the ratio of attack orders and special abilities. On the one hand, the balance of attack orders vs the total number of commands partially describes a player's tactical aggressiveness.</p>
 <p>On the other, the use of special abilities suggests a level of awareness of the possibilities offered by different units and enough control to activate and use them. Furthermore, tallying the times a player uses the abilities provided by their race, I can infer part of their tactical preferences.</p>
 <p>In the following code, I can extract its <code>GameEvents</code>.</p>

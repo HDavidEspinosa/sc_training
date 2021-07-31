@@ -26,7 +26,7 @@ entries:
       url: handle_command_events.html
     - output: web,pdf
       title: Chapter 6 - Tracking Control Groups
-      url: control_group_parser.html
+      url: selection_parser.html
     output: web
     title: sc_training
   output: web

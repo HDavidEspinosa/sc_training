@@ -34,7 +34,13 @@ index = {"Player_data": "01_summarise_rpl.ipynb",
          "get_top_abilities": "05_handle_command_events.ipynb",
          "get_prefered_spec_abil": "05_handle_command_events.ipynb",
          "calc_attack_ratio": "05_handle_command_events.ipynb",
-         "CtrlGrpPlugin": "06_selection_parser.ipynb"}
+         "CtrlGroupTracker": "06_selection_parser.ipynb",
+         "count_active_groups": "06_selection_parser.ipynb",
+         "build_ctrlg_df": "06_selection_parser.ipynb",
+         "count_max_active_groups": "06_selection_parser.ipynb",
+         "calc_ctrlg_ratio": "06_selection_parser.ipynb",
+         "calc_get_ctrl_grp_ratio": "06_selection_parser.ipynb",
+         "calc_select_ratio": "06_selection_parser.ipynb"}
 
 modules = ["summarise_rpl.py",
            "handle_tracker_event.py",

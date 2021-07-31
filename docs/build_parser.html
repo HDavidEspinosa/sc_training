@@ -44,8 +44,7 @@ nb_path: "04_build_parser.ipynb"
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Listing-a-player's-elements">Listing a player's elements<a class="anchor-link" href="#Listing-a-player's-elements"> </a></h3><p>In any case, the first step to parse any indicators related to the build order is to obtain a list of the player's elements.</p>
 <p>In the following code, I use the <code>Player</code> object's <code>units</code> attribute to extract a list of all these elements owned by the player during the match. I also use a list of all the units I want to include in my analysis (i.e. <code>UNIT_NAMES</code>) to filter unwanted units. For example, I exclude Zerg larvae from my analysis because they are generated automatically by the game with little control from the player.
-{% include note.html content='In this example, I exclude some units that change their play-state during the game (e.g. burrowed troops). I exclude these units for the time being to focus on the game&#8217;s basic unit types. Later, I expand on some considerations related to this stage changes that I need to account for in the module&#8217;s <a href="/sc_training/build_parser.html#composition_df"><code>composition_df</code></a> helper function to generate an accurate unit count.
-' %}
+{% include note.html content='In this example, I exclude some units that change their play-state during the game (e.g. burrowed troops). I exclude these units for the time being to focus on the game&#8217;s basic unit types. Later, I expand on some considerations related to this stage changes that I need to account for in the module&#8217;s <a href="/sc_training/build_parser.html#composition_df"><code>composition_df</code></a> helper function to generate an accurate unit count.' %}
 Allow me to describe the code step by step to clarify the ideas behind this module. First, I will define multiple constant values that I will use through the module's development to filter various data characteristics. These constants store information from multiple data files saved in this project's data folder.</p>
 <p>The constants include:</p>
 <ul>
@@ -1623,7 +1622,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_composicion" class="doc_header"><code>count_composicion</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L223" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composicion</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_composicion" class="doc_header"><code>count_composicion</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L223" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composicion</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -1962,7 +1961,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L260" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L260" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -2355,7 +2354,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_expan_times" class="doc_header"><code>get_expan_times</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L285" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_times</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_expan_times" class="doc_header"><code>get_expan_times</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L285" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_times</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Gets a dictionary with the finished_at times for a player's first
 three expansions.</p>
@@ -2588,7 +2587,7 @@ expansions, the rest of the expansions are ignored.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/build_parser.py#L334" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L334" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Lists the times at wich the player completed their updates</p>
 

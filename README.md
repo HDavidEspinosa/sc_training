@@ -124,7 +124,7 @@ Beyond these two initial setup elements, some modules also load data files that 
 ```python
 data_path = Path(Path.cwd()/'data') \
             if Path('data').exists() \
-            else Path('../data')
+            else Path('../../data')
 
 with open(data_path/'unit_names.csv') as f:
     file_reader = csv.reader(f)

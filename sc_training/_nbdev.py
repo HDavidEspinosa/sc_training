@@ -42,12 +42,12 @@ index = {"Player_data": "01_summarise_rpl.ipynb",
          "calc_get_ctrl_grp_ratio": "06_selection_parser.ipynb",
          "calc_select_ratio": "06_selection_parser.ipynb"}
 
-modules = ["summarise_rpl.py",
-           "handle_tracker_event.py",
-           "macro_econ_parser.py",
-           "build_parser.py",
-           "handle_command_events.py",
-           "selection_parser.py"]
+modules = ["ingest/summarise_rpl.py",
+           "ingest/handle_tracker_event.py",
+           "ingest/macro_econ_parser.py",
+           "ingest/build_parser.py",
+           "ingest/handle_command_events.py",
+           "ingest/selection_parser.py"]
 
 doc_url = "https://HDavidEspinosa.github.io/sc_training/"
 

@@ -27,7 +27,7 @@ from .macro_econ_parser import *
 #
 # Internal constants
 data_path = (Path(Path.cwd()/'data')
-             if Path('data').exists() else Path('../data'))
+             if Path('data').exists() else Path('../../data'))
 
 with open(data_path/'ability_list.json') as af:
     ABILITIES = json.load(af)

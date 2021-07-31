@@ -29,7 +29,7 @@ from .macro_econ_parser import *
 # Load data files
 
 data_path = Path(Path.cwd()/'data') \
-            if Path('data').exists() else Path('../data')
+            if Path('data').exists() else Path('../../data')
 
 with open(data_path/'unit_names.csv') as f:
     file_reader = csv.reader(f)

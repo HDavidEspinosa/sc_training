@@ -49,7 +49,7 @@ The development of all modules starts with two elements: importing the module's 
 
 Importing the module's dependencies means invoking several libraries used by each module. The following is an example of these imports.
 
-```python
+```
 # This are some of the common libraries for this library's
 # development.
 
@@ -88,7 +88,7 @@ Additionally, to develop each module, I need to load some StarCraft II replay fi
 The replays used to test and develop this project are extracted from publicly available datasets. In no case do I access any personal or private information of the users or players. These data sets have been collected using Blizzards developer's API and their client protocol (SC2client-proto), which only gathers them with the express authorisation of the users. The following code illustrates how they are loaded using sc2reader and collected into variables that store `sc2reader.resources.Replay` objects for later processing. I store this data in the library's test_replays folder.
 {% include tip.html content='One can load one replay at a time using the `sc2replays.load_replay(<str_file_path>)` method.' %}
 
-```python
+```
 # This code sets up the notebook's sample replay.
 rps_path = Path(Path.cwd()/'test_replays') \
            if Path('test_replays').exists() \
@@ -107,7 +107,7 @@ single_replay
 
 {% include tip.html content='Alternatively, one can use the sc2replays.load_replays(<str_dir_path>) method, which returns a generator of replay objects.' %}
 
-```python
+```
 replays = sc2reader.load_replays(str(rps_path))
 replays
 ```
@@ -121,7 +121,7 @@ replays
 
 Beyond these two initial setup elements, some modules also load data files that store helpful information to organise and configure the modules and their functions. These data files are stored in the library's data folder. The code below illustrates how I load some of these files. 
 
-```python
+```
 data_path = Path(Path.cwd()/'data') \
             if Path('data').exists() \
             else Path('../../data')
@@ -150,7 +150,7 @@ As I pointed out before, in each module, I include a section where I compile all
 
 For example, in the following code, I demonstrate how to call the `get_replay_info` function from the `summarise_rpl` module (see <<Chapter 1 - Summarising Replays>>).
 
-```python
+```
 from sc_training.summarise_rpl import *
 
 #Note that get_replay_info is defined in the summarise_rpl module.
@@ -182,7 +182,7 @@ If time allows I will cover the package intallation process and a sample run of 
 
 Fill me in please! Don't forget code examples:
 
-```python
+```
 # This are this module's dependencies.
 from pathlib import Path
 from pprint import pprint
@@ -195,7 +195,7 @@ import sc2reader
 
 ```
 
-```python
+```
 # This code sets up the notebook's sample replay.
 rps_path = Path("./test_replays")
 game_path = str(rps_path/"Jagannatha LE.SC2Replay")
@@ -210,11 +210,11 @@ single_replay
 
 
 
-```python
+```
 p1 = single_replay.player[1]
 ```
 
-```python
+```
 p1.units[:5]
 ```
 

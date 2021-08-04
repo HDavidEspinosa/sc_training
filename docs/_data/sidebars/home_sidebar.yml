@@ -9,24 +9,34 @@ entries:
     - output: web,pdf
       title: Overview
       url: /
-    - output: web,pdf
-      title: Chapter 1 - Summarising Replays
-      url: summarise_rpl.html
-    - output: web,pdf
-      title: Chapter 2 - Handling Tracker Events
-      url: handle_tracker_events.html
-    - output: web,pdf
-      title: Chapter 3 - Parsing Macroeconomic Indicators
-      url: macro_econ_parser.html
-    - output: web,pdf
-      title: Chapter 4 - Parsing Build Orders
-      url: build_parser.html
-    - output: web,pdf
-      title: Chapter 5 - Handling Command Events
-      url: handle_command_events.html
-    - output: web,pdf
-      title: Chapter 6 - Tracking Control Groups
-      url: selection_parser.html
+      subfolders:
+      - output: web
+        subfolderitems:
+        - output: web,pdf
+          title: Chapter 0 SC2 Training Grounds Computer Model
+          url: Comp_model.html
+        title: Introduction
+      - output: web
+        subfolderitems:
+        - output: web,pdf
+          title: Chapter 1 - Summarising Replays
+          url: summarise_rpl.html
+        - output: web,pdf
+          title: Chapter 2 - Handling Tracker Events
+          url: handle_tracker_events.html
+        - output: web,pdf
+          title: Chapter 3 - Parsing Macroeconomic Indicators
+          url: macro_econ_parser.html
+        - output: web,pdf
+          title: Chapter 4 - Parsing Build Orders
+          url: build_parser.html
+        - output: web,pdf
+          title: Chapter 5 - Handling Command Events
+          url: handle_command_events.html
+        - output: web,pdf
+          title: Chapter 6 - Tracking Control Groups
+          url: selection_parser.html
+        title: Section 1 Ingest and Clustering
     output: web
     title: sc_training
   output: web

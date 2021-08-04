@@ -1,11 +1,18 @@
 {
   "sc_training": {
     "Overview": "/",
-    "Chapter 1 - Summarising Replays": "summarise_rpl.html",
-    "Chapter 2 - Handling Tracker Events": "handle_tracker_events.html",
-    "Chapter 3 - Parsing Macroeconomic Indicators": "macro_econ_parser.html",
-    "Chapter 4 - Parsing Build Orders": "build_parser.html",
-    "Chapter 5 - Handling Command Events": "handle_command_events.html",
-    "Chapter 6 - Tracking Control Groups": "selection_parser.html"
+    "": {
+    	"Introduction": {
+    		"Chapter 0 SC2 Training Grounds Computer Model": "Comp_model.html"
+    	}, 
+      "Section 1 Ingest and Clustering":{
+        "Chapter 1 - Summarising Replays": "summarise_rpl.html",
+        "Chapter 2 - Handling Tracker Events": "handle_tracker_events.html",
+        "Chapter 3 - Parsing Macroeconomic Indicators": "macro_econ_parser.html",
+        "Chapter 4 - Parsing Build Orders": "build_parser.html",
+        "Chapter 5 - Handling Command Events": "handle_command_events.html",
+        "Chapter 6 - Tracking Control Groups": "selection_parser.html"
+      }
+    }
   }
 }

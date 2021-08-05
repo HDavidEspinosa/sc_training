@@ -19,24 +19,30 @@ entries:
       - output: web
         subfolderitems:
         - output: web,pdf
-          title: Chapter 1 - Summarising Replays
+          title: Section 1 - Ingest and Clustering
+          url: 01_ingest_and_clustering.html
+        - output: web,pdf
+          title: Section 1.1 - Summarising Replays
           url: summarise_rpl.html
         - output: web,pdf
-          title: Chapter 2 - Handling Tracker Events
+          title: Section 1.2 - Handling Tracker Events
           url: handle_tracker_events.html
         - output: web,pdf
-          title: Chapter 3 - Parsing Macroeconomic Indicators
+          title: Section 1.3 - Parsing Macroeconomic Indicators
           url: macro_econ_parser.html
         - output: web,pdf
-          title: Chapter 4 - Parsing Build Orders
+          title: Section 1.4 - Parsing Build Orders
           url: build_parser.html
         - output: web,pdf
-          title: Chapter 5 - Handling Command Events
+          title: Section 1.5 - Handling Command Events
           url: handle_command_events.html
         - output: web,pdf
-          title: Chapter 6 - Tracking Control Groups
+          title: Section 1.6 - Tracking Control Groups
           url: selection_parser.html
-        title: Section 1 Ingest and Clustering
+        - output: web,pdf
+          title: Section 1.7 - The Main Ingest Module
+          url: ingest.html
+        title: Section 1 - Ingest and Clustering
     output: web
     title: sc_training
   output: web

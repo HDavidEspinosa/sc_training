@@ -1,6 +1,6 @@
 ---
 
-title: Chapter 1 - Summarising Replays
+title: Section 1.1 - Summarising Replays
 
 
 keywords: fastai
@@ -31,7 +31,10 @@ nb_path: "01_summarise_rpl.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this chapter I define the module <code>summarise_rpl</code> and I reviews how to extract a <code>Replay's</code> metadata with <code>sc2reader</code>. This metadata will allow me to index the replays when they are processed to group them by player and race to construct the players' profiles.</p>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p>In this chapter I define the module <code>summarise_rpl</code> and I reviews how to extract a <code>Replay's</code> metadata with <code>sc2reader</code>. This metadata will allow me to index the replays when they are processed to group them by player and race to construct the players' profiles.</p>
+<h3 id="Exported-Functions">Exported Functions<a class="anchor-link" href="#Exported-Functions"> </a></h3><ul>
+<li>get_replay_info</li>
+</ul>
 <h2 id="The-Replay-Object">The <code>Replay</code> Object<a class="anchor-link" href="#The-Replay-Object"> </a></h2><p><code>sc2reader</code> loads replay files into <code>Repaly</code> objects. Once these objects are defined, users can access their data in two ways.</p>
 <ul>
 <li><p>The user can access descriptive information about a <code>Replay</code> by calling on some of the object's attributes. This data is useful for indexing and organising purposes.</p>
@@ -69,7 +72,7 @@ nb_path: "01_summarise_rpl.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x15a73579130&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x255744f43d0&gt;</pre>
 </div>
 
 </div>
@@ -157,8 +160,7 @@ Winner : Team 2: Player 2 - MxChrisxM (Terran)
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="The-Participant-Object">The <code>Participant</code> Object<a class="anchor-link" href="#The-Participant-Object"> </a></h2><p>Beyond the information contained in a <code>Replay's</code> attributes, users can call upon the <code>Participant</code> objects associated with it to complement this data. These <code>Participant</code> objects record the match's players, what races they played with, and their results.
-{% include tip.html content='All entities in a replay fall into one of two categories, i.e. <em>User</em> or <em>Player</em>. <em>Users</em> refer to human entities and use <em>game and message events</em> to record some of the entities&#8217; behaviours. <em>Players</em> actively play the game and use <em>tracker events</em> to record several performance indicators.
-' %}
+{% include tip.html content='All entities in a replay fall into one of two categories, i.e. <em>User</em> or <em>Player</em>. <em>Users</em> refer to human entities and use <em>game and message events</em> to record some of the entities&#8217; behaviours. <em>Players</em> actively play the game and use <em>tracker events</em> to record several performance indicators.' %}
 As such, one can summarise the entities encountered in replays as follows:</p>
 <ul>
 <li>A <strong>Participant</strong> is a Player and a User</li>
@@ -466,50 +468,6 @@ match's main attributes.</p>
 </div>
 </div>
 </div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_players" class="doc_header"><code>get_players</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/summarise_rpl.py#L111" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_players</code>(<strong><code>player_dict</code></strong>:<code>Dict</code>[<code>Any</code>, <code>Any</code>])</p>
-</blockquote>
-<p>Extracts the players' data from a Participant Object, into a
-Player_data instance.</p>
-<p><em>Args:</em></p>
-
-<pre><code>- player_dict (Dict[int, sc2reader.objects.Participant]):
-    Dictionary of the players in the match.
-
-</code></pre>
-<p><em>Returns:</em></p>
-
-<pre><code>- List[Player_data]:
-    List of the match's players, each player contains a summary of
-    their match data.</code></pre>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>With this function, I can store a summary of the matches meta-data in a <a href="/sc_training/summarise_rpl.html#Replay_data"><code>Replay_data</code></a> instance like this:</p>

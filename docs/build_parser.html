@@ -1,6 +1,6 @@
 ---
 
-title: Chapter 4 - Parsing Build Orders
+title: Section 1.4 - Parsing Build Orders
 
 
 keywords: fastai
@@ -31,7 +31,14 @@ nb_path: "04_build_parser.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this chapter, I review how to extract information on a player's build strategy. In accordance with this review I then  define the <code>build_parser</code> module. This module contains functions that developers can use to parse the players' build orders, and to inventory their army, base and technology upgrades.</p>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p>In this chapter, I review how to extract information on a player's build strategy. In accordance with this review I then  define the <code>build_parser</code> module. This module contains functions that developers can use to parse the players' build orders, and to inventory their army, base and technology upgrades.</p>
+<h2 id="Exportable-Members">Exportable Members<a class="anchor-link" href="#Exportable-Members"> </a></h2><ul>
+<li><a href="/sc_training/build_parser.html#count_composition"><code>count_composition</code></a></li>
+<li><a href="/sc_training/build_parser.html#count_started"><code>count_started</code></a></li>
+<li><a href="/sc_training/build_parser.html#get_expan_times"><code>get_expan_times</code></a></li>
+<li><a href="/sc_training/build_parser.html#get_expan_counts"><code>get_expan_counts</code></a></li>
+<li><a href="/sc_training/build_parser.html#list_player_upgrades"><code>list_player_upgrades</code></a></li>
+</ul>
 <h2 id="Builds-orders">Builds-orders<a class="anchor-link" href="#Builds-orders"> </a></h2><p>A crucial part of how players execute a strategy is how they construct their bases and their armies. Currently, in the game, players can review the order in which the game participants build their first 40 elements once a match is over. These build-orders include buildings (built, upgraded, expanded), units (trained, mutated, warped, merged), and any tech researched.</p>
 <p>Since this package is meant to build player profiles based on the players' performance indicators, I need to find a way to capture the overall composition of the players' bases and armies. Moreover, afterwards, I must be able to generalise this composition data to build the players profiles.</p>
 <p>Initially, my first instinct was to store the build orders as a time series. I thought of recording a sequence of snapshots, evenly spaced over time, that marked the time and order in which each element entered the game. However, storing the build-orders as a time series is too detailed and is not suited to practical generalisation. Hence, I am opting to extract units, buildings and research compositions at four different game intervals, i.e. whole, early, mid, and late games. These intervals match the measures that I take for macroeconomic indicators in &lt;&lt;Chapter 3 - Parsing Macroeconomic Indicators&gt;&gt;.</p>
@@ -1337,7 +1344,7 @@ Sample Terran unit set in tustates replay.
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Functions">Functions<a class="anchor-link" href="#Functions"> </a></h2><p>In this section, I develop the functions this module exports. These functions allow for the extraction of various performance indicators relative to the units trained, buildings built and upgrades researched by players through a match.</p>
 <p>As is the case for other modules in this package, the exportable functions use several helper functions that can be consulted in the module's development notebooks or the module's source code. However, these helper functions are not included in this documentation.</p>
-<h3 id="Composition-functions">Composition functions<a class="anchor-link" href="#Composition-functions"> </a></h3><p>The following functions generate lists of dictionaries that describe a player's army or buildings composition (<a href="/sc_training/build_parser.html#count_composicion"><code>count_composicion</code></a>) and the number of units that started training or buildings that started construction (<a href="/sc_training/build_parser.html#count_started"><code>count_started</code></a>) during the whole match and through the early, mid and late games.</p>
+<h3 id="Composition-functions">Composition functions<a class="anchor-link" href="#Composition-functions"> </a></h3><p>The following functions generate lists of dictionaries that describe a player's army or buildings composition (<a href="/sc_training/build_parser.html#count_composition"><code>count_composition</code></a>) and the number of units that started training or buildings that started construction (<a href="/sc_training/build_parser.html#count_started"><code>count_started</code></a>) during the whole match and through the early, mid and late games.</p>
 <p>In this case, I define <em>composition</em> as the number of active units of different types a player has in the game. This count goes up every time a unit is created and down if they are killed. Meanwhile, <em>count_started</em> refers to the player's intended army, i.e. the number of units of different types they try to create at each interval of the game.</p>
 
 </div>
@@ -1622,8 +1629,30 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_composicion" class="doc_header"><code>count_composicion</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L223" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composicion</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_composition" class="doc_header"><code>count_composition</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L223" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composition</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
+<p>Generate a tally of all of a player's active units at different
+stages of the match.</p>
+<p>The function returns a dictionary of with four keys ('whole_comp',
+'early_comp', 'mid_comp', 'late_comp') each of which refers to a
+dictionary that stores pairs of 'unit_type' : 'active_unit_type_count`.
+There are values for all player's race unit types, even if the player
+has no active units of some types.</p>
+<p><em>Args</em></p>
+
+<pre><code>- rpl (sc2reader.resources.Replay)
+    Replay being processed
+- pid (int)
+    In-game id for the player being analysed.
+- buildings (bool)=False
+    Flag indicating if the function should count buildings (True)
+    or troops (False)
+
+</code></pre>
+<p><em>Returns</em></p>
+
+<pre><code>- dict
+    Tally of a player's active units during a match</code></pre>
 
 </div>
 
@@ -1649,11 +1678,9 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indexes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;whole&#39;</span><span class="p">,</span> <span class="s1">&#39;early&#39;</span><span class="p">,</span> <span class="s1">&#39;mid&#39;</span><span class="p">,</span> <span class="s1">&#39;late&#39;</span><span class="p">]</span>
-<span class="n">test_army</span> <span class="o">=</span> <span class="n">count_composicion</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">army_comp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test_army</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
-
-<span class="c1"># print(army_comp_df.T.to_markdown())</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_army</span> <span class="o">=</span> <span class="n">count_composition</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">army_comp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test_army</span><span class="p">)</span>
+<span class="c1"># print(army_comp_df.to_markdown())</span>
 </pre></div>
 
     </div>
@@ -1668,10 +1695,10 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 <table>
 <thead><tr>
 <th style="text-align:left"></th>
-<th style="text-align:right">whole</th>
-<th style="text-align:right">early</th>
-<th style="text-align:right">mid</th>
-<th style="text-align:right">late</th>
+<th style="text-align:right">whole_comp</th>
+<th style="text-align:right">early_comp</th>
+<th style="text-align:right">mid_comp</th>
+<th style="text-align:right">late_comp</th>
 </tr>
 </thead>
 <tbody>
@@ -1800,10 +1827,9 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_buildings_comp</span> <span class="o">=</span> <span class="n">count_composicion</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">buildings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">buildings_comp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test_buildings_comp</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
-
-<span class="c1">#print(buildings_comp_df.T.to_markdown())</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_buildings_comp</span> <span class="o">=</span> <span class="n">count_composition</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">buildings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">buildings_comp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test_buildings_comp</span><span class="p">)</span>
+<span class="c1"># print(buildings_comp_df.to_markdown())</span>
 </pre></div>
 
     </div>
@@ -1818,10 +1844,10 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 <table>
 <thead><tr>
 <th style="text-align:left"></th>
-<th style="text-align:right">whole</th>
-<th style="text-align:right">early</th>
-<th style="text-align:right">mid</th>
-<th style="text-align:right">late</th>
+<th style="text-align:right">whole_comp</th>
+<th style="text-align:right">early_comp</th>
+<th style="text-align:right">mid_comp</th>
+<th style="text-align:right">late_comp</th>
 </tr>
 </thead>
 <tbody>
@@ -1961,8 +1987,29 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L260" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L282" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
+<p>Generate a tally of all of a player's started units at different
+stages of the match.</p>
+<p>The function returns a dictionary of with four keys ('whole_started',
+'early_started', 'mid_started', 'late_started') each of which refers
+to a dictionary that stores pairs of 'unit_type' :
+'started_unit_type_count`. There are values for all player's race unit
+types, even if the player has no units of some types.</p>
+<p><em>Args</em></p>
+
+<pre><code>- rpl (sc2reader.resources.Replay)
+    Replay being processed
+- pid (int)
+    In-game id for the player being analysed.
+- buildings (bool)=False
+    Flag indicating if the function should count buildings (True)
+    or troops (False)
+
+</code></pre>
+<p><em>Returns</em>
+    dict
+        Tally of a player's started units during a match</p>
 
 </div>
 
@@ -1989,9 +2036,9 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">army_training_count</span> <span class="o">=</span> <span class="n">count_started</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">atc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">army_training_count</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
+<span class="n">atc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">army_training_count</span><span class="p">)</span>
 
-<span class="c1"># print(atc_df.T.to_markdown())</span>
+<span class="c1"># print(atc_df.to_markdown())</span>
 </pre></div>
 
     </div>
@@ -2006,10 +2053,10 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 <table>
 <thead><tr>
 <th style="text-align:left"></th>
-<th style="text-align:right">whole</th>
-<th style="text-align:right">early</th>
-<th style="text-align:right">mid</th>
-<th style="text-align:right">late</th>
+<th style="text-align:right">whole_started</th>
+<th style="text-align:right">early_started</th>
+<th style="text-align:right">mid_started</th>
+<th style="text-align:right">late_started</th>
 </tr>
 </thead>
 <tbody>
@@ -2167,9 +2214,9 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">buildings_started_count</span> <span class="o">=</span> <span class="n">count_started</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">buildings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">bsc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">buildings_started_count</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">indexes</span><span class="p">)</span>
+<span class="n">bsc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">buildings_started_count</span><span class="p">)</span>
 
-<span class="c1"># print(bsc_df.T.to_markdown())</span>
+<span class="c1"># print(bsc_df.to_markdown())</span>
 </pre></div>
 
     </div>
@@ -2184,10 +2231,10 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 <table>
 <thead><tr>
 <th style="text-align:left"></th>
-<th style="text-align:right">whole</th>
-<th style="text-align:right">early</th>
-<th style="text-align:right">mid</th>
-<th style="text-align:right">late</th>
+<th style="text-align:right">whole_started</th>
+<th style="text-align:right">early_started</th>
+<th style="text-align:right">mid_started</th>
+<th style="text-align:right">late_started</th>
 </tr>
 </thead>
 <tbody>
@@ -2337,7 +2384,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 <p>In this regard, I define two exportable functions that extract two performance indicators:</p>
 <ul>
 <li><a href="/sc_training/build_parser.html#get_expan_times"><code>get_expan_times</code></a> extracts the time of the first three expansions</li>
-<li><code>get_expan_counts</code> exports a dictionary containing the expansion counts for the differt game stages.</li>
+<li><a href="/sc_training/build_parser.html#get_expan_counts"><code>get_expan_counts</code></a> exports a dictionary containing the expansion counts for the differt game stages.</li>
 </ul>
 
 </div>
@@ -2354,7 +2401,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_expan_times" class="doc_header"><code>get_expan_times</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L285" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_times</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_expan_times" class="doc_header"><code>get_expan_times</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L336" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_times</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Gets a dictionary with the finished_at times for a player's first
 three expansions.</p>
@@ -2436,64 +2483,53 @@ expansions, the rest of the expansions are ignored.</p>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_expan_counts</span><span class="p">(</span><span class="n">rpl</span><span class="p">:</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">resources</span><span class="o">.</span><span class="n">Replay</span><span class="p">,</span>
-                        <span class="n">pid</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-    <span class="sd">&#39;&#39;&#39;The function counts the number of base structures a player built at each game stage.</span>
+<div class="output_wrapper">
+<div class="output">
 
-<span class="sd">    *Args*</span>
-<span class="sd">        - rpl (sc2reader.resources.Replay)</span>
-<span class="sd">            Replay containing a match&#39;s information.</span>
-<span class="sd">        - pid (int)</span>
-<span class="sd">            The match player ID for the player being consider in the </span>
-<span class="sd">            analysis.</span>
-
-<span class="sd">    *Returns*</span>
-<span class="sd">        - dict[str, int]</span>
-<span class="sd">            Dictionary containing the base count for the whole, early, </span>
-<span class="sd">            mid and late stages of the game.</span>
-
-<span class="sd">    &#39;&#39;&#39;</span>
-
-    <span class="n">units_df</span> <span class="o">=</span> <span class="n">composition_df</span><span class="p">(</span><span class="n">rpl</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">buildings</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">units_df</span><span class="p">[</span><span class="s1">&#39;real_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">units_df</span><span class="p">[</span><span class="s1">&#39;enter_game_time&#39;</span><span class="p">]</span>
-
-    <span class="n">interval_units_dfs</span> <span class="o">=</span> <span class="n">gen_interval_sub_dfs</span><span class="p">(</span><span class="n">rpl</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">seconds</span><span class="p">,</span>
-                                              <span class="n">units_df</span><span class="p">,</span>
-                                              <span class="p">[</span><span class="s1">&#39;Unit&#39;</span><span class="p">,</span><span class="s1">&#39;enter_game_time&#39;</span><span class="p">])</span>
-    
-    <span class="n">expansion_count_names</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;total_expan&#39;</span><span class="p">,</span>
-                              <span class="s1">&#39;earlyg_expan&#39;</span><span class="p">,</span> 
-                              <span class="s1">&#39;midg_expan&#39;</span><span class="p">,</span> 
-                              <span class="s1">&#39;lateg_expan&#39;</span><span class="p">]</span>
-
-    <span class="n">expansion_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">in_name</span><span class="p">,</span> <span class="n">in_df</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">expansion_count_names</span><span class="p">,</span> <span class="n">interval_units_dfs</span><span class="p">):</span>
-        <span class="n">interval_df</span> <span class="o">=</span> <span class="n">in_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">units_df</span><span class="p">[</span><span class="s1">&#39;Unit&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">BASES</span><span class="p">[</span><span class="n">rpl</span><span class="o">.</span>
-                                                        <span class="n">player</span><span class="p">[</span><span class="n">pid</span><span class="p">]</span><span class="o">.</span>
-                                                        <span class="n">play_race</span><span class="p">])</span>
-                                <span class="o">&amp;</span> <span class="n">units_df</span><span class="p">[</span><span class="s1">&#39;enter_game_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ne</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span>
-
-        <span class="n">expansion_counts</span><span class="p">[</span><span class="n">in_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">interval_df</span><span class="p">)</span>
+<div class="output_area">
 
 
-    <span class="k">return</span> <span class="n">expansion_counts</span>
-    
-</pre></div>
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="get_expan_counts" class="doc_header"><code>get_expan_counts</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L385" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_counts</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+</blockquote>
+<p>The function counts the number of base structures a player built
+at each game stage.</p>
+<p><em>Args</em></p>
 
-    </div>
+<pre><code>- rpl (sc2reader.resources.Replay)
+    Replay containing a match's information.
+- pid (int)
+    The match player ID for the player being consider in the
+    analysis.
+
+</code></pre>
+<p><em>Returns</em></p>
+
+<pre><code>- dict[str, int]
+    Dictionary containing the base count for the whole, early,
+    mid and late stages of the game.</code></pre>
+
+</div>
+
+</div>
+
 </div>
 </div>
 
 </div>
     {% endraw %}
 
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The following are two examples of the use of <code>get_expan_counts</code>.</p>
+<p>The following are two examples of the use of <a href="/sc_training/build_parser.html#get_expan_counts"><code>get_expan_counts</code></a>.</p>
 
 </div>
 </div>
@@ -2587,7 +2623,7 @@ expansions, the rest of the expansions are ignored.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L334" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L430" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Lists the times at wich the player completed their updates</p>
 

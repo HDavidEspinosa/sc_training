@@ -13,7 +13,7 @@ entries:
       - output: web
         subfolderitems:
         - output: web,pdf
-          title: Chapter 0 SC2 Training Grounds Computer Model
+          title: SC2 Training Grounds Computer Model
           url: Comp_model.html
         title: Introduction
       - output: web

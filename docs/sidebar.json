@@ -3,7 +3,7 @@
     "Overview": "/",
     "": {
     	"Introduction": {
-    		"Chapter 0 SC2 Training Grounds Computer Model": "Comp_model.html"
+    		"SC2 Training Grounds Computer Model": "Comp_model.html"
     	}, 
       "Section 1 - Ingest and Clustering":{
         "Section 1 - Ingest and Clustering": "01_ingest_and_clustering.html",

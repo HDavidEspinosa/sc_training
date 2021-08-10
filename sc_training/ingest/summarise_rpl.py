@@ -87,7 +87,7 @@ class Replay_data:
     game_release: str
     map_name: str
     category: str
-    winner: str
+    winner: int
     players: list[Player_data]
 
     def __str__(self):
@@ -125,6 +125,13 @@ def get_players(player_dict: Dict[Any, Any]) -> List[Player_data]:
     return [Player_data(p.pid, p.name, p.play_race, p.result)
             for p in player_dict.values()]
 
+# Internal Cell
+def get_winner(winner: sc2reader.resources.Team) -> int:
+    if winner:
+        return winner.number
+    else:
+        return 0
+
 # Cell
 
 def get_replay_info(replay: sc2reader.resources.Replay) -> Replay_data:
@@ -151,6 +158,6 @@ def get_replay_info(replay: sc2reader.resources.Replay) -> Replay_data:
         game_release= replay.release_string,
         map_name= replay.map_name,
         category= replay.category,
-        winner= replay.winner,
+        winner= get_winner(replay.winner),
         players= get_players(replay.player)) # note the use of the helper
                                              # function here

@@ -64,6 +64,40 @@ Allow me to describe the code step by step to clarify the ideas behind this modu
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sc_training.ingest.build_parser</span> <span class="k">as</span> <span class="nn">bp</span>
+<span class="n">Path</span><span class="p">(</span><span class="n">bp</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Path(&#39;c:/Users/david/Documents/phdcode/sc_training/sc_training/ingest/build_parser.py&#39;)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>After loading these data, I load multiple sample replays. In this case, I need to use a larger pool of test cases to ensure that I am considering all the different types of game units and build variations.</p>
@@ -1629,7 +1663,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_composition" class="doc_header"><code>count_composition</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L223" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composition</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_composition" class="doc_header"><code>count_composition</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L227" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composition</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Generate a tally of all of a player's active units at different
 stages of the match.</p>
@@ -1987,7 +2021,7 @@ has no active units of some types.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L282" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L286" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Generate a tally of all of a player's started units at different
 stages of the match.</p>
@@ -2401,7 +2435,7 @@ types, even if the player has no units of some types.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_expan_times" class="doc_header"><code>get_expan_times</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L336" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_times</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_expan_times" class="doc_header"><code>get_expan_times</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L340" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_times</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Gets a dictionary with the finished_at times for a player's first
 three expansions.</p>
@@ -2491,7 +2525,7 @@ expansions, the rest of the expansions are ignored.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_expan_counts" class="doc_header"><code>get_expan_counts</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L385" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_counts</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_expan_counts" class="doc_header"><code>get_expan_counts</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L389" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_counts</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>The function counts the number of base structures a player built
 at each game stage.</p>
@@ -2623,7 +2657,7 @@ at each game stage.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L430" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L434" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Lists the times at wich the player completed their updates</p>
 
@@ -2659,7 +2693,7 @@ at each game stage.</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">player1_upgrades</span> <span class="o">=</span> <span class="n">list_player_upgrades</span><span class="p">(</span><span class="n">sing_zerg</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="c1">#print(pd.DataFrame(player1_upgrades, index=[&#39;P_1 Upgrdes&#39;]).T.to_markdown())</span>
+<span class="c1"># print(pd.DataFrame(player1_upgrades, index=[&#39;P_1 Upgrdes&#39;]).T.to_markdown())</span>
 </pre></div>
 
     </div>

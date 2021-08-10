@@ -1,0 +1,6 @@
+{
+    "DB_NAME": "TEST_library",
+    "PORT_ADDRESS": "localhost",
+    "PORT_NUMBER": 27017,
+    "REPLAY_PATH": ".\\test_replays\\TestProfilerBatch"
+}

@@ -111,10 +111,14 @@ def count_max_active_groups(rpl: sc2reader.resources.Replay,
             Maximum number of active control groups at each game stage
             indexed with the keys [stage]_max_act_grps
     """
-
+    column_names = ['whole_max_act_grps', 'early_max_act_grps',
+                    'mid_max_act_grps', 'late_max_act_grps']
     ctrl_grp_e = [e for e in rpl.events
                 if isinstance(e, sc2reader.events.game.ControlGroupEvent)
                 and e.pid == (pid - 1)]
+
+    if not ctrl_grp_e:
+        return {name: 0 for name in column_names}
 
     ctrl_grp_e_df = build_ctrlg_df(ctrl_grp_e, rpl)
 
@@ -124,15 +128,14 @@ def count_max_active_groups(rpl: sc2reader.resources.Replay,
     ctrl_grp_e_df['active_groups'] = [count_active_groups(grp_trk[player][sec])
                                       for player, sec in grp_trk_indexes]
 
-    column_names = ['whole_max_act_grps', 'early_max_act_grps',
-                    'mid_max_act_grps', 'late_max_act_grps']
+
 
     interv_dfs= gen_interval_sub_dfs(rpl.length.seconds,
                                      ctrl_grp_e_df,
                                      ['active_groups'])
 
     return {name: df.agg('max')['active_groups']
-            for name, df in zip(column_names,interv_dfs)}
+            for name, df in zip(column_names, interv_dfs)}
 
 # Cell
 def calc_ctrlg_ratio(rpl: sc2reader.resources.Replay,
@@ -170,6 +173,8 @@ def calc_ctrlg_ratio(rpl: sc2reader.resources.Replay,
 
     total_counted_events = len(command_secs | select_secs | ctrlg_secs)
 
+    if not total_counted_events:
+        return {"ctrlg_ratio": 0}
 
     return {"ctrlg_ratio": len(ctrlg_secs)/total_counted_events}
 
@@ -191,6 +196,9 @@ def calc_get_ctrl_grp_ratio(rpl: sc2reader.resources.Replay,
 
     selection_union = len(ctrlg_secs | select_secs)
 
+    if not selection_union:
+        return {"get_ctrl_grp_ratio": 0}
+
     return {'get_ctrl_grp_ratio':len(ctrlg_secs)/selection_union}
 
 # Cell
@@ -209,5 +217,8 @@ def calc_select_ratio(rpl: sc2reader.resources.Replay,
                   and e.pid == (pid - 1)}
 
     selection_union = len(ctrlg_secs | select_secs)
+
+    if not selection_union:
+        return {"get_ctrl_grp_ratio": 0}
 
     return {'select_ratio':len(select_secs)/selection_union}

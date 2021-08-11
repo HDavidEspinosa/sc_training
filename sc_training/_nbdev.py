@@ -47,8 +47,11 @@ index = {"Player_data": "01_summarise_rpl.ipynb",
          "open_config_file": "07_ingest.ipynb",
          "Config_schema": "07_ingest.ipynb",
          "load_configurations": "07_ingest.ipynb",
-         "inventory_replays": "07_ingest.ipynb",
-         "get_replay_indicators": "07_ingest.ipynb"}
+         "flatten_indicators": "07_ingest.ipynb",
+         "set_up_db": "07_ingest.ipynb",
+         "verify_replays_path": "07_ingest.ipynb",
+         "build_indicators": "07_ingest.ipynb",
+         "inventory_replays": "07_ingest.ipynb"}
 
 modules = ["ingest/summarise_rpl.py",
            "ingest/handle_tracker_event.py",

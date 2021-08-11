@@ -373,17 +373,19 @@ def get_expan_times(rpl: sc2reader.resources.Replay,
                             & units_df['enter_game_time'].notna()
                             & units_df['enter_game_time'] != 0]
 
-    if max_expan >= len(bases_df):
+    if (max_expan - 1) < len(bases_df):
+
+        return {expan: u
+                for expan, u
+                in zip(expansions,
+                       bases_df.enter_game_time.iloc[:2])}
+
+    else:
         return {expan: u
                 for expan, u
                 in zip_longest(expansions,
                                bases_df.enter_game_time,
                                fillvalue= np.nan)}
-    else:
-        return {expan: u
-                for expan, u
-                in zip(expansions,
-                       bases_df.enter_game_time)}
 
 # Cell
 def get_expan_counts(rpl: sc2reader.resources.Replay,

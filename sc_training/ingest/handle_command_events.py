@@ -61,7 +61,7 @@ def build_commands_df(rpl: sc2reader.resources.Replay,
 # Cell
 
 def calc_spe_abil_ratios(rpl: sc2reader.resources.Replay,
-                         pid: int) -> dict[float]:
+                         pid: int) -> dict[str, float]:
     '''
     Extracts a ratio from 0 to 1 that quantifies the use use of special
     abilities.
@@ -113,23 +113,25 @@ def calc_spe_abil_ratios(rpl: sc2reader.resources.Replay,
 
 # Internal Cell
 
-def get_top_abilities(abilities: pd.DataFrame) -> tuple[str,str]:
+def get_top_abilities(abilities: pd.DataFrame) -> dict[str, tuple[str,str]]:
     prefered = None
     second = None
+    if not abilities.empty:
+        ability_count = (abilities
+                        .groupby('ability_name')
+                        .size())
 
-    ability_count = (abilities
-                    .groupby('ability_name')
-                    .size())
+        ability_count.sort_values(ascending=False, inplace=True)
 
-    ability_count.sort_values(ascending=False, inplace=True)
+        if len(ability_count) > 0:
+            prefered = ability_count.index[0]
 
-    if len(ability_count) > 0:
-        prefered = ability_count.index[0]
+        if len(ability_count) >= 2:
+            second = ability_count.index[1]
 
-    if len(ability_count) >= 2:
-        second = ability_count.index[1]
+    return (prefered, second)
 
-    return prefered, second
+
 
 # Cell
 def get_prefered_spec_abil(rpl: sc2reader.resources.Replay,

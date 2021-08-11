@@ -134,7 +134,8 @@ def count_max_active_groups(rpl: sc2reader.resources.Replay,
                                      ctrl_grp_e_df,
                                      ['active_groups'])
 
-    return {name: df.agg('max')['active_groups']
+    return {name: (df.agg('max')['active_groups'] if
+                   not df.empty else 0)
             for name, df in zip(column_names, interv_dfs)}
 
 # Cell

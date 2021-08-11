@@ -31,10 +31,10 @@ nb_path: "07_ingest.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p>This section defines the ingest process' <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> and <a href="/sc_training/ingest.html#get_replay_indicators"><code>get_replay_indicators</code></a> functions following the design proposed in the Ingestion Sequence Diagram (see Section 1 - Data Ingestion and Clustering Process). It exports these functions into the ingest module of the ingest sub-package.</p>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p>This section defines the ingest process' <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> and <code>get_replay_indicators</code> functions following the design proposed in the Ingestion Sequence Diagram (see Section 1 - Data Ingestion and Clustering Process). It exports these functions into the ingest module of the ingest sub-package.</p>
 <h3 id="Exportable-Members">Exportable Members<a class="anchor-link" href="#Exportable-Members"> </a></h3><ul>
 <li><a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a></li>
-<li><a href="/sc_training/ingest.html#get_replay_indicators"><code>get_replay_indicators</code></a></li>
+<li><code>get_replay_indicators</code></li>
 </ul>
 
 </div>
@@ -127,11 +127,43 @@ players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Wi
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>All of those check and load procedures are contained within the <a href="/sc_training/ingest.html#load_configurations"><code>load_configurations</code></a> helper function. The following sample code uses shows the use of this fucntion to set up a test data base.</p>
+<p>All of those check and load procedures are contained within the <a href="/sc_training/ingest.html#load_configurations"><code>load_configurations</code></a> function. The following sample code shows the use of this fucntion to set up a test data base.</p>
 
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="load_configurations" class="doc_header"><code>load_configurations</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L83" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_configurations</code>()</p>
+</blockquote>
+<p>Loads the project's</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -219,13 +251,13 @@ Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_a
 
 <span class="n">replay_batch</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replays</span><span class="p">(</span><span class="n">db_settings</span><span class="o">.</span><span class="n">replay_path</span><span class="p">)</span>
 
-<span class="c1"># for rpl in replay_batch:</span>
-<span class="c1">#     if not collection.count_documents({&#39;replay_name&#39;: rpl.filename}, </span>
-<span class="c1">#                                       limit = 1):</span>
-<span class="c1">#         # print(f&#39;Adding {Path(rpl.filename).name} to replays collection.&#39;)</span>
-<span class="c1">#         collection.insert_one(asdict(get_replay_info(rpl)))</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         print(rpl.filename, &quot;already exists in the replay_info collection.&quot;)</span>
+<span class="k">for</span> <span class="n">rpl</span> <span class="ow">in</span> <span class="n">replay_batch</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">({</span><span class="s1">&#39;replay_name&#39;</span><span class="p">:</span> <span class="n">rpl</span><span class="o">.</span><span class="n">filename</span><span class="p">},</span> 
+                                      <span class="n">limit</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># print(f&#39;Adding {Path(rpl.filename).name} to replays collection.&#39;)</span>
+        <span class="n">collection</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">get_replay_info</span><span class="p">(</span><span class="n">rpl</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">rpl</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;already exists in the replay_info collection.&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -277,33 +309,11 @@ Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_a
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Building-the-indicators-collection">Building the <code>indicators</code> collection<a class="anchor-link" href="#Building-the-indicators-collection"> </a></h2><p>Similarly, I can loop through every replay in a batch, extracting the performance indicators for each replays' players. Moreover, I can store these indicators as separate documents in a second collection (i.e. rpl_indicators). This two collection approach was defined in Section 1's introduction.</p>
-<p>In the following code, I illustrate how such a loop would apply all the functions defined in the ingest subpackage to build the indicators of two players in a sample replay. Each player's indicators are stored in a single flat dictionary, i.e. a dictionary that has no nested data structures as values.</p>
+<p>In the following code, I illustrate how such a loop would apply all the functions defined in the <code>ingest</code> subpackage to build the indicators of two players in a sample replay. Each player's indicators are stored in a single flat dictionary, i.e. a dictionary that has no nested data structures as values.</p>
 
 </div>
 </div>
 </div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">flatten_indicators</span><span class="p">(</span><span class="n">nested_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-    <span class="n">output_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">nested</span> <span class="ow">in</span> <span class="n">nested_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">for</span> <span class="n">nested_k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nested</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">output_dict</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">nested_k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
-    <span class="k">return</span> <span class="n">output_dict</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -318,17 +328,18 @@ Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_a
 <span class="n">simple_functions</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_player_macro_econ_stats</span><span class="p">,</span>
                     <span class="n">get_expan_times</span><span class="p">,</span>
                     <span class="n">get_expan_counts</span><span class="p">,</span>
-                    <span class="n">list_player_upgrades</span><span class="p">,</span>
-                    <span class="n">calc_spe_abil_ratios</span><span class="p">,</span>
-                    <span class="n">get_prefered_spec_abil</span><span class="p">,</span>
                     <span class="n">calc_attack_ratio</span><span class="p">,</span>
                     <span class="n">calc_ctrlg_ratio</span><span class="p">,</span>
                     <span class="n">count_max_active_groups</span><span class="p">,</span>
                     <span class="n">calc_get_ctrl_grp_ratio</span><span class="p">,</span>
-                    <span class="n">calc_select_ratio</span><span class="p">]</span>
+                    <span class="n">calc_select_ratio</span><span class="p">,</span>
+                    <span class="n">list_player_upgrades</span><span class="p">,</span>
+                    <span class="n">calc_spe_abil_ratios</span><span class="p">]</span>
 
 <span class="n">double_functions</span> <span class="o">=</span> <span class="p">[</span><span class="n">count_composition</span><span class="p">,</span>
                     <span class="n">count_started</span><span class="p">]</span>
+
+
 
 
 <span class="n">indicators_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -340,6 +351,9 @@ Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_a
         
         <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">simple_functions</span><span class="p">:</span>
             <span class="n">rpl_indicators</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">rpl</span><span class="p">,</span> <span class="n">pid</span><span class="p">))</span>
+
+        <span class="n">v</span> <span class="o">=</span> <span class="n">get_prefered_spec_abil</span><span class="p">(</span><span class="n">rpl</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
+        <span class="n">rpl_indicators</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">flatten_indicators</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">double_functions</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]:</span>
@@ -371,6 +385,14 @@ Processing player: pid:2 Player 2 - MxChrisxM (Terran)
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As a result of the code above, <code>indicaors_list</code> now contains two dictionaries that store the indicators for each player. 
+{% include tip.html content='In some cases, each player&#8217;s indicators lists would contain a different number of indicators. This difference exists because the list stores separate counts for the players&#8217; units and buildings according to their race during the match. Remember that each one of the game races has a different number of available units. ' %}</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -378,9 +400,137 @@ Processing player: pid:2 Player 2 - MxChrisxM (Terran)
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">inspect</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of players evaluated: &#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">indicators_list</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;First set of indicators belongs to:&#39;</span><span class="p">,</span> 
+      <span class="n">indicators_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;player_username&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;First set of indicators contains: &#39;</span><span class="p">,</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">indicators_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;indicators.&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Second set of indicators belongs to:&#39;</span><span class="p">,</span> 
+      <span class="n">indicators_list</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;player_username&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Second set of indicators contains: &#39;</span><span class="p">,</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">indicators_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="s1">&#39;indicators.&#39;</span><span class="p">)</span>      
+</pre></div>
 
-<span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="n">count_composition</span><span class="p">)</span>
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Number of players evaluated:  2
+First set of indicators belongs to: HDEspino
+First set of indicators contains:  388 indicators.
+Second set of indicators belongs to: MxChrisxM
+Second set of indicators contains:  377 indicators.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Exportable-functions">Exportable functions<a class="anchor-link" href="#Exportable-functions"> </a></h2><p>This section defines <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a>. With this function, users can provide a directory containing multiple <code>.SC2Replay</code> files. The function will build four collections in the database specified in the <code>config.json</code> file.</p>
+<p>Thus, I have condensed two initially proposed functions in the ingestion process diagram, i.e. <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> and <code>get_replay_indicators</code>, to run in one loop. I also split the indicators by play race into separate collections. This separation will make it easier to compare and condense these replays into the players' race profiles.</p>
+<p>Internally, the function uses three helper functions:</p>
+<ul>
+<li><a href="/sc_training/ingest.html#set_up_db"><code>set_up_db</code></a>: connects to the MongoDB client and loads the working database.</li>
+<li><a href="/sc_training/ingest.html#verify_replays_path"><code>verify_replays_path</code></a>: makes sure that the path past by the user is valid.</li>
+<li><a href="/sc_training/ingest.html#build_indicators"><code>build_indicators</code></a>: runs through the indicator extraction loop and stores the results in the indicators collections.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="inventory_replays"><a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a><a class="anchor-link" href="#inventory_replays"> </a></h3><p>So, to summarise, the main exportable function of the ingest subpackage is <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a>.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="inventory_replays" class="doc_header"><code>inventory_replays</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L186" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>inventory_replays</code>(<strong><code>replay_batch</code></strong>:<code>Any</code>)</p>
+</blockquote>
+<p>This function builds four collections within the database
+specified in the config.json file.</p>
+<ul>
+<li><code>replays</code>
+  Stores the metadata of the replays, can be used for indexing and
+  for finding the other replays.</li>
+<li><code>inicators_Protoss</code>, <code>indicator_Terran</code>, <code>indicators_Zerg</code>
+  Store the indicators for each performance of every player,
+  separated by the race they play with in every match.</li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After running the function once I get the following sample results:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">inventory_replays</span><span class="p">(</span><span class="n">test_batch_path</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">collections</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">worcking_bd</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">()]</span>
+<span class="n">collections</span>
 </pre></div>
 
     </div>
@@ -395,7 +545,7 @@ Processing player: pid:2 Player 2 - MxChrisxM (Terran)
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>FullArgSpec(args=[&#39;rpl&#39;, &#39;pid&#39;, &#39;buildings&#39;], varargs=None, varkw=None, defaults=(False,), kwonlyargs=[], kwonlydefaults=None, annotations={&#39;return&#39;: dict[str, dict[str, int]], &#39;rpl&#39;: &lt;class &#39;sc2reader.resources.Replay&#39;&gt;, &#39;pid&#39;: &lt;class &#39;int&#39;&gt;, &#39;buildings&#39;: &lt;class &#39;bool&#39;&gt;})</pre>
+<pre>[&#39;indicators_Terran&#39;, &#39;indicators_Zerg&#39;, &#39;indicators_Protoss&#39;, &#39;replays&#39;]</pre>
 </div>
 
 </div>
@@ -406,70 +556,37 @@ Processing player: pid:2 Player 2 - MxChrisxM (Terran)
 </div>
     {% endraw %}
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exportable-functions">Exportable functions<a class="anchor-link" href="#Exportable-functions"> </a></h2>
-</div>
-</div>
-</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">collections</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1"> has </span><span class="si">{</span><span class="n">worcking_bd</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">estimated_document_count</span><span class="p">()</span><span class="si">}</span><span class="s1"> records.&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
 <div class="output_area">
 
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="inventory_replays" class="doc_header"><code>inventory_replays</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L100" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>inventory_replays</code>()</p>
-</blockquote>
-
-</div>
-
-</div>
-
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>indicators_Terran has 82 records.
+indicators_Zerg has 49 records.
+indicators_Protoss has 167 records.
+replays has 149 records.
+</pre>
 </div>
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_replay_indicators" class="doc_header"><code>get_replay_indicators</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L106" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_replay_indicators</code>()</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}

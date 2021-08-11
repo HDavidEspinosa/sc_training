@@ -59,7 +59,8 @@ modules = ["ingest/summarise_rpl.py",
            "ingest/build_parser.py",
            "ingest/handle_command_events.py",
            "ingest/selection_parser.py",
-           "ingest/ingest.py"]
+           "ingest/ingest.py",
+           "profiler.py"]
 
 doc_url = "https://HDavidEspinosa.github.io/sc_training/"
 

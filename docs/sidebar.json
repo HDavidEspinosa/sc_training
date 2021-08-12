@@ -13,7 +13,8 @@
         "Section 1.4 - Parsing Build Orders": "build_parser.html",
         "Section 1.5 - Handling Command Events": "handle_command_events.html",
         "Section 1.6 - Tracking Control Groups": "selection_parser.html",
-        "Section 1.7 - The Main Ingest Module": "ingest.html"
+        "Section 1.7 - The Main Ingest Module": "ingest.html",
+        "Section 1.8 - Player Profiler": "profiler.html"
       }
     }
   }

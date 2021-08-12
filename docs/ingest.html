@@ -74,7 +74,7 @@ nb_path: "07_ingest.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>File path:                   C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\16-Bit LE (2).SC2Replay 
+<pre>File path:                   c:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\16-Bit LE (2).SC2Replay 
 File name:                   16-Bit LE (2).SC2Replay 
 Date (datetime.datetime):    2021-06-04 03:49:10 
 Duration (seconds):          707 
@@ -86,7 +86,7 @@ winner:                      1
 players:                     [(1, &#39;HDEspino&#39;, &#39;Terran&#39;, &#39;Win&#39;), (2, &#39;A.I. 1 (Harder)&#39;, &#39;Zerg&#39;, &#39;Loss&#39;)] 
 
 &lt;class &#39;sc_training.ingest.summarise_rpl.Replay_data&#39;&gt;
-File path:                   C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\16-Bit LE (3).SC2Replay 
+File path:                   c:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\16-Bit LE (3).SC2Replay 
 File name:                   16-Bit LE (3).SC2Replay 
 Date (datetime.datetime):    2021-06-08 02:04:37 
 Duration (seconds):          384 
@@ -251,16 +251,38 @@ Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_a
 
 <span class="n">replay_batch</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replays</span><span class="p">(</span><span class="n">db_settings</span><span class="o">.</span><span class="n">replay_path</span><span class="p">)</span>
 
-<span class="c1"># for rpl in replay_batch:</span>
-<span class="c1">#     if not collection.count_documents({&#39;replay_name&#39;: rpl.filename}, </span>
-<span class="c1">#                                       limit = 1):</span>
-<span class="c1">#         # print(f&#39;Adding {Path(rpl.filename).name} to replays collection.&#39;)</span>
-<span class="c1">#         collection.insert_one(asdict(get_replay_info(rpl)))</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         print(rpl.filename, &quot;already exists in the replay_info collection.&quot;)</span>
+<span class="n">count_add</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">count_existed</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">rpl</span> <span class="ow">in</span> <span class="n">replay_batch</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">({</span><span class="s1">&#39;replay_name&#39;</span><span class="p">:</span> <span class="n">rpl</span><span class="o">.</span><span class="n">filename</span><span class="p">},</span> 
+                                      <span class="n">limit</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># print(f&#39;Adding {Path(rpl.filename).name} to replays collection.&#39;)</span>
+        <span class="n">collection</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">get_replay_info</span><span class="p">(</span><span class="n">rpl</span><span class="p">)))</span>
+        <span class="n">count_add</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">count_existed</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># print(rpl.filename, &quot;already exists in the replay_info collection.&quot;)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">count_add</span><span class="si">}</span><span class="s2"> added to replays&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">count_existed</span><span class="si">}</span><span class="s2"> already existed in replays&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>153 added to replays
+0 already existed in replays
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -559,160 +581,11 @@ specified in the config.json file.</p>
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\16-Bit LE (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\16-Bit LE (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\16-Bit LE.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (10).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (11).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (12).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (13).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (14).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (15).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (16).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (17).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (18).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (19).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (20).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (21).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (4).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (5).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (6).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (7).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (8).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE (9).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\2000 Atmospheres LE.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (10).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (11).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (12).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (13).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (4).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (5).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (6).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (7).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (8).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE (9).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Beckett Industries LE.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Blackburn LE (10).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Blackburn LE (11).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Blackburn LE (12).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Blackburn LE (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Blackburn LE (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Blackburn LE (4).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Blackburn LE (6).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Blackburn LE (7).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Blackburn LE (8).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Blackburn LE (9).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Blackburn LE.SC2Replay
-C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Dead of Night (2).SC2Replayis not ladder or practice
-C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Dead of Night.SC2Replayis not ladder or practice
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Deathaura LE (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Deathaura LE (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Deathaura LE (4).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Deathaura LE (5).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Deathaura LE.SC2Replay
-C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Emerald City LE (2).SC2Replayis not ladder or practice
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Emerald City LE.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (10).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (11).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (13).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (14).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (15).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (16).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (18).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (19).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (20).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (21).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (22).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (4).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (5).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (6).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (7).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (8).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE (9).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Jagannatha LE.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (10).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (11).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (12).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (13).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (14).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (15).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (16).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (17).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (18).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (19).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (20).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (21).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (22).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (4).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (5).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (6).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (7).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (8).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE (9).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Lightshade LE.SC2Replay
-C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Megaton.SC2Replayis not ladder or practice
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE (10).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE (11).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE (12).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE (4).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE (5).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE (6).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE (7).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE (8).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE (9).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Oxide LE.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Pillars of Gold LE (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Pillars of Gold LE.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (10).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (11).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (12).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (13).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (15).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (16).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (17).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (18).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (19).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (20).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (21).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (22).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (23).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (24).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (4).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (5).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (6).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (7).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (8).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE (9).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE_rush_lose.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Romanticide LE_win.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Submarine LE (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Submarine LE (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Submarine LE.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Void Training Stage 1 (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Void Training Stage 1 (4).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Void Training Stage 1 (5).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Void Training Stage 1.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Void Training Stage 2.SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Void Training Stage 3 (2).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Void Training Stage 3 (3).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Void Training Stage 3 (4).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Void Training Stage 3 (5).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Void Training Stage 3 (6).SC2Replay
-Processing C:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch\Void Training Stage 3.SC2Replay
-Load complete. 149 files loaded
+<pre>Load complete.
+153 files processed
+149 files loaded
+4 files ignored
+0 files alredy existed
 </pre>
 </div>
 </div>
@@ -746,7 +619,7 @@ Load complete. 149 files loaded
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;indicators&#39;, &#39;replays&#39;]</pre>
+<pre>[&#39;replays&#39;, &#39;indicators&#39;]</pre>
 </div>
 
 </div>
@@ -778,8 +651,8 @@ Load complete. 149 files loaded
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>indicators has 298 records.
-replays has 149 records.
+<pre>replays has 149 records.
+indicators has 298 records.
 </pre>
 </div>
 </div>

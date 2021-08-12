@@ -169,7 +169,7 @@ print(replay_data)
     winner:                      Team 2: Player 2 - MxChrisxM (Terran) 
     players:                     [(1, 'HDEspino', 'Protoss', 'Loss'), (2, 'MxChrisxM', 'Terran', 'Win')] 
     
-
+    
 
 ## Install
 {% include warning.html content='THE FOLLOWING 2 SECTIONS ARE INCOMPLETE PLACEHOLDERS. PLEASE DISREGARD FOR NOW' %}

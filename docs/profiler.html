@@ -1,6 +1,6 @@
 ---
 
-title: Section 2 - Player Profiler
+title: Section 1.8 - Player Profiler
 
 
 keywords: fastai
@@ -32,7 +32,18 @@ nb_path: "08_profiler.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p>In this section, I use the database built in Section 1.7 to define a <code>player_profiler</code> function that will take the data of each player's performances and then it will process it to compile three player profiles for each player, each corresponding to one of the play races of StarCraft 2. The section compiles this function into the <code>profiler</code> module.</p>
-<p>The following code shows the players in the data base that have more than 2 replays in the database.</p>
+<h3 id="Exportable-Members">Exportable Members<a class="anchor-link" href="#Exportable-Members"> </a></h3><ul>
+<li><a href="/sc_training/profiler.html#build_player_race_profiles"><code>build_player_race_profiles</code></a></li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Querying-the-database">Querying the database<a class="anchor-link" href="#Querying-the-database"> </a></h2><p>Once the ingestion process is done, the next step is to turn the replays data in the database into player profiles. To build these profiles, I need to separate the replays by player and then by race. To accomplish the former, I need to extract a list of <strong>usernames</strong> from the database.</p>
+<p>The following code shows how to extract a list of player usernames looping through the <code>replays</code> collection created in the ingest process.
+{% include tip.html content='I will ignore the usernames that follow the pattern &#8217;A.I. number (level)&#8217; because they refer to the game&#8217;s A.I. opponents. Similarly, I ignore the names &#8217;Player 2&#8217; and those composed only by repeating the letter &#8217;l&#8217; (known as a barcode name). This condition is necessary because players use these two patterns to hide their identity by blending with other players that use the same username. Hence they cannot be used to separate players.' %}</p>
 
 </div>
 </div>
@@ -44,32 +55,25 @@ nb_path: "08_profiler.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">working_db</span> <span class="o">=</span> <span class="n">set_up_db</span><span class="p">()</span>
-</pre></div>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Load database</span>
+<span class="n">working_db</span> <span class="o">=</span> <span class="n">set_up_db</span><span class="p">()</span>
 
-    </div>
-</div>
-</div>
+<span class="c1"># Define username patters to ignore</span>
+<span class="n">ai_pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^A\.I\. [\d] [(][\w\s]*[)]$&#39;</span><span class="p">)</span>
+<span class="n">barcode_pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^l+$&#39;</span><span class="p">)</span>
 
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">players_match_count</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="c1"># Iterate through the records in the `replays` collection to get all valid</span>
+<span class="c1"># user names.</span>
+<span class="n">players_match_count</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">working_db</span><span class="p">[</span><span class="s1">&#39;replays&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">():</span>
     <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="n">rec</span><span class="p">[</span><span class="s1">&#39;players&#39;</span><span class="p">]:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">player</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;A.I.&#39;</span><span class="p">)</span> 
-                <span class="ow">or</span> <span class="n">player</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;llll&#39;</span><span class="p">)</span>
-                <span class="ow">or</span> <span class="n">player</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Player 2&#39;</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">ai_pat</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">player</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span> 
+                <span class="ow">or</span> <span class="n">barcode_pat</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">player</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>
+                <span class="ow">or</span> <span class="n">player</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Player 2&#39;</span><span class="p">):</span>
             <span class="n">players_match_count</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">player</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
             <span class="n">players_match_count</span><span class="p">[</span><span class="n">player</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
             
+<span class="c1"># I will ignore players that only have one record in the database.</span>
 <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">count</span> <span class="k">for</span> <span class="n">name</span> <span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">players_match_count</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">}</span>
 </pre></div>
 
@@ -107,7 +111,7 @@ nb_path: "08_profiler.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Of this players I will focus only on <code>HDEspino</code> given that the player has a substancial number of replays.</p>
+<p>Of this players I will focus only on <code>HDEspino</code> given that the player has a substancial number of replays in the test database.</p>
 <p>In any case, once I have a list of user names in a database, I can extract all the replays replative to that player with simple queries to the data base.</p>
 <p>For example, the following queries extract all replays were <code>HDEspino</code> was playing either as player one or two.</p>
 
@@ -153,7 +157,7 @@ nb_path: "08_profiler.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Based on this list, I will build the Protoss profile for this player to illustrate what this process would entail.</p>
+<h2 id="Building-the-profile">Building the profile<a class="anchor-link" href="#Building-the-profile"> </a></h2><p>Based on this list, I will build the Protoss profile for this player to illustrate what this process would entail.</p>
 <p>First, I will query the system to identify the replays where the user was one of the players and was playing as Protoss. Then, I use that information to build a DataFrame containing all of the indicators for the player's performances in these replays.</p>
 
 </div>
@@ -166,12 +170,16 @@ nb_path: "08_profiler.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">player_1_protoss</span> <span class="o">=</span> <span class="p">[</span><span class="n">rpl</span><span class="p">[</span><span class="s1">&#39;replay_name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">rpl</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Query `replays` and build a list of replays the user played as</span>
+<span class="c1"># Protoss and Player 1. </span>
+<span class="n">player_1_protoss</span> <span class="o">=</span> <span class="p">[</span><span class="n">rpl</span><span class="p">[</span><span class="s1">&#39;replay_name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">rpl</span> 
                    <span class="ow">in</span> <span class="n">working_db</span><span class="p">[</span><span class="s1">&#39;replays&#39;</span><span class="p">]</span><span class="o">.</span>
                       <span class="n">find</span><span class="p">({</span><span class="s1">&#39;players.0.username&#39;</span><span class="p">:</span><span class="s1">&#39;HDEspino&#39;</span><span class="p">,</span> 
                             <span class="s1">&#39;players.0.race&#39;</span><span class="p">:</span><span class="s1">&#39;Protoss&#39;</span><span class="p">},</span>
                             <span class="p">{</span><span class="s1">&#39;replay_name&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;players&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">})]</span>
 
+<span class="c1"># Based on the list query `indicators` to get the performance scores of </span>
+<span class="c1"># Player 1 in each replay of the previous list.</span>
 <span class="n">working_repls</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">rpl</span> <span class="ow">in</span> <span class="n">player_1_protoss</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">cur</span> <span class="ow">in</span> <span class="n">working_db</span><span class="p">[</span><span class="s1">&#39;indicators&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">({</span><span class="s1">&#39;replay_name&#39;</span><span class="p">:</span><span class="n">rpl</span><span class="p">,</span> 
@@ -214,7 +222,10 @@ nb_path: "08_profiler.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">player_2_protoss</span> <span class="o">=</span> <span class="p">[</span><span class="n">rpl</span><span class="p">[</span><span class="s1">&#39;replay_name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">rpl</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Repeat the process above but focused on the replays where the player</span>
+<span class="c1"># played as Player 2.</span>
+
+<span class="n">player_2_protoss</span> <span class="o">=</span> <span class="p">[</span><span class="n">rpl</span><span class="p">[</span><span class="s1">&#39;replay_name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">rpl</span> 
                    <span class="ow">in</span> <span class="n">working_db</span><span class="p">[</span><span class="s1">&#39;replays&#39;</span><span class="p">]</span><span class="o">.</span>
                       <span class="n">find</span><span class="p">({</span><span class="s1">&#39;players.1.username&#39;</span><span class="p">:</span><span class="s1">&#39;HDEspino&#39;</span><span class="p">,</span> 
                             <span class="s1">&#39;players.1.race&#39;</span><span class="p">:</span><span class="s1">&#39;Protoss&#39;</span><span class="p">},</span>
@@ -227,8 +238,11 @@ nb_path: "08_profiler.ipynb"
                                               <span class="s1">&#39;player_username&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
                                               <span class="s1">&#39;player_id&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>
         <span class="n">working_repls</span><span class="p">[</span><span class="n">rpl</span><span class="p">]</span> <span class="o">=</span> <span class="n">cur</span>
-        
-<span class="nb">len</span><span class="p">(</span><span class="n">working_repls</span><span class="p">)</span>
+   
+<span class="n">working_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">working_repls</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> 
+                           <span class="n">index</span><span class="o">=</span><span class="n">working_repls</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+                                                      <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">working_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -240,12 +254,70 @@ nb_path: "08_profiler.ipynb"
 
 <div class="output_area">
 
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>130</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 130 entries, 0 to 129
+Columns: 385 entries, unspent_minerals_avg_whole to late_started_zealot
+dtypes: float64(93), int64(284), object(8)
+memory usage: 391.1+ KB
+</pre>
+</div>
 </div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After extracting all replays relative to a player and race, I group them into a DataFrame. In the sample case, the DataFrame has 130 entries and 385 columns. These columns represent the indicators stored by <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> into the <code>indicators</code> collection.</p>
+<p>More importantly, I see that there are three types of data stored in the columns (93 store decimals (type float64), 284 store integers (type int64) and 8 store other value types). In this case, the other value types are categorical values in the form of strings, which store the players' first and second prefered special abilities, as I show in the code below.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">working_df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">[</span><span class="n">working_df</span><span class="o">.</span><span class="n">dtypes</span> <span class="o">==</span> <span class="nb">object</span><span class="p">]</span>
+
+<span class="n">cat_features</span> <span class="o">=</span> <span class="n">working_df</span><span class="p">[[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">categorical_columns</span><span class="o">.</span><span class="n">index</span><span class="p">]]</span>
+<span class="n">cat_features</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 130 entries, 0 to 129
+Data columns (total 8 columns):
+ #   Column                 Non-Null Count  Dtype 
+---  ------                 --------------  ----- 
+ 0   first_whole_pref_sab   130 non-null    object
+ 1   second_whole_pref_sab  130 non-null    object
+ 2   first_early_pref_sab   130 non-null    object
+ 3   second_early_pref_sab  130 non-null    object
+ 4   first_mid_pref_sab     130 non-null    object
+ 5   second_mid_pref_sab    130 non-null    object
+ 6   first_late_pref_sab    130 non-null    object
+ 7   second_late_pref_sab   130 non-null    object
+dtypes: object(8)
+memory usage: 8.2+ KB
+</pre>
+</div>
 </div>
 
 </div>
@@ -261,55 +333,125 @@ nb_path: "08_profiler.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">working_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">working_repls</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="n">working_repls</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">working_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;pref&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[&#39;first_whole_pref_sab&#39;,
- &#39;second_whole_pref_sab&#39;,
- &#39;first_early_pref_sab&#39;,
- &#39;second_early_pref_sab&#39;,
- &#39;first_mid_pref_sab&#39;,
- &#39;second_mid_pref_sab&#39;,
- &#39;first_late_pref_sab&#39;,
- &#39;second_late_pref_sab&#39;]</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">working_repls</span><span class="p">[[</span><span class="s1">&#39;first_whole_pref_sab&#39;</span><span class="p">,</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pref_abil_df</span> <span class="o">=</span> <span class="n">working_df</span><span class="p">[[</span><span class="s1">&#39;first_whole_pref_sab&#39;</span><span class="p">,</span>
  <span class="s1">&#39;second_whole_pref_sab&#39;</span><span class="p">,</span>
  <span class="s1">&#39;first_early_pref_sab&#39;</span><span class="p">,</span>
- <span class="s1">&#39;second_early_pref_sab&#39;</span><span class="p">,</span>
- <span class="s1">&#39;first_mid_pref_sab&#39;</span><span class="p">,</span>
- <span class="s1">&#39;second_mid_pref_sab&#39;</span><span class="p">,</span>
- <span class="s1">&#39;first_late_pref_sab&#39;</span><span class="p">,</span>
- <span class="s1">&#39;second_late_pref_sab&#39;</span><span class="p">]]</span>
+ <span class="s1">&#39;second_early_pref_sab&#39;</span><span class="p">]]</span>
+
+<span class="c1"># print(pref_abil_df.head(10).to_markdown())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead><tr>
+<th style="text-align:right"></th>
+<th style="text-align:left">first_whole_pref_sab</th>
+<th style="text-align:left">second_whole_pref_sab</th>
+<th style="text-align:left">first_early_pref_sab</th>
+<th style="text-align:left">second_early_pref_sab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">0</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">None</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">None</td>
+</tr>
+<tr>
+<td style="text-align:right">1</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">PrismaticAlignment</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">None</td>
+</tr>
+<tr>
+<td style="text-align:right">2</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">GravitonBeam</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">None</td>
+</tr>
+<tr>
+<td style="text-align:right">3</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">ArchonWarpSelection</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">None</td>
+</tr>
+<tr>
+<td style="text-align:right">4</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">GuardianShield</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">None</td>
+</tr>
+<tr>
+<td style="text-align:right">5</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">AdeptPhaseShift</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">CancelSlot</td>
+</tr>
+<tr>
+<td style="text-align:right">6</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">CancelSlot</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">None</td>
+</tr>
+<tr>
+<td style="text-align:right">7</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">ForceField</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">None</td>
+</tr>
+<tr>
+<td style="text-align:right">8</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">GuardianShield</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">None</td>
+</tr>
+<tr>
+<td style="text-align:right">9</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">PhasingMode</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">None</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I can process this categories using the <code>value_counts</code> function to get the most common preffered ability. Next I define <a href="/sc_training/profiler.html#get_top_of_category"><code>get_top_of_category</code></a> to extract the most used attribute in a column.
+{% include note.html content='once I move into clustering I will need to turn this data into a numerical representation. For example, since this are cardinal categories I could convert the data into a binary matrix (one-hot-matrix).' %}</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_top_of_category</span><span class="p">(</span><span class="n">pref_abil_df</span><span class="o">.</span><span class="n">first_whole_pref_sab</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -321,18 +463,397 @@ nb_path: "08_profiler.ipynb"
 
 <div class="output_area">
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_3880/739817364.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> working_repls[[&#39;first_whole_pref_sab&#39;,
-</span><span class="ansi-green-fg">      2</span>  <span class="ansi-blue-intense-fg ansi-bold">&#39;second_whole_pref_sab&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
-<span class="ansi-green-fg">      3</span>  <span class="ansi-blue-intense-fg ansi-bold">&#39;first_early_pref_sab&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
-<span class="ansi-green-fg">      4</span>  <span class="ansi-blue-intense-fg ansi-bold">&#39;second_early_pref_sab&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
-<span class="ansi-green-fg">      5</span>  <span class="ansi-blue-intense-fg ansi-bold">&#39;first_mid_pref_sab&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
 
-<span class="ansi-red-intense-fg ansi-bold">TypeError</span>: unhashable type: &#39;list&#39;</pre>
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;ChronoBoostEnergyCost&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cate_profile</span> <span class="o">=</span> <span class="n">cat_features</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">get_top_of_category</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cate_profile</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>first_whole_pref_sab     ChronoBoostEnergyCost
+second_whole_pref_sab           GuardianShield
+first_early_pref_sab     ChronoBoostEnergyCost
+second_early_pref_sab                     None
+first_mid_pref_sab       ChronoBoostEnergyCost
+second_mid_pref_sab                       None
+first_late_pref_sab                       None
+second_late_pref_sab                      None
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Meanwhile, I will simply average all other columns to get a single value for the players profile.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">non_cat_columns</span> <span class="o">=</span> <span class="n">working_df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">[</span><span class="n">working_df</span><span class="o">.</span><span class="n">dtypes</span> <span class="o">!=</span> <span class="nb">object</span><span class="p">]</span>
+
+<span class="n">non_cat_features</span> <span class="o">=</span> <span class="n">working_df</span><span class="p">[[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">non_cat_columns</span><span class="o">.</span><span class="n">index</span><span class="p">]]</span>
+<span class="n">non_cat_features</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 130 entries, 0 to 129
+Columns: 377 entries, unspent_minerals_avg_whole to late_started_zealot
+dtypes: float64(93), int64(284)
+memory usage: 383.0 KB
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">non_cate_profile</span> <span class="o">=</span> <span class="n">non_cat_features</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">non_cate_profile</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>unspent_minerals_avg_whole    1068.323130
+unspent_minerals_avg_early     184.596550
+unspent_minerals_avg_mid       651.947283
+unspent_minerals_avg_late     2307.746755
+unspent_vespene_avg_whole      531.042321
+                                 ...     
+late_started_stalker             5.123077
+late_started_tempest             0.584615
+late_started_voidray             5.069231
+late_started_warpprism           0.123077
+late_started_zealot              3.215385
+Length: 377, dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Once these two sets of values are defined, I can join them in a single profile. 
+{% include note.html content='When merging the two sets, I define a &#8217;player_profile&#8217; value as an identifier for the profile and a shared column that allows the merge. ' %}</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">profile_name</span> <span class="o">=</span> <span class="s1">&#39;player_profile&#39;</span>
+<span class="n">left</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">non_cate_profile</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">left</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">profile_name</span><span class="p">,</span> <span class="s1">&#39;HDEspino_protoss&#39;</span><span class="p">)</span>
+<span class="n">right</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cate_profile</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">right</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">profile_name</span><span class="p">,</span> <span class="s1">&#39;HDEspino_protoss&#39;</span><span class="p">)</span>
+
+<span class="n">full_profile</span> <span class="o">=</span>  <span class="n">left</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">profile_name</span><span class="p">)</span>
+<span class="n">full_profile</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 1 entries, 0 to 0
+Columns: 386 entries, player_profile to second_late_pref_sab
+dtypes: float64(377), object(9)
+memory usage: 3.0+ KB
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The following table shows the resultof the ten first and last indicators in the profile
+and their values.</p>
+<table>
+<thead><tr>
+<th style="text-align:left">Indicator</th>
+<th style="text-align:left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">player_profile</td>
+<td style="text-align:left">HDEspino_protoss</td>
+</tr>
+<tr>
+<td style="text-align:left">unspent_minerals_avg_whole</td>
+<td style="text-align:left">1068.32313026423</td>
+</tr>
+<tr>
+<td style="text-align:left">unspent_minerals_avg_early</td>
+<td style="text-align:left">184.59654999017428</td>
+</tr>
+<tr>
+<td style="text-align:left">unspent_minerals_avg_mid</td>
+<td style="text-align:left">651.9472831545554</td>
+</tr>
+<tr>
+<td style="text-align:left">unspent_minerals_avg_late</td>
+<td style="text-align:left">2307.7467547558495</td>
+</tr>
+<tr>
+<td style="text-align:left">unspent_vespene_avg_whole</td>
+<td style="text-align:left">531.0423213983343</td>
+</tr>
+<tr>
+<td style="text-align:left">unspent_vespene_avg_early</td>
+<td style="text-align:left">109.9563382651504</td>
+</tr>
+<tr>
+<td style="text-align:left">unspent_vespene_avg_mid</td>
+<td style="text-align:left">504.7169891278007</td>
+</tr>
+<tr>
+<td style="text-align:left">unspent_vespene_avg_late</td>
+<td style="text-align:left">1075.1499164552638</td>
+</tr>
+<tr>
+<td style="text-align:left">unspent_resources_avg_whole</td>
+<td style="text-align:left">1599.365451662564</td>
+</tr>
+<tr>
+<td style="text-align:left">late_started_warpprism</td>
+<td style="text-align:left">0.12307692307692308</td>
+</tr>
+<tr>
+<td style="text-align:left">late_started_zealot</td>
+<td style="text-align:left">3.2153846153846155</td>
+</tr>
+<tr>
+<td style="text-align:left">first_whole_pref_sab</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+</tr>
+<tr>
+<td style="text-align:left">second_whole_pref_sab</td>
+<td style="text-align:left">GuardianShield</td>
+</tr>
+<tr>
+<td style="text-align:left">first_early_pref_sab</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+</tr>
+<tr>
+<td style="text-align:left">second_early_pref_sab</td>
+<td style="text-align:left">None</td>
+</tr>
+<tr>
+<td style="text-align:left">first_mid_pref_sab</td>
+<td style="text-align:left">ChronoBoostEnergyCost</td>
+</tr>
+<tr>
+<td style="text-align:left">second_mid_pref_sab</td>
+<td style="text-align:left">None</td>
+</tr>
+<tr>
+<td style="text-align:left">first_late_pref_sab</td>
+<td style="text-align:left">None</td>
+</tr>
+<tr>
+<td style="text-align:left">second_late_pref_sab</td>
+<td style="text-align:left">None</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Exportable-function">Exportable function<a class="anchor-link" href="#Exportable-function"> </a></h2><p>Here, I define <a href="/sc_training/profiler.html#build_player_race_profiles"><code>build_player_race_profiles</code></a> as a function that converts all replays in a database into a set of player profiles. The function uses four helper functions:</p>
+<ul>
+<li><a href="/sc_training/profiler.html#get_user_name_list"><code>get_user_name_list</code></a></li>
+<li><a href="/sc_training/profiler.html#get_player_replays"><code>get_player_replays</code></a></li>
+<li><a href="/sc_training/profiler.html#build_profile"><code>build_profile</code></a></li>
+<li><a href="/sc_training/profiler.html#get_top_of_category"><code>get_top_of_category</code></a> </li>
+</ul>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="build_player_race_profiles" class="doc_header"><code>build_player_race_profiles</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/profiler.py#L111" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>build_player_race_profiles</code>()</p>
+</blockquote>
+<p>Converts all replays in the project's database, defined in the
+project's config.json file, into a set of player profiles stored in
+that same database in the 'Protoss_Profiles', 'Terran_Profiles',
+and 'Zerg_Profiles' collections.</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Once, I run the function. There is one record in each of the profile databases; the profile of <code>HDEspino</code> for each race.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">build_player_race_profiles</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">working_db</span><span class="p">[</span><span class="s1">&#39;Protoss_Profiles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">estimated_document_count</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">working_db</span><span class="p">[</span><span class="s1">&#39;Terran_Profiles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">estimated_document_count</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">working_db</span><span class="p">[</span><span class="s1">&#39;Zerg_Profiles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">estimated_document_count</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1
+1
+1
+</pre>
 </div>
 </div>
 

@@ -201,17 +201,27 @@ def inventory_replays(replay_batch: Any) -> None:
     replays = sc2reader.load_replays(str(path))
 
     load_count = 0
+    process_count = 0
+    previous = 0
+    ignored = 0
     for rpl in replays:
+        process_count += 1
         if (not (rpl.type == "1v1")):
-            print(f'{rpl.filename}is not ladder or practice')
+            ignored += 1
+            # print(f'{rpl.filename}is not 1v1')
             continue
         if not rpls_collect.count_documents({'replay_name': rpl.filename},
                                             limit = 1):
-            print(f'Processing {rpl.filename}')
+            # print(f'Processing {rpl.filename}')
             rpls_collect.insert_one(asdict(get_replay_info(rpl)))
             build_indicators(rpl, worcking_bd)
             load_count += 1
         else:
-            print(rpl.filename, "already exists in the replay_info rpls_collect.")
+            previous += 1
+            # print(rpl.filename, "already exists in the replay_info rpls_collect.")
 
-    print(f'Load complete. {load_count} files loaded')
+    print(f'Load complete.')
+    print(f'{process_count} files processed')
+    print(f'{load_count} files loaded')
+    print(f'{ignored} files ignored')
+    print(f'{previous} files alredy existed')

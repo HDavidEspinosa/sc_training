@@ -51,7 +51,12 @@ index = {"Player_data": "01_summarise_rpl.ipynb",
          "set_up_db": "07_ingest.ipynb",
          "verify_replays_path": "07_ingest.ipynb",
          "build_indicators": "07_ingest.ipynb",
-         "inventory_replays": "07_ingest.ipynb"}
+         "inventory_replays": "07_ingest.ipynb",
+         "get_top_of_category": "08_profiler.ipynb",
+         "get_user_name_list": "08_profiler.ipynb",
+         "get_player_replays": "08_profiler.ipynb",
+         "build_profile": "08_profiler.ipynb",
+         "build_player_race_profiles": "08_profiler.ipynb"}
 
 modules = ["ingest/summarise_rpl.py",
            "ingest/handle_tracker_event.py",

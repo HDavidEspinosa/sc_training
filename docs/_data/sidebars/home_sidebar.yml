@@ -42,6 +42,9 @@ entries:
         - output: web,pdf
           title: Section 1.7 - The Main Ingest Module
           url: ingest.html
+        - output: web,pdf
+          title: Section 1.8 - Player Profiler
+          url: profiler.html
         title: Section 1 - Ingest and Clustering
     output: web
     title: sc_training

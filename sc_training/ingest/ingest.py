@@ -22,7 +22,7 @@ from jsonschema import validate
 from dataclasses import dataclass, astuple, asdict, field
 
 from . import *
-
+sc2reader.engine.register_plugin(APMTracker())
 sc2reader.engine.register_plugin(CtrlGroupTracker())
 
 # Internal Cell
@@ -162,7 +162,7 @@ def build_indicators(rpl: sc2reader.resources.Replay,
 
     double_functions = [count_composition,
                         count_started]
-    indi_collect = worcking_bd['indicators']
+    indi_collect = working_db['indicators']
     for pid, player in rpl.player.items():
         rpl_indicators = {}
         for func in simple_functions:
@@ -184,15 +184,24 @@ def build_indicators(rpl: sc2reader.resources.Replay,
 
 # Cell
 def inventory_replays(replay_batch: Any) -> None:
-    """This function builds four collections within the database
+    """This function builds two collections within the database
     specified in the config.json file.
 
+    The replay information will be stored in the database specified in
+    cwd/data/config.json in the following collections:
     - `replays`
         Stores the metadata of the replays, can be used for indexing and
         for finding the other replays.
-    - `inicators_Protoss`, `indicator_Terran`, `indicators_Zerg`
-        Store the indicators for each performance of every player,
-        separated by the race they play with in every match.
+    - `inicators`
+        Store the indicators for each performance of every player.
+
+    *Args:*
+        - replay_batch
+            Directory address where the replays to process are located.
+
+    *Return:*
+        -None
+
     """
     working_db = set_up_db()
     rpls_collect = working_db['replays']
@@ -204,6 +213,9 @@ def inventory_replays(replay_batch: Any) -> None:
     process_count = 0
     previous = 0
     ignored = 0
+
+    print(f'Inventorying replays at: {path} in database {working_db.name}')
+
     for rpl in replays:
         process_count += 1
         if (not (rpl.type == "1v1")):
@@ -214,7 +226,7 @@ def inventory_replays(replay_batch: Any) -> None:
                                             limit = 1):
             # print(f'Processing {rpl.filename}')
             rpls_collect.insert_one(asdict(get_replay_info(rpl)))
-            build_indicators(rpl, worcking_bd)
+            build_indicators(rpl, working_db)
             load_count += 1
         else:
             previous += 1

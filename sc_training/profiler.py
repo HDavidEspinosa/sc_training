@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import re
 import pymongo
+import csv
 
 from typing import *
 
@@ -46,10 +47,10 @@ def get_user_name_list(active_db: pymongo.database.Database) -> list:
             if count >= 5]
 
 # Internal Cell
-def get_player_replays(username: str, race: str) -> list:
+def get_player_replays(active_db: Any, username: str, race: str) -> list:
 
     player_1_protoss = [rpl['replay_name'] for rpl
-                        in working_db['replays'].
+                        in active_db['replays'].
                         find({'players.0.username':username,
                               'players.0.race':race},
                              {'replay_name':1, 'players':1})]
@@ -58,21 +59,21 @@ def get_player_replays(username: str, race: str) -> list:
     # Player 1 in each replay of the previous list.
     working_repls = {}
     for rpl in player_1_protoss:
-        for cur in working_db['indicators'].find({'replay_name':rpl,
+        for cur in active_db['indicators'].find({'replay_name':rpl,
                                                 'player_id': 1},
                                                 {'_id':0, 'replay_name':0,
                                                 'player_username':0,
                                                 'player_id': 0}):
             working_repls[rpl] = cur
 
-    layer_2_protoss = [rpl['replay_name'] for rpl
-                       in working_db['replays'].
+    player_2_protoss = [rpl['replay_name'] for rpl
+                       in active_db['replays'].
                        find({'players.1.username':username,
                              'players.1.race':race},
                             {'replay_name':1, 'players':1})]
 
     for rpl in player_2_protoss:
-        for cur in working_db['indicators'].find({'replay_name':rpl,
+        for cur in active_db['indicators'].find({'replay_name':rpl,
                                                 'player_id': 2},
                                                 {'_id':0, 'replay_name':0,
                                                 'player_username':0,
@@ -116,26 +117,36 @@ def build_player_race_profiles() -> None:
     """
     races = ['Protoss', 'Terran', 'Zerg']
     active_db = set_up_db()
+    print(f'Accessing: {active_db.name}')
+
     for race in races:
         active_db[f'{race}_Profiles'].drop()
 
 
     user_name_list = get_user_name_list(active_db)
+    print(f'{len(user_name_list)} users found in database')
 
-
-    for user_name in get_user_name_list(active_db):
+    print('Generating Player Profiles')
+    counts = {'Protoss':0, 'Zerg': 0, 'Terran':0}
+    for user_name in user_name_list:
         for race in races:
-            replays = get_player_replays(user_name, race)
+            replays = get_player_replays(active_db, user_name, race)
 
-            active_replays_df = (pd.DataFrame(working_repls.values(),
-                                              index=working_repls.keys())
-                                              .reset_index()
-                                              .drop('index', axis=1))
+            if replays:
+                active_replays_df = (pd.DataFrame(replays.values(),
+                                                index=replays.keys())
+                                                .reset_index()
+                                                .drop('index', axis=1))
 
-            act_prf = build_profile(active_replays_df, user_name, race)
-            act_prf_dict_lists = act_prf.to_dict(orient='list')
-            final_act_prf_dict = ({k: v[0]
-                                   for k, v
-                                   in act_prf_dict_lists.items()})
+                act_prf = build_profile(active_replays_df, user_name, race)
+                act_prf_dict_lists = act_prf.to_dict(orient='list')
+                final_act_prf_dict = ({k: v[0]
+                                    for k, v
+                                    in act_prf_dict_lists.items()})
 
-            active_db[f'{race}_Profiles'].insert_one(final_act_prf_dict)
+                active_db[f'{race}_Profiles'].insert_one(final_act_prf_dict)
+                counts[race] += 1
+
+    print('Created the following profiles')
+    for _race, count in counts.items():
+        print(f'{_race}: {count}')

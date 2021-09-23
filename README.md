@@ -2,49 +2,26 @@
 
 
 
-In this interactive document, I explore and prototype the technical back-end design for SC2 Training Grounds. Furthermore, I also export this back end as a Python library that demonstrate a basic implementation of this design. This library is a prototype meant to facilitate the exploration of the technical feasibility, requirements, possibilities and limitations of developing an in-game recommender system for StarCraft II, i.e. SC2 Training Grounds.
-{% include note.html content='this prototype is mainly a tool for the reflective practice of development. This reflection is part of my PhD research project, "Encouraging Play Experience Expansion Through Machine-Learning-Based Recommendations: User-Experience Design considerations in the use of Machine-Learning-Based Recommendation System for Videogames".' %}
-## Introduction
+This document explores the technical back-end design for SC2 Training Grounds. It also functions as the development environment for `sc_training`, a prototype Python library that demonstrates parts of a high-level implementation of this design. 
+{% include note.html content='this prototype is primarily meant as a tool for reflective practice. This reflection is part of my PhD research project, "Encouraging Play Experience Expansion Through Machine-Learning-Based Recommendations: User-Experience Design considerations in the use of Machine-Learning-Based Recommendation System for Video games".' %}
 
-`sc_training` is a python library developed to document, organise and communicate the basic technical posibilities, specifications and design that support SC2 Training Grounds.
+## Executive Summary
 
-As such, I develop this library using literate and iterative programming. This means that I try to build the library while simultaneously providing a narrative explanation and documentation for this development, i.e. literate programming. In other words, "the program is its own documentation" (Knuth, 1984; Ramsey, 1994; Literate Programming, 2014; Kery et al., 2018). This approach also helps me keep a journal of the development process, which is especially useful as this library is developed as part of my creative practice PhD project. This methodology allows me to rapidly test and explore many features and ideas while integrating the finalised elements into the library's source code and structure (Howard, 2019).
+`sc_training` is a python library developed to document, organise and communicate the design of *SC2 Training Grounds'* computer model. The goals of this library's development are:
+1. To review the technical challenges associated with the creation of a solution such as *SC2 Training Grounds*.
+2. To assess the possibilities and limitations of the resources that could be used to develop this solution. Therefore, allowing me to design a more realistic and grounded user experience for the application. 
+3. To provide a proof-of-concept that tests the technical feasibility of the project.
 
-In this case, I used [nbdev](https://nbdev.fast.ai/) to facilitate this process. This means that this library includes three components that can be explored separately or combined. First, the library was developed through a series of Jupyter notebooks. These interactive documents contain intertwined textual elements and source code, which can be consulted using jupyter lab or other IPython interpreters. Readers can read these documents if they want to explore the basic ideas in this library and the source code that compose all its functions. 
-{% include tip.html content='the following link explains how to set up the Jupyter and IPython libraries to use these documents; [Jupyter/IPython Quick Start Guide](https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/). I also include a PDF version of this notebooks as an extra support document.' %}
-Second, the library also includes its interactive documentation, where I review the development of each of its modules. I have structured this documentation as linearly as possible to reflect its development process and the structure that underlines the library.
-
-Each module's documentation includes several sections that review the main challenges I faced at each development stage. Additionally, at each document's end, there is a summary of the functions each module exports as a solution to these challenges. This summary hides much of the implementation details of each module, which readers can review in the library's source code or its development Jupyter notebooks. 
-{% include tip.html content='this documentation can be consulted as an interactive website through the following link [Interactive Documentation](https://hdavidespinosa.github.io/sc_training/).' %}
-Finally, this library is also exported as a traditional python library. This means that readers can find a functioning version of all the module's source code contained in the `sc_training` folder of the library. With this source code anyone can replicateand verify any of the examples and experiments I explore in the documentation and the notebooks.
-
-## Modules and Structure
-
-`sc_training` has various modules that are divided into several sections. The sections respond to the general strategy proposed in SC2 Training Grounds Design Brief. 
-
-### Section 1 Input and Data Structures
-
-Modules 00 to 07 cover an in-depth exploration of the [sc2reader](https://github.com/ggtracker/sc2reader) library. I use this package as the primary interface to extract data from StarCraft II replays and maps as input for SC2 Training Grounds.  
-
-### Section 2 Clustering
-
-In modules XX to XX, I review the clustering component of SC 2 Training Grounds. This component uses the player profiles constructed with Section 1's modules to generate a player classification model based on the players' performance indicators. 
-
-### Section 3 Classifier
-
-The modules in this section explore how I would use supervised learning techniques to generate a classification model based on the initial cluster analysis. This model aims to allow the system to rapidly and efficiently classify players into the categories defined in the previous cluster analysis.
-
-### Section 4 Recommender
-
-This final section explores how the player classification can be used to generate play recommendations for the players. This recommendation's objective is to help players build and follow specific training regimes to improve their performance in StarCraft II online melee matches.
-{% include warning.html content='this library is not meant as a complete implementation of the recommender system. Instead, the library has three primary objectives. First, it facilitates exploring some of the technical challenges developers and designers would face when creating a solution like the one described in the *SC2 Training Grounds Design Brief*. Second, it helps me gauge the possibilities and limitations of the resources I am using. These, in turn, help me scope and design a more realistic interface and experience for the solution in its *User experience Design Document*. Third, as a part of a proof-of-concept, it helps me evaluate the realistic technical feasibility of this project.' %} 
+I developed this library using literate and iterative programming. In other words, I built it while simultaneously providing a narrative explanation and documentation of its development (Knuth, 1984; Ramsey, 1994; Literate Programming, 2014; Kery et al., 2018). This methodology allows for the rapid testing exploration of ideas while integrating them into a functioning program (Howard, 2019). Hence, the library is simultaneously the program's documentation and the program itself.
+{% include tip.html content='I used [nbdev](https://nbdev.fast.ai/) to facilitate this process. The use of this tool means that this document includes three components that can be explored separately or combined.  **First**, the library was developed through a series of [Jupyter notebooks](https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/). These interactive documents contain intertwined textual elements and source code that describe the ideas that support this library and the source code that compose its functions. The static version of these documents is included as a pdf appendix to the PhD project. Meanwhile, the interactive documents can be consulted using jupyter lab or other IPython interpreters (a guide to set up the Jupyter and IPython libraries to use these documents: [Jupyter/IPython Quick Start Guide](https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/)). **Second**, the library is also exported as a traditional python library. Readers can find a functioning version of all the module&#8217;s in the `sc_training` folder of the library. Readers can use this code to replicate and verify any examples and experiments explored in the documentation and the notebooks. **Third**, these notebooks produce a website that serves as the library&#8217;s [Interactive Documentation](https://hdavidespinosa.github.io/sc_training/). This documentation omits many technical details focusing on the descriptions of the development process and the library&#8217;s structure.' %} 
 
 ## Setup
+Before going into the document itself it is important to clarify some aspects of the composition. 
 
-As a prelude to the exploration in the following modules, I will like to clarify some aspects of the composition of this document for brevity and clarity. 
+Because of the nature of the documents, each notebook is exported as a module of the `sc_training` library. 
 
-In every case, when I start developing one of this library's modules, I have to include some setup elements at the beginning of each document. Since this process is almost identical in most cases, I will cover it here so that I can hide it in the module's documentation.
-{% include note.html content='Remember that any elements that I may hide in these documents can still be consulted and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.' %}
+Meanwhile, since each notebook works as a separate module, I have to include some setup elements at the beginning of each document. Since this process is almost identical in most cases, I will cover it here so that I can hide it in the module's documentation.
+{% include note.html content='Remember that any elements that I hide in these documents can still be reviewed and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.' %}
 The development of all modules starts with two elements: importing the module's dependencies and loading the development tests and sample data.
 
 Importing the module's dependencies means invoking several libraries used by each module. The following is an example of these imports.
@@ -101,7 +78,7 @@ single_replay
 
 
 
-    <sc2reader.resources.Replay at 0x1becba91fd0>
+    <sc2reader.resources.Replay at 0x239dec65e80>
 
 
 
@@ -115,7 +92,7 @@ replays
 
 
 
-    <generator object SC2Factory.load_all at 0x000001BED1D0E9E0>
+    <generator object SC2Factory.load_all at 0x00000239E4F4C120>
 
 
 
@@ -146,7 +123,7 @@ with open(data_path/'upgrades.json') as f:
 
 ## Exportable functions
 
-As I pointed out before, in each module, I include a section where I compile all the exportable functions that respond to the challenges summarise by each module. Once exported, other modules can call these functions by importing the module that exported them in the first place.
+In each module, I include a section where I compile all the exportable functions that respond to the challenges summarise by each module. Once exported, other modules can call these functions by importing the module that exported them in the first place.
 
 For example, in the following code, I demonstrate how to call the `get_replay_info` function from the `summarise_rpl` module (see <<Chapter 1 - Summarising Replays>>).
 
@@ -158,25 +135,21 @@ replay_data = get_replay_info(single_replay)
 print(replay_data)
 ```
 
-    File path:                   c:\Users\david\Documents\phdcode\sc_training\test_replays\Jagannatha LE.SC2Replay 
-    File name:                   Jagannatha LE.SC2Replay 
-    Date (datetime.datetime):    2021-02-24 02:53:06 
-    Duration (seconds):          590 
-    Game type:                   1v1 
-    Game release:                5.0.6.83830 
-    Map:                         Jagannatha LE 
-    Game category:               Ladder 
-    winner:                      Team 2: Player 2 - MxChrisxM (Terran) 
-    players:                     [(1, 'HDEspino', 'Protoss', 'Loss'), (2, 'MxChrisxM', 'Terran', 'Win')] 
-    
+
+    ---------------------------------------------------------------------------
+
+    ModuleNotFoundError                       Traceback (most recent call last)
+
+    ~\AppData\Local\Temp/ipykernel_38380/3927205414.py in <module>
+    ----> 1 from sc_training.summarise_rpl import *
+          2 
+          3 #Note that get_replay_info is defined in the summarise_rpl module.
+          4 replay_data = get_replay_info(single_replay)
+          5 print(replay_data)
 
 
-## Install
-{% include warning.html content='THE FOLLOWING 2 SECTIONS ARE INCOMPLETE PLACEHOLDERS. PLEASE DISREGARD FOR NOW' %}
-If time allows I will cover the package intallation process and a sample run of the final system in these sections 
-{% include note.html content='This is a test quote' %}
+    ModuleNotFoundError: No module named 'sc_training.summarise_rpl'
 
-`pirpi install sc_traing`
 
 ## How to use
 

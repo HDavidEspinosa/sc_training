@@ -31,31 +31,34 @@ nb_path: "index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this interactive document, I explore and prototype the technical back-end design for SC2 Training Grounds. Furthermore, I also export this back end as a Python library that demonstrate a basic implementation of this design. This library is a prototype meant to facilitate the exploration of the technical feasibility, requirements, possibilities and limitations of developing an in-game recommender system for StarCraft II, i.e. SC2 Training Grounds.
-{% include note.html content='this prototype is mainly a tool for the reflective practice of development. This reflection is part of my PhD research project, "Encouraging Play Experience Expansion Through Machine-Learning-Based Recommendations: User-Experience Design considerations in the use of Machine-Learning-Based Recommendation System for Videogames".' %}</p>
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p><code>sc_training</code> is a python library developed to document, organise and communicate the basic technical posibilities, specifications and design that support SC2 Training Grounds.</p>
-<p>As such, I develop this library using literate and iterative programming. This means that I try to build the library while simultaneously providing a narrative explanation and documentation for this development, i.e. literate programming. In other words, "the program is its own documentation" (Knuth, 1984; Ramsey, 1994; Literate Programming, 2014; Kery et al., 2018). This approach also helps me keep a journal of the development process, which is especially useful as this library is developed as part of my creative practice PhD project. This methodology allows me to rapidly test and explore many features and ideas while integrating the finalised elements into the library's source code and structure (Howard, 2019).</p>
-<p>In this case, I used <a href="https://nbdev.fast.ai/">nbdev</a> to facilitate this process. This means that this library includes three components that can be explored separately or combined. First, the library was developed through a series of Jupyter notebooks. These interactive documents contain intertwined textual elements and source code, which can be consulted using jupyter lab or other IPython interpreters. Readers can read these documents if they want to explore the basic ideas in this library and the source code that compose all its functions. 
-{% include tip.html content='the following link explains how to set up the Jupyter and IPython libraries to use these documents; <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/">Jupyter/IPython Quick Start Guide</a>. I also include a PDF version of this notebooks as an extra support document.' %}
-Second, the library also includes its interactive documentation, where I review the development of each of its modules. I have structured this documentation as linearly as possible to reflect its development process and the structure that underlines the library.</p>
-<p>Each module's documentation includes several sections that review the main challenges I faced at each development stage. Additionally, at each document's end, there is a summary of the functions each module exports as a solution to these challenges. This summary hides much of the implementation details of each module, which readers can review in the library's source code or its development Jupyter notebooks. 
-{% include tip.html content='this documentation can be consulted as an interactive website through the following link <a href="https://hdavidespinosa.github.io/sc_training/">Interactive Documentation</a>.' %}
-Finally, this library is also exported as a traditional python library. This means that readers can find a functioning version of all the module's source code contained in the <code>sc_training</code> folder of the library. With this source code anyone can replicateand verify any of the examples and experiments I explore in the documentation and the notebooks.</p>
-<h2 id="Modules-and-Structure">Modules and Structure<a class="anchor-link" href="#Modules-and-Structure"> </a></h2><p><code>sc_training</code> has various modules that are divided into several sections. The sections respond to the general strategy proposed in SC2 Training Grounds Design Brief.</p>
-<h3 id="Section-1-Input-and-Data-Structures">Section 1 Input and Data Structures<a class="anchor-link" href="#Section-1-Input-and-Data-Structures"> </a></h3><p>Modules 00 to 07 cover an in-depth exploration of the <a href="https://github.com/ggtracker/sc2reader">sc2reader</a> library. I use this package as the primary interface to extract data from StarCraft II replays and maps as input for SC2 Training Grounds.</p>
-<h3 id="Section-2-Clustering">Section 2 Clustering<a class="anchor-link" href="#Section-2-Clustering"> </a></h3><p>In modules XX to XX, I review the clustering component of SC 2 Training Grounds. This component uses the player profiles constructed with Section 1's modules to generate a player classification model based on the players' performance indicators.</p>
-<h3 id="Section-3-Classifier">Section 3 Classifier<a class="anchor-link" href="#Section-3-Classifier"> </a></h3><p>The modules in this section explore how I would use supervised learning techniques to generate a classification model based on the initial cluster analysis. This model aims to allow the system to rapidly and efficiently classify players into the categories defined in the previous cluster analysis.</p>
-<h3 id="Section-4-Recommender">Section 4 Recommender<a class="anchor-link" href="#Section-4-Recommender"> </a></h3><p>This final section explores how the player classification can be used to generate play recommendations for the players. This recommendation's objective is to help players build and follow specific training regimes to improve their performance in StarCraft II online melee matches.
-{% include warning.html content='this library is not meant as a complete implementation of the recommender system. Instead, the library has three primary objectives. First, it facilitates exploring some of the technical challenges developers and designers would face when creating a solution like the one described in the <em>SC2 Training Grounds Design Brief</em>. Second, it helps me gauge the possibilities and limitations of the resources I am using. These, in turn, help me scope and design a more realistic interface and experience for the solution in its <em>User experience Design Document</em>. Third, as a part of a proof-of-concept, it helps me evaluate the realistic technical feasibility of this project.' %}</p>
+<p>This document explores the technical back-end design for SC2 Training Grounds. It also functions as the development environment for <code>sc_training</code>, a prototype Python library that demonstrates parts of a high-level implementation of this design. 
+{% include note.html content='this prototype is primarily meant as a tool for reflective practice. This reflection is part of my PhD research project, "Encouraging Play Experience Expansion Through Machine-Learning-Based Recommendations: User-Experience Design considerations in the use of Machine-Learning-Based Recommendation System for Video games".' %}</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Setup">Setup<a class="anchor-link" href="#Setup"> </a></h2><p>As a prelude to the exploration in the following modules, I will like to clarify some aspects of the composition of this document for brevity and clarity.</p>
-<p>In every case, when I start developing one of this library's modules, I have to include some setup elements at the beginning of each document. Since this process is almost identical in most cases, I will cover it here so that I can hide it in the module's documentation.
-{% include note.html content='Remember that any elements that I may hide in these documents can still be consulted and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.' %}
+<h2 id="Executive-Summary">Executive Summary<a class="anchor-link" href="#Executive-Summary"> </a></h2><p><code>sc_training</code> is a python library developed to document, organise and communicate the design of <em>SC2 Training Grounds'</em> computer model. The goals of this library's development are:</p>
+<ol>
+<li>To review the technical challenges associated with the creation of a solution such as <em>SC2 Training Grounds</em>.</li>
+<li>To assess the possibilities and limitations of the resources that could be used to develop this solution. Therefore, allowing me to design a more realistic and grounded user experience for the application. </li>
+<li>To provide a proof-of-concept that tests the technical feasibility of the project.</li>
+</ol>
+<p>I developed this library using literate and iterative programming. In other words, I built it while simultaneously providing a narrative explanation and documentation of its development (Knuth, 1984; Ramsey, 1994; Literate Programming, 2014; Kery et al., 2018). This methodology allows for the rapid testing exploration of ideas while integrating them into a functioning program (Howard, 2019). Hence, the library is simultaneously the program's documentation and the program itself.
+{% include tip.html content='I used <a href="https://nbdev.fast.ai/">nbdev</a> to facilitate this process. The use of this tool means that this document includes three components that can be explored separately or combined.  <strong>First</strong>, the library was developed through a series of <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/">Jupyter notebooks</a>. These interactive documents contain intertwined textual elements and source code that describe the ideas that support this library and the source code that compose its functions. The static version of these documents is included as a pdf appendix to the PhD project. Meanwhile, the interactive documents can be consulted using jupyter lab or other IPython interpreters (a guide to set up the Jupyter and IPython libraries to use these documents: <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/">Jupyter/IPython Quick Start Guide</a>). <strong>Second</strong>, the library is also exported as a traditional python library. Readers can find a functioning version of all the module&#8217;s in the <code>sc_training</code> folder of the library. Readers can use this code to replicate and verify any examples and experiments explored in the documentation and the notebooks. <strong>Third</strong>, these notebooks produce a website that serves as the library&#8217;s <a href="https://hdavidespinosa.github.io/sc_training/">Interactive Documentation</a>. This documentation omits many technical details focusing on the descriptions of the development process and the library&#8217;s structure.
+' %}</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Setup">Setup<a class="anchor-link" href="#Setup"> </a></h2><p>Before going into the document itself it is important to clarify some aspects of the composition.</p>
+<p>Because of the nature of the documents, each notebook is exported as a module of the <code>sc_training</code> library.</p>
+<p>Meanwhile, since each notebook works as a separate module, I have to include some setup elements at the beginning of each document. Since this process is almost identical in most cases, I will cover it here so that I can hide it in the module's documentation.
+{% include note.html content='Remember that any elements that I hide in these documents can still be reviewed and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.
+' %}
 The development of all modules starts with two elements: importing the module's dependencies and loading the development tests and sample data.</p>
 <p>Importing the module's dependencies means invoking several libraries used by each module. The following is an example of these imports.</p>
 
@@ -144,7 +147,7 @@ The development of all modules starts with two elements: importing the module's 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x1becba91fd0&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x239dec65e80&gt;</pre>
 </div>
 
 </div>
@@ -185,7 +188,7 @@ The development of all modules starts with two elements: importing the module's 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;generator object SC2Factory.load_all at 0x000001BED1D0E9E0&gt;</pre>
+<pre>&lt;generator object SC2Factory.load_all at 0x00000239E4F4C120&gt;</pre>
 </div>
 
 </div>
@@ -241,7 +244,7 @@ The development of all modules starts with two elements: importing the module's 
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exportable-functions">Exportable functions<a class="anchor-link" href="#Exportable-functions"> </a></h2><p>As I pointed out before, in each module, I include a section where I compile all the exportable functions that respond to the challenges summarise by each module. Once exported, other modules can call these functions by importing the module that exported them in the first place.</p>
+<h2 id="Exportable-functions">Exportable functions<a class="anchor-link" href="#Exportable-functions"> </a></h2><p>In each module, I include a section where I compile all the exportable functions that respond to the challenges summarise by each module. Once exported, other modules can call these functions by importing the module that exported them in the first place.</p>
 <p>For example, in the following code, I demonstrate how to call the <a href="/sc_training/summarise_rpl.html#get_replay_info"><code>get_replay_info</code></a> function from the <code>summarise_rpl</code> module (see &lt;&lt;Chapter 1 - Summarising Replays&gt;&gt;).</p>
 
 </div>
@@ -270,19 +273,18 @@ The development of all modules starts with two elements: importing the module's 
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>File path:                   c:\Users\david\Documents\phdcode\sc_training\test_replays\Jagannatha LE.SC2Replay 
-File name:                   Jagannatha LE.SC2Replay 
-Date (datetime.datetime):    2021-02-24 02:53:06 
-Duration (seconds):          590 
-Game type:                   1v1 
-Game release:                5.0.6.83830 
-Map:                         Jagannatha LE 
-Game category:               Ladder 
-winner:                      Team 2: Player 2 - MxChrisxM (Terran) 
-players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Loss&#39;), (2, &#39;MxChrisxM&#39;, &#39;Terran&#39;, &#39;Win&#39;)] 
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">ModuleNotFoundError</span>                       Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_38380/3927205414.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span><span class="ansi-green-intense-fg ansi-bold">from</span> sc_training<span class="ansi-yellow-intense-fg ansi-bold">.</span>summarise_rpl <span class="ansi-green-intense-fg ansi-bold">import</span> <span class="ansi-yellow-intense-fg ansi-bold">*</span>
+<span class="ansi-green-fg">      2</span> 
+<span class="ansi-green-fg">      3</span> <span class="ansi-red-intense-fg ansi-bold">#Note that get_replay_info is defined in the summarise_rpl module.</span>
+<span class="ansi-green-fg">      4</span> replay_data <span class="ansi-yellow-intense-fg ansi-bold">=</span> get_replay_info<span class="ansi-yellow-intense-fg ansi-bold">(</span>single_replay<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">      5</span> print<span class="ansi-yellow-intense-fg ansi-bold">(</span>replay_data<span class="ansi-yellow-intense-fg ansi-bold">)</span>
 
-</pre>
+<span class="ansi-red-intense-fg ansi-bold">ModuleNotFoundError</span>: No module named &#39;sc_training.summarise_rpl&#39;</pre>
 </div>
 </div>
 
@@ -292,22 +294,6 @@ players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Lo
 </div>
     {% endraw %}
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Install">Install<a class="anchor-link" href="#Install"> </a></h2><p>{% include warning.html content='THE FOLLOWING 2 SECTIONS ARE INCOMPLETE PLACEHOLDERS. PLEASE DISREGARD FOR NOW' %}
-If time allows I will cover the package intallation process and a sample run of the final system in these sections 
-{% include note.html content='This is a test quote' %}</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><code>pirpi install sc_traing</code></p>
-
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="How-to-use">How to use<a class="anchor-link" href="#How-to-use"> </a></h2>

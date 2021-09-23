@@ -277,8 +277,8 @@ Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_a
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>153 added to replays
-0 already existed in replays
+<pre>0 added to replays
+153 already existed in replays
 </pre>
 </div>
 </div>
@@ -525,16 +525,25 @@ Second set of indicators contains:  377 indicators.
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="inventory_replays" class="doc_header"><code>inventory_replays</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L186" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>inventory_replays</code>(<strong><code>replay_batch</code></strong>:<code>Any</code>)</p>
 </blockquote>
-<p>This function builds four collections within the database
+<p>This function builds two collections within the database
 specified in the config.json file.</p>
+<p>The replay information will be stored in the database specified in
+cwd/data/config.json in the following collections:</p>
 <ul>
 <li><code>replays</code>
   Stores the metadata of the replays, can be used for indexing and
   for finding the other replays.</li>
-<li><code>inicators_Protoss</code>, <code>indicator_Terran</code>, <code>indicators_Zerg</code>
-  Store the indicators for each performance of every player,
-  separated by the race they play with in every match.</li>
+<li><code>inicators</code>
+  Store the indicators for each performance of every player.</li>
 </ul>
+<p><em>Args:</em></p>
+
+<pre><code>- replay_batch
+    Directory address where the replays to process are located.
+
+</code></pre>
+<p><em>Return:</em>
+    -None</p>
 
 </div>
 
@@ -581,7 +590,8 @@ specified in the config.json file.</p>
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Load complete.
+<pre>Inventorying replays at: c:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch in database TEST_library
+Load complete.
 153 files processed
 149 files loaded
 4 files ignored
@@ -619,7 +629,7 @@ specified in the config.json file.</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;replays&#39;, &#39;indicators&#39;]</pre>
+<pre>[&#39;indicators&#39;, &#39;replays&#39;]</pre>
 </div>
 
 </div>
@@ -651,8 +661,8 @@ specified in the config.json file.</p>
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>replays has 149 records.
-indicators has 298 records.
+<pre>indicators has 298 records.
+replays has 149 records.
 </pre>
 </div>
 </div>

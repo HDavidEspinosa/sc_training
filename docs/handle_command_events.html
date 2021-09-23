@@ -34,6 +34,7 @@ nb_path: "05_handle_command_events.ipynb"
 <h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p>In this chapter, I review the <code>GameEvent</code> and <code>CommandEvent</code> objects as sources of information about the players' tactical characteristics. Here I also develop the functions contained in <code>handle_command_events</code> module. The module can be used to process some of the player's tactical performance indicators.</p>
 <p>In the previous modules, I focussed on the indicators I could extract and build based on the information in a replay's <code>PlayerStatsEvents</code>. For the most part, these indicators revolve around economic and building indicators, which point to the game's strategic (i.e. macro) dimension. Meanwhile, beyond what a player's build orders and army composition may tangentially suggest, these indicators don't seem to reveal much about the game's tactical (i.e. micro) dimension. Moreover, the game itself and other applications like <a href="https://sc2replaystats.com/">sc2replaystats</a> offer players little information in this regard.</p>
 <h3 id="Exportable-Members">Exportable Members<a class="anchor-link" href="#Exportable-Members"> </a></h3><ul>
+<li><a href="/sc_training/handle_command_events.html#calc_apms"><code>calc_apms</code></a></li>
 <li><a href="/sc_training/handle_command_events.html#calc_spe_abil_ratios"><code>calc_spe_abil_ratios</code></a></li>
 <li><a href="/sc_training/handle_command_events.html#get_prefered_spec_abil"><code>get_prefered_spec_abil</code></a></li>
 <li><a href="/sc_training/handle_command_events.html#calc_attack_ratio"><code>calc_attack_ratio</code></a></li>
@@ -119,7 +120,7 @@ nb_path: "05_handle_command_events.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>79.32203389830521
+<pre>198.3050847457627
 </pre>
 </div>
 </div>
@@ -507,9 +508,13 @@ Total sum: 151
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exportable-Functions">Exportable Functions<a class="anchor-link" href="#Exportable-Functions"> </a></h2><p>In this section, I define this <code>handle_command_events</code> exportable functions. These functions use the <code>CommandEvent</code> classification discussed above to calculate several micro-game performance indicators.</p>
-<p>First, I define the function <a href="/sc_training/handle_command_events.html#calc_spe_abil_ratios"><code>calc_spe_abil_ratios</code></a>. In this function, I use the special abilities list to calculate the ratio between them and the total commands executed by the player. With this ratio, I can quantify the use of these abilities. The measurement helps me separate players that use their race's unique capabilities from those who do not.
-{% include note.html content='Following the logic set in previous modules, I define these functions to calculate all indicators for the early, mid, late and whole game. Although I do this to remain consistent, I also think this level of detail makes sense given how players have access to different units and abilities at various game stages.' %}</p>
+<h2 id="Exportable-Functions">Exportable Functions<a class="anchor-link" href="#Exportable-Functions"> </a></h2><p>In this section, I define the <code>handle_command_events</code> module's exportable functions. These functions use <code>CommandEvents</code>, as discussed above, to calculate several micro-game performance indicators.</p>
+<ul>
+<li><a href="/sc_training/handle_command_events.html#calc_apms"><code>calc_apms</code></a>: This function uses <code>sc2reader's</code> <code>APMTracker</code> plugin to extract the average APM of a specific player during the whole game and the early, mid and late stages of the game. </li>
+<li><a href="/sc_training/handle_command_events.html#calc_spe_abil_ratios"><code>calc_spe_abil_ratios</code></a>: This function uses the special abilities list to calculate the ratio between commands involving this abilities and the total commands executed by the player. With this ratio, I can quantify the use and awareness of these abilities.</li>
+<li><a href="/sc_training/handle_command_events.html#get_prefered_spec_abil"><code>get_prefered_spec_abil</code></a>: This function calculates the player's first and second preferred abilities, if they use any.</li>
+<li><a href="/sc_training/handle_command_events.html#calc_attack_ratio"><code>calc_attack_ratio</code></a>: This function estimates a player's aggressiveness.</li>
+</ul>
 
 </div>
 </div>
@@ -525,7 +530,98 @@ Total sum: 151
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="calc_spe_abil_ratios" class="doc_header"><code>calc_spe_abil_ratios</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L63" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_spe_abil_ratios</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="calc_apms" class="doc_header"><code>calc_apms</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L68" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_apms</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+</blockquote>
+<p>Extracts the average APM of a specific player during the whole game
+and the early, mid and late stages of the game.</p>
+<p>The function uses sc2reader APMTracker plugin to extract the
+minute-to-minute APM measurement of the player. Based on this it
+calculates the average values for the whole, early, mid and late game
+stages.</p>
+<p><em>Args</em></p>
+
+<pre><code>- rpl (sc2reader.resources.Replay)
+    Replay being analysed
+- pid (int)
+    Player id of the player being considered by the function
+
+</code></pre>
+<p><em>Returns</em></p>
+
+<pre><code>- dict[str, float]
+    Dictionary with the game stage names as key and the Average
+    APMs measurements of each stage as values</code></pre>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The following is a sample run of the <code>calc_apm</code> function.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pprint</span><span class="p">(</span><span class="n">calc_apms</span><span class="p">(</span><span class="n">single_replay</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&#39;early_APM&#39;: 615.9999999999949,
+ &#39;late_APM&#39;: 468.99999999999727,
+ &#39;mid_APM&#39;: 718.6666666666598,
+ &#39;whole_APM&#39;: 909.7627118644067}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="calc_spe_abil_ratios" class="doc_header"><code>calc_spe_abil_ratios</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L119" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_spe_abil_ratios</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Extracts a ratio from 0 to 1 that quantifies the use use of special
 abilities.</p>
@@ -563,6 +659,13 @@ abilities to general commands executed by the player.</p>
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The following is a sample run of the <a href="/sc_training/handle_command_events.html#calc_spe_abil_ratios"><code>calc_spe_abil_ratios</code></a> function.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -570,8 +673,7 @@ abilities to general commands executed by the player.</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># calc_spe_abil_ratios sample run</span>
-<span class="n">test_restult</span> <span class="o">=</span> <span class="n">calc_spe_abil_ratios</span><span class="p">(</span><span class="n">TEST_MATCH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_restult</span> <span class="o">=</span> <span class="n">calc_spe_abil_ratios</span><span class="p">(</span><span class="n">TEST_MATCH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">test_restult</span><span class="p">)</span>
 </pre></div>
 
@@ -601,7 +703,7 @@ abilities to general commands executed by the player.</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Meawhile, the function <a href="/sc_training/handle_command_events.html#get_prefered_spec_abil"><code>get_prefered_spec_abil</code></a> calculates the player's first and second preferred abilities, if they use any. Again, this function separates the results for the early, mid and late games.</p>
+<p>Meanwhile, the function <a href="/sc_training/handle_command_events.html#get_prefered_spec_abil"><code>get_prefered_spec_abil</code></a> calculates the player's first and second preferred abilities, if they use any. Again, this function separates the results for the early, mid and late games.</p>
 
 </div>
 </div>
@@ -617,7 +719,7 @@ abilities to general commands executed by the player.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_prefered_spec_abil" class="doc_header"><code>get_prefered_spec_abil</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L137" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_prefered_spec_abil</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_prefered_spec_abil" class="doc_header"><code>get_prefered_spec_abil</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L193" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_prefered_spec_abil</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Extracts the names of the two special abilities a player uses the
 most during the whole, early, mid and late games.</p>
@@ -711,7 +813,7 @@ most during the whole, early, mid and late games.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="calc_attack_ratio" class="doc_header"><code>calc_attack_ratio</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L179" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_attack_ratio</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="calc_attack_ratio" class="doc_header"><code>calc_attack_ratio</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L235" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_attack_ratio</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Calculates the ratio between a player's attack orders and their
 common commands.</p>
@@ -780,71 +882,6 @@ aggresiveness.</p>
  &#39;late_att_ratio&#39;: 0.084}</pre>
 </div>
 
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="calc_apms" class="doc_header"><code>calc_apms</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L245" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_apms</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pprint</span><span class="p">(</span><span class="n">calc_apms</span><span class="p">(</span><span class="n">single_replay</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{&#39;early_APM&#39;: 246.40000000000046,
- &#39;late_APM&#39;: 187.60000000000045,
- &#39;mid_APM&#39;: 287.46666666666664,
- &#39;whole_APM&#39;: 363.9050847457606}
-</pre>
-</div>
 </div>
 
 </div>

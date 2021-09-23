@@ -1,6 +1,6 @@
 ---
 
-title: Section 1.7 - The main ingest module 
+title: 9 - The main ingest module 
 
 
 keywords: fastai
@@ -143,7 +143,7 @@ players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Wi
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="load_configurations" class="doc_header"><code>load_configurations</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L83" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_configurations</code>()</p>
+<h4 id="load_configurations" class="doc_header"><code>load_configurations</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L85" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_configurations</code>()</p>
 </blockquote>
 <p>Loads the project's</p>
 
@@ -484,7 +484,7 @@ Second set of indicators contains:  377 indicators.
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="set_up_db" class="doc_header"><code>set_up_db</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L118" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>set_up_db</code>()</p>
+<h4 id="set_up_db" class="doc_header"><code>set_up_db</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L120" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>set_up_db</code>()</p>
 </blockquote>
 <p>Loads the database specified in the project's config.json file.</p>
 
@@ -523,7 +523,7 @@ Second set of indicators contains:  377 indicators.
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="inventory_replays" class="doc_header"><code>inventory_replays</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L186" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>inventory_replays</code>(<strong><code>replay_batch</code></strong>:<code>Any</code>)</p>
+<h4 id="inventory_replays" class="doc_header"><code>inventory_replays</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L188" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>inventory_replays</code>(<strong><code>replay_batch</code></strong>:<code>Any</code>)</p>
 </blockquote>
 <p>This function builds two collections within the database
 specified in the config.json file.</p>
@@ -629,7 +629,7 @@ Load complete.
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&#39;indicators&#39;, &#39;replays&#39;]</pre>
+<pre>[&#39;replays&#39;, &#39;indicators&#39;]</pre>
 </div>
 
 </div>
@@ -661,8 +661,8 @@ Load complete.
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>indicators has 298 records.
-replays has 149 records.
+<pre>replays has 149 records.
+indicators has 298 records.
 </pre>
 </div>
 </div>

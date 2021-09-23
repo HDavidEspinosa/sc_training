@@ -1,6 +1,6 @@
 ---
 
-title: Section 1 Data Ingestion and Clustering Process
+title: 2 - Data Ingestion and Clustering Process
 
 
 keywords: fastai
@@ -54,7 +54,7 @@ The following sequence diagram shows the proposed flow of orders and data betwee
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Based on this proposed flow of orders, I first need to implement the ingest process for StarCraft II replay files. This ingestion process is essential to structure the input for the clustering process. Furthermore, it also determines the input of the application's classification modelling process, as shown in SC2 Training Grounds activity diagram (see Section 1's introduction).</p>
-<p>In the sequence diagram, I show that the ingestion process is, on a top-level, composed of two main functions,  <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> and <a href="/sc_training/ingest.html#get_replay_indicators"><code>get_replay_indicators</code></a>. <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> registers the replays so that a user can use their basic meta-data to reference specific replays and identify their players. Meanwhile, <a href="/sc_training/ingest.html#get_replay_indicators"><code>get_replay_indicators</code></a> compiles all performance indicators of each player in each replay. Thus, the system can loop through various replays and extract and store the performance indicators for each player in each game.</p>
+<p>In the sequence diagram, I show that the ingestion process is, on a top-level, composed of two main functions,  <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> and <code>get_replay_indicators</code>. <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> registers the replays so that a user can use their basic meta-data to reference specific replays and identify their players. Meanwhile, <code>get_replay_indicators</code> compiles all performance indicators of each player in each replay. Thus, the system can loop through various replays and extract and store the performance indicators for each player in each game.</p>
 <p>Having understood how the functions are supposed to interact, I implement them in the following modules. The most important outcome of this implementation is the structure of the players' performance indicators and how this data is indexed. In other words, this definition determines the information vectors that will become the inputs for the clustering and classification modelling process afterwards. 
 {% include note.html content='To review the three-step process that resulted in the final version of the vectors, see the dissertation document Chapter 5.' %}
 This implementation implies defining multiple functions that extract, organise and return different bits of information contained in a <em>SC2Replay</em> file. Since different pieces relate to different categories of information, I group the functions in separate modules according to those categories.</p>

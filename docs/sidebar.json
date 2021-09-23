@@ -1,21 +1,15 @@
 {
   "sc_training": {
     "Overview": "/",
-    "": {
-    	"Introduction": {
-    		"SC2 Training Grounds Computer Model": "Comp_model.html"
-    	}, 
-      "Section 1 - Ingest and Clustering":{
-        "Section 1 - Ingest and Clustering": "01_ingest_and_clustering.html",
-        "Section 1.1 - Summarising Replays": "summarise_rpl.html",
-        "Section 1.2 - Handling Tracker Events": "handle_tracker_events.html",
-        "Section 1.3 - Parsing Macroeconomic Indicators": "macro_econ_parser.html",
-        "Section 1.4 - Parsing Build Orders": "build_parser.html",
-        "Section 1.5 - Handling Command Events": "handle_command_events.html",
-        "Section 1.6 - Tracking Control Groups": "selection_parser.html",
-        "Section 1.7 - The Main Ingest Module": "ingest.html",
-        "Section 1.8 - Player Profiler": "profiler.html"
-      }
-    }
+    "1 - SC2 Training Grounds Computer Model": "Comp_model.html",
+    "2 - Data Ingestion and Clustering Process": "01_ingest_and_clustering.html",
+    "3 - Summarising Replays": "summarise_rpl.html",
+    "4 - Handling Tracker Events": "handle_tracker_events.html",
+    "5 - Parsing Macroeconomic Indicators": "macro_econ_parser.html",
+    "6 - Parsing Build Orders": "build_parser.html",
+    "7 - Handling Command Events": "handle_command_events.html",
+    "8 - Tracking Control Groups": "selection_parser.html",
+    "9 - The main ingest module ": "ingest.html",
+    "10 - Player Profiler": "profiler.html"
   }
 }

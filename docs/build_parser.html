@@ -1,6 +1,6 @@
 ---
 
-title: Section 1.4 - Parsing Build Orders
+title: 6 - Parsing Build Orders
 
 
 keywords: fastai
@@ -1663,7 +1663,7 @@ Name: Player2_ArmyComp, dtype: int64</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_composition" class="doc_header"><code>count_composition</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L227" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composition</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_composition" class="doc_header"><code>count_composition</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L229" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_composition</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Generate a tally of all of a player's active units at different
 stages of the match.</p>
@@ -2021,7 +2021,7 @@ has no active units of some types.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L286" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="count_started" class="doc_header"><code>count_started</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L288" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>count_started</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>, <strong><code>buildings</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Generate a tally of all of a player's started units at different
 stages of the match.</p>
@@ -2435,7 +2435,7 @@ types, even if the player has no units of some types.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_expan_times" class="doc_header"><code>get_expan_times</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L340" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_times</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_expan_times" class="doc_header"><code>get_expan_times</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L342" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_times</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Gets a dictionary with the finished_at times for a player's first
 three expansions.</p>
@@ -2535,10 +2535,7 @@ expansions, the rest of the expansions are ignored.</p>
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>4
-False
-Case1
-{&#39;expan_1&#39;: 261.0943458686441, &#39;expan_2&#39;: 515.4802039194916}
+<pre>{&#39;expan_1&#39;: 261.0943458686441, &#39;expan_2&#39;: 515.4802039194916}
 </pre>
 </div>
 </div>
@@ -2560,7 +2557,7 @@ Case1
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_expan_counts" class="doc_header"><code>get_expan_counts</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L391" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_counts</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_expan_counts" class="doc_header"><code>get_expan_counts</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L393" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_expan_counts</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>The function counts the number of base structures a player built
 at each game stage.</p>
@@ -2692,7 +2689,7 @@ at each game stage.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L436" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="list_player_upgrades" class="doc_header"><code>list_player_upgrades</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/build_parser.py#L438" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>list_player_upgrades</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Lists the times at wich the player completed their updates</p>
 

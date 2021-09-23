@@ -21,6 +21,8 @@ from pprint import pprint
 from jsonschema import validate
 from dataclasses import dataclass, astuple, asdict, field
 
+from sc2reader.engine.plugins import APMTracker
+
 from . import *
 sc2reader.engine.register_plugin(APMTracker())
 sc2reader.engine.register_plugin(CtrlGroupTracker())

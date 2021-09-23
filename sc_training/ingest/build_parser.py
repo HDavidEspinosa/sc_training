@@ -21,8 +21,10 @@ import json
 # Internal Cell
 
 import sc2reader
+
 from .handle_tracker_event import *
 from .macro_econ_parser import *
+
 
 # Internal Cell
 

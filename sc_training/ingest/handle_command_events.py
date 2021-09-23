@@ -247,13 +247,15 @@ def calc_apms(rpl: sc2reader.resources.Replay,
 
     apms_dict = reindex(rpl.player[pid].apm)
 
-    apms_dicts = [[apm for apm in apms_dict.values()],
-                  [apm for m, apm in apms_dict.items() if m < 4],
+    apms_lists = [[apm for m, apm in apms_dict.items() if m < 4],
                   [apm for m, apm in apms_dict.items() if 4 <= m < 8],
-                  [apm for m, apm in apms_dict.items() if 9 <= m]]
+                  [apm for m, apm in apms_dict.items() if 8 <= m]]
 
-    dict_keys = ['whole_APM', 'early_APM',
-                 'mid_APM', 'late_APM']
+    dict_keys = ['early_APM', 'mid_APM', 'late_APM']
 
-    return {k: average(vals) for k, vals in zip(dict_keys, apms_dict)}
+    avg_apms = {k: average(vals) for k, vals in zip(dict_keys, apms_lists)}
+
+    avg_apms['whole_APM'] = rpl.player[pid].avg_apm
+
+    return avg_apms
 

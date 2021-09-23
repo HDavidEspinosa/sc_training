@@ -39,25 +39,37 @@ nb_path: "index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Executive-Summary">Executive Summary<a class="anchor-link" href="#Executive-Summary"> </a></h2><p><code>sc_training</code> is a python library developed to document, organise and communicate the design of <em>SC2 Training Grounds'</em> computer model. The goals of this library's development are:</p>
+<h2 id="Executive-Summary">Executive Summary<a class="anchor-link" href="#Executive-Summary"> </a></h2><p><code>sc_training</code> is a python library developed to document, organise and communicate the design of <em>SC2 Training Grounds'</em> computer model. I developed this library for the following purposes:</p>
 <ol>
-<li>To review the technical challenges associated with the creation of a solution such as <em>SC2 Training Grounds</em>.</li>
-<li>To assess the possibilities and limitations of the resources that could be used to develop this solution. Therefore, allowing me to design a more realistic and grounded user experience for the application. </li>
+<li>To review the technical challenges associated with creating a solution such as <em>SC2 Training Grounds</em>.</li>
+<li>To assess the possibilities and limitations of the resources I could use to develop this solution. Therefore, allowing me to design a more realistic and grounded user experience for the application. </li>
 <li>To provide a proof-of-concept that tests the technical feasibility of the project.</li>
 </ol>
-<p>I developed this library using literate and iterative programming. In other words, I built it while simultaneously providing a narrative explanation and documentation of its development (Knuth, 1984; Ramsey, 1994; Literate Programming, 2014; Kery et al., 2018). This methodology allows for the rapid testing exploration of ideas while integrating them into a functioning program (Howard, 2019). Hence, the library is simultaneously the program's documentation and the program itself.
-{% include tip.html content='I used <a href="https://nbdev.fast.ai/">nbdev</a> to facilitate this process. The use of this tool means that this document includes three components that can be explored separately or combined.  <strong>First</strong>, the library was developed through a series of <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/">Jupyter notebooks</a>. These interactive documents contain intertwined textual elements and source code that describe the ideas that support this library and the source code that compose its functions. The static version of these documents is included as a pdf appendix to the PhD project. Meanwhile, the interactive documents can be consulted using jupyter lab or other IPython interpreters (a guide to set up the Jupyter and IPython libraries to use these documents: <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/">Jupyter/IPython Quick Start Guide</a>). <strong>Second</strong>, the library is also exported as a traditional python library. Readers can find a functioning version of all the module&#8217;s in the <code>sc_training</code> folder of the library. Readers can use this code to replicate and verify any examples and experiments explored in the documentation and the notebooks. <strong>Third</strong>, these notebooks produce a website that serves as the library&#8217;s <a href="https://hdavidespinosa.github.io/sc_training/">Interactive Documentation</a>. This documentation omits many technical details focusing on the descriptions of the development process and the library&#8217;s structure.
-' %}</p>
+<p>In this case, I used literate and iterative programming to develop the library while providing a narrative explanation and documentation of this process (Knuth, 1984; Ramsey, 1994; Literate Programming, 2014; Kery et al., 2018). This methodology allows rapid testing and exploration of ideas while integrating them into a functioning program (Howard, 2019). Hence, the library is simultaneously the program's documentation and the program itself.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Setup">Setup<a class="anchor-link" href="#Setup"> </a></h2><p>Before going into the document itself it is important to clarify some aspects of the composition.</p>
+<h2 id="Accessing-the-Library's-Files-and-Documentation">Accessing the Library's Files and Documentation<a class="anchor-link" href="#Accessing-the-Library's-Files-and-Documentation"> </a></h2><p>{% include note.html content='a pdf version of this document is attached as Appendix C of my PhD project. This format is included for convenience. However, I remind the reader that, in this format, the library loses part of its original functions as an interactive artefact. Readers can download all the files described below from the following <a href="https://github.com/HDavidEspinosa/sc_training">GitHub repository</a>.
+' %}
+To facilitate the use of literary programming, I developed this library using I used <a href="https://nbdev.fast.ai/">nbdev</a>. The use of this tool means that this library is rendered in various ways to accommodate different interests.</p>
+<ul>
+<li>First, since nbdev uses <em>interactive notebooks</em> (see <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/">Jupyter notebooks</a>) as a development environment, the library was developed and is originally contained in this format. These interactive documents intertwine textual elements that describe the ideas that support its components and the source code that defines its functions (see <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/">Jupyter/IPython Quick Start Guide</a> for a guide on how to set up the Jupyter and IPython libraries to use these documents). </li>
+<li>Second, the library is also exported as a traditional <em>python library</em>. Readers can find a functioning version of all the library's modules in the <a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training">repository's <code>sc_training</code> folder</a>, which they can use to replicate and verify any examples and experiments explored in this deliverable. </li>
+<li>Third, these notebooks produce a <em>website</em> that serves as the library's <a href="https://hdavidespinosa.github.io/sc_training/">Interactive Documentation</a>. This documentation omits many technical details focusing on the descriptions of the development process and the library's structure.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Setup">Setup<a class="anchor-link" href="#Setup"> </a></h2><p>Before going into the document itself, it is important to clarify some aspects regarding their composition.</p>
 <p>Because of the nature of the documents, each notebook is exported as a module of the <code>sc_training</code> library.</p>
 <p>Meanwhile, since each notebook works as a separate module, I have to include some setup elements at the beginning of each document. Since this process is almost identical in most cases, I will cover it here so that I can hide it in the module's documentation.
-{% include note.html content='Remember that any elements that I hide in these documents can still be reviewed and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.
+{% include note.html content='Remember that any elements I hide in these documents can still be reviewed and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.
 ' %}
 The development of all modules starts with two elements: importing the module's dependencies and loading the development tests and sample data.</p>
 <p>Importing the module's dependencies means invoking several libraries used by each module. The following is an example of these imports.</p>
@@ -75,7 +87,7 @@ The development of all modules starts with two elements: importing the module's 
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># development.</span>
 
 <span class="c1"># These are some of the libraries of Python&#39;s standard library </span>
-<span class="c1"># I use to support differnt functionalities. </span>
+<span class="c1"># I use to support different functionalities. </span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">astuple</span><span class="p">,</span> <span class="n">field</span>
@@ -114,7 +126,7 @@ The development of all modules starts with two elements: importing the module's 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Additionally, to develop each module, I need to load some StarCraft II replay files (marked with the .SC2Replay extension). The game generates these files to store all relevant configuration and game-play information necessary to rebuild and reproduce a match.</p>
-<p>The replays used to test and develop this project are extracted from publicly available datasets. In no case do I access any personal or private information of the users or players. These data sets have been collected using Blizzards developer's API and their client protocol (SC2client-proto), which only gathers them with the express authorisation of the users. The following code illustrates how they are loaded using sc2reader and collected into variables that store <code>sc2reader.resources.Replay</code> objects for later processing. I store this data in the library's test_replays folder.
+<p>The replays used to test and develop this project are extracted from publicly available datasets. In no case do I access any personal or private information of the users or players. The following code illustrates how they are loaded using <code>sc2reader</code> and collected into variables that store <code>sc2reader.resources.Replay</code> objects for later processing. I store this data in the repository's <code>test_replays</code> folder.
 {% include tip.html content='One can load one replay at a time using the <code>sc2replays.load_replay(&lt;str_file_path&gt;)</code> method.' %}</p>
 
 </div>
@@ -147,7 +159,7 @@ The development of all modules starts with two elements: importing the module's 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x239dec65e80&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x1ec1d787dc0&gt;</pre>
 </div>
 
 </div>
@@ -188,7 +200,7 @@ The development of all modules starts with two elements: importing the module's 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;generator object SC2Factory.load_all at 0x00000239E4F4C120&gt;</pre>
+<pre>&lt;generator object SC2Factory.load_all at 0x000001EC234FFA50&gt;</pre>
 </div>
 
 </div>
@@ -244,7 +256,7 @@ The development of all modules starts with two elements: importing the module's 
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exportable-functions">Exportable functions<a class="anchor-link" href="#Exportable-functions"> </a></h2><p>In each module, I include a section where I compile all the exportable functions that respond to the challenges summarise by each module. Once exported, other modules can call these functions by importing the module that exported them in the first place.</p>
+<h2 id="Exportable-functions">Exportable functions<a class="anchor-link" href="#Exportable-functions"> </a></h2><p>In each module, I include a section where I compile all the exportable functions that respond to each module's challenges and requirements. Once exported, other modules can call these functions by importing the module that exported them in the first place.</p>
 <p>For example, in the following code, I demonstrate how to call the <a href="/sc_training/summarise_rpl.html#get_replay_info"><code>get_replay_info</code></a> function from the <code>summarise_rpl</code> module (see &lt;&lt;Chapter 1 - Summarising Replays&gt;&gt;).</p>
 
 </div>
@@ -257,7 +269,7 @@ The development of all modules starts with two elements: importing the module's 
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sc_training.summarise_rpl</span> <span class="kn">import</span> <span class="o">*</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sc_training.ingest.summarise_rpl</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1">#Note that get_replay_info is defined in the summarise_rpl module.</span>
 <span class="n">replay_data</span> <span class="o">=</span> <span class="n">get_replay_info</span><span class="p">(</span><span class="n">single_replay</span><span class="p">)</span>
@@ -273,146 +285,20 @@ The development of all modules starts with two elements: importing the module's 
 
 <div class="output_area">
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">ModuleNotFoundError</span>                       Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_38380/3927205414.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span><span class="ansi-green-intense-fg ansi-bold">from</span> sc_training<span class="ansi-yellow-intense-fg ansi-bold">.</span>summarise_rpl <span class="ansi-green-intense-fg ansi-bold">import</span> <span class="ansi-yellow-intense-fg ansi-bold">*</span>
-<span class="ansi-green-fg">      2</span> 
-<span class="ansi-green-fg">      3</span> <span class="ansi-red-intense-fg ansi-bold">#Note that get_replay_info is defined in the summarise_rpl module.</span>
-<span class="ansi-green-fg">      4</span> replay_data <span class="ansi-yellow-intense-fg ansi-bold">=</span> get_replay_info<span class="ansi-yellow-intense-fg ansi-bold">(</span>single_replay<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">      5</span> print<span class="ansi-yellow-intense-fg ansi-bold">(</span>replay_data<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>File path:                   c:\Users\david\Documents\phdcode\sc_training\test_replays\Jagannatha LE.SC2Replay 
+File name:                   Jagannatha LE.SC2Replay 
+Date (datetime.datetime):    2021-02-24 02:53:06 
+Duration (seconds):          590 
+Game type:                   1v1 
+Game release:                5.0.6.83830 
+Map:                         Jagannatha LE 
+Game category:               Ladder 
+winner:                      2 
+players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Loss&#39;), (2, &#39;MxChrisxM&#39;, &#39;Terran&#39;, &#39;Win&#39;)] 
 
-<span class="ansi-red-intense-fg ansi-bold">ModuleNotFoundError</span>: No module named &#39;sc_training.summarise_rpl&#39;</pre>
+</pre>
 </div>
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-to-use">How to use<a class="anchor-link" href="#How-to-use"> </a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Fill me in please! Don't forget code examples:</p>
-
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">astuple</span><span class="p">,</span> <span class="n">field</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
-
-
-<span class="kn">import</span> <span class="nn">sc2reader</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rps_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./test_replays&quot;</span><span class="p">)</span>
-<span class="n">game_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rps_path</span><span class="o">/</span><span class="s2">&quot;Jagannatha LE.SC2Replay&quot;</span><span class="p">)</span>
-<span class="n">single_replay</span> <span class="o">=</span> <span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="n">game_path</span><span class="p">)</span>
-<span class="n">single_replay</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x1bed12e7e50&gt;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p1</span> <span class="o">=</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p1</span><span class="o">.</span><span class="n">units</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[BeaconArmy [2640001],
- BeaconDefend [2680001],
- BeaconAttack [26C0001],
- BeaconHarass [2700001],
- BeaconIdle [2740001]]</pre>
-</div>
-
 </div>
 
 </div>

@@ -7,21 +7,29 @@ This document explores the technical back-end design for SC2 Training Grounds. I
 
 ## Executive Summary
 
-`sc_training` is a python library developed to document, organise and communicate the design of *SC2 Training Grounds'* computer model. The goals of this library's development are:
-1. To review the technical challenges associated with the creation of a solution such as *SC2 Training Grounds*.
-2. To assess the possibilities and limitations of the resources that could be used to develop this solution. Therefore, allowing me to design a more realistic and grounded user experience for the application. 
+`sc_training` is a python library developed to document, organise and communicate the design of *SC2 Training Grounds'* computer model. I developed this library for the following purposes:
+
+1. To review the technical challenges associated with creating a solution such as *SC2 Training Grounds*.
+2. To assess the possibilities and limitations of the resources I could use to develop this solution. Therefore, allowing me to design a more realistic and grounded user experience for the application. 
 3. To provide a proof-of-concept that tests the technical feasibility of the project.
 
-I developed this library using literate and iterative programming. In other words, I built it while simultaneously providing a narrative explanation and documentation of its development (Knuth, 1984; Ramsey, 1994; Literate Programming, 2014; Kery et al., 2018). This methodology allows for the rapid testing exploration of ideas while integrating them into a functioning program (Howard, 2019). Hence, the library is simultaneously the program's documentation and the program itself.
-{% include tip.html content='I used [nbdev](https://nbdev.fast.ai/) to facilitate this process. The use of this tool means that this document includes three components that can be explored separately or combined.  **First**, the library was developed through a series of [Jupyter notebooks](https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/). These interactive documents contain intertwined textual elements and source code that describe the ideas that support this library and the source code that compose its functions. The static version of these documents is included as a pdf appendix to the PhD project. Meanwhile, the interactive documents can be consulted using jupyter lab or other IPython interpreters (a guide to set up the Jupyter and IPython libraries to use these documents: [Jupyter/IPython Quick Start Guide](https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/)). **Second**, the library is also exported as a traditional python library. Readers can find a functioning version of all the module&#8217;s in the `sc_training` folder of the library. Readers can use this code to replicate and verify any examples and experiments explored in the documentation and the notebooks. **Third**, these notebooks produce a website that serves as the library&#8217;s [Interactive Documentation](https://hdavidespinosa.github.io/sc_training/). This documentation omits many technical details focusing on the descriptions of the development process and the library&#8217;s structure.' %} 
+In this case, I used literate and iterative programming to develop the library while providing a narrative explanation and documentation of this process (Knuth, 1984; Ramsey, 1994; Literate Programming, 2014; Kery et al., 2018). This methodology allows rapid testing and exploration of ideas while integrating them into a functioning program (Howard, 2019). Hence, the library is simultaneously the program's documentation and the program itself.
+
+## Accessing the Library's Files and Documentation
+{% include note.html content='a pdf version of this document is attached as Appendix C of my PhD project. This format is included for convenience. However, I remind the reader that, in this format, the library loses part of its original functions as an interactive artefact. Readers can download all the files described below from the following [GitHub repository](https://github.com/HDavidEspinosa/sc_training).' %}
+To facilitate the use of literary programming, I developed this library using I used [nbdev](https://nbdev.fast.ai/). The use of this tool means that this library is rendered in various ways to accommodate different interests. 
+
+- First, since nbdev uses _interactive notebooks_ (see [Jupyter notebooks](https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/)) as a development environment, the library was developed and is originally contained in this format. These interactive documents intertwine textual elements that describe the ideas that support its components and the source code that defines its functions (see [Jupyter/IPython Quick Start Guide](https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/) for a guide on how to set up the Jupyter and IPython libraries to use these documents). 
+- Second, the library is also exported as a traditional _python library_. Readers can find a functioning version of all the library's modules in the [repository's `sc_training` folder](https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training), which they can use to replicate and verify any examples and experiments explored in this deliverable. 
+- Third, these notebooks produce a _website_ that serves as the library's [Interactive Documentation](https://hdavidespinosa.github.io/sc_training/). This documentation omits many technical details focusing on the descriptions of the development process and the library's structure.
 
 ## Setup
-Before going into the document itself it is important to clarify some aspects of the composition. 
+Before going into the document itself, it is important to clarify some aspects regarding their composition. 
 
 Because of the nature of the documents, each notebook is exported as a module of the `sc_training` library. 
 
 Meanwhile, since each notebook works as a separate module, I have to include some setup elements at the beginning of each document. Since this process is almost identical in most cases, I will cover it here so that I can hide it in the module's documentation.
-{% include note.html content='Remember that any elements that I hide in these documents can still be reviewed and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.' %}
+{% include note.html content='Remember that any elements I hide in these documents can still be reviewed and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.' %}
 The development of all modules starts with two elements: importing the module's dependencies and loading the development tests and sample data.
 
 Importing the module's dependencies means invoking several libraries used by each module. The following is an example of these imports.
@@ -31,7 +39,7 @@ Importing the module's dependencies means invoking several libraries used by eac
 # development.
 
 # These are some of the libraries of Python's standard library 
-# I use to support differnt functionalities. 
+# I use to support different functionalities. 
 from pathlib import Path
 from pprint import pprint
 from dataclasses import dataclass, astuple, field
@@ -62,7 +70,7 @@ import sc2reader
 
 Additionally, to develop each module, I need to load some StarCraft II replay files (marked with the .SC2Replay extension). The game generates these files to store all relevant configuration and game-play information necessary to rebuild and reproduce a match. 
 
-The replays used to test and develop this project are extracted from publicly available datasets. In no case do I access any personal or private information of the users or players. These data sets have been collected using Blizzards developer's API and their client protocol (SC2client-proto), which only gathers them with the express authorisation of the users. The following code illustrates how they are loaded using sc2reader and collected into variables that store `sc2reader.resources.Replay` objects for later processing. I store this data in the library's test_replays folder.
+The replays used to test and develop this project are extracted from publicly available datasets. In no case do I access any personal or private information of the users or players. The following code illustrates how they are loaded using `sc2reader` and collected into variables that store `sc2reader.resources.Replay` objects for later processing. I store this data in the repository's `test_replays` folder.
 {% include tip.html content='One can load one replay at a time using the `sc2replays.load_replay(<str_file_path>)` method.' %}
 
 ```python
@@ -78,7 +86,7 @@ single_replay
 
 
 
-    <sc2reader.resources.Replay at 0x239dec65e80>
+    <sc2reader.resources.Replay at 0x1ec1d787dc0>
 
 
 
@@ -92,7 +100,7 @@ replays
 
 
 
-    <generator object SC2Factory.load_all at 0x00000239E4F4C120>
+    <generator object SC2Factory.load_all at 0x000001EC234FFA50>
 
 
 
@@ -123,83 +131,29 @@ with open(data_path/'upgrades.json') as f:
 
 ## Exportable functions
 
-In each module, I include a section where I compile all the exportable functions that respond to the challenges summarise by each module. Once exported, other modules can call these functions by importing the module that exported them in the first place.
+In each module, I include a section where I compile all the exportable functions that respond to each module's challenges and requirements. Once exported, other modules can call these functions by importing the module that exported them in the first place.
 
 For example, in the following code, I demonstrate how to call the `get_replay_info` function from the `summarise_rpl` module (see <<Chapter 1 - Summarising Replays>>).
 
 ```python
-from sc_training.summarise_rpl import *
+from sc_training.ingest.summarise_rpl import *
 
 #Note that get_replay_info is defined in the summarise_rpl module.
 replay_data = get_replay_info(single_replay)
 print(replay_data)
 ```
 
-
-    ---------------------------------------------------------------------------
-
-    ModuleNotFoundError                       Traceback (most recent call last)
-
-    ~\AppData\Local\Temp/ipykernel_38380/3927205414.py in <module>
-    ----> 1 from sc_training.summarise_rpl import *
-          2 
-          3 #Note that get_replay_info is defined in the summarise_rpl module.
-          4 replay_data = get_replay_info(single_replay)
-          5 print(replay_data)
-
-
-    ModuleNotFoundError: No module named 'sc_training.summarise_rpl'
-
-
-## How to use
-
-Fill me in please! Don't forget code examples:
-
-```python
-# This are this module's dependencies.
-from pathlib import Path
-from pprint import pprint
-from dataclasses import dataclass, astuple, field
-from datetime import datetime
-from typing import *
-
-
-import sc2reader
-
-```
-
-```python
-# This code sets up the notebook's sample replay.
-rps_path = Path("./test_replays")
-game_path = str(rps_path/"Jagannatha LE.SC2Replay")
-single_replay = sc2reader.load_replay(game_path)
-single_replay
-```
-
-
-
-
-    <sc2reader.resources.Replay at 0x1bed12e7e50>
-
-
-
-```python
-p1 = single_replay.player[1]
-```
-
-```python
-p1.units[:5]
-```
-
-
-
-
-    [BeaconArmy [2640001],
-     BeaconDefend [2680001],
-     BeaconAttack [26C0001],
-     BeaconHarass [2700001],
-     BeaconIdle [2740001]]
-
+    File path:                   c:\Users\david\Documents\phdcode\sc_training\test_replays\Jagannatha LE.SC2Replay 
+    File name:                   Jagannatha LE.SC2Replay 
+    Date (datetime.datetime):    2021-02-24 02:53:06 
+    Duration (seconds):          590 
+    Game type:                   1v1 
+    Game release:                5.0.6.83830 
+    Map:                         Jagannatha LE 
+    Game category:               Ladder 
+    winner:                      2 
+    players:                     [(1, 'HDEspino', 'Protoss', 'Loss'), (2, 'MxChrisxM', 'Terran', 'Win')] 
+    
 
 
 ## References

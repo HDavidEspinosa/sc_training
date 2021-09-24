@@ -120,7 +120,7 @@ nb_path: "05_handle_command_events.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>198.3050847457627
+<pre>79.32203389830521
 </pre>
 </div>
 </div>
@@ -530,7 +530,7 @@ Total sum: 151
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="calc_apms" class="doc_header"><code>calc_apms</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L68" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_apms</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="calc_apms" class="doc_header"><code>calc_apms</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L71" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_apms</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Extracts the average APM of a specific player during the whole game
 and the early, mid and late stages of the game.</p>
@@ -596,12 +596,46 @@ stages.</p>
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{&#39;early_APM&#39;: 615.9999999999949,
- &#39;late_APM&#39;: 468.99999999999727,
- &#39;mid_APM&#39;: 718.6666666666598,
- &#39;whole_APM&#39;: 909.7627118644067}
+<pre>{&#39;early_APM&#39;: 246.40000000000046,
+ &#39;late_APM&#39;: 187.60000000000045,
+ &#39;mid_APM&#39;: 287.46666666666664,
+ &#39;whole_APM&#39;: 363.9050847457606}
 </pre>
 </div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">player_</span> <span class="o">=</span> <span class="n">single_replay</span><span class="o">.</span><span class="n">player</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">player_</span><span class="o">.</span><span class="n">is_human</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>True</pre>
+</div>
+
 </div>
 
 </div>
@@ -621,7 +655,7 @@ stages.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="calc_spe_abil_ratios" class="doc_header"><code>calc_spe_abil_ratios</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L119" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_spe_abil_ratios</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="calc_spe_abil_ratios" class="doc_header"><code>calc_spe_abil_ratios</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L125" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_spe_abil_ratios</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Extracts a ratio from 0 to 1 that quantifies the use use of special
 abilities.</p>
@@ -719,7 +753,7 @@ abilities to general commands executed by the player.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_prefered_spec_abil" class="doc_header"><code>get_prefered_spec_abil</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L193" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_prefered_spec_abil</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="get_prefered_spec_abil" class="doc_header"><code>get_prefered_spec_abil</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L199" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_prefered_spec_abil</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Extracts the names of the two special abilities a player uses the
 most during the whole, early, mid and late games.</p>
@@ -813,7 +847,7 @@ most during the whole, early, mid and late games.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="calc_attack_ratio" class="doc_header"><code>calc_attack_ratio</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L235" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_attack_ratio</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
+<h4 id="calc_attack_ratio" class="doc_header"><code>calc_attack_ratio</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/handle_command_events.py#L241" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calc_attack_ratio</code>(<strong><code>rpl</code></strong>:<code>Replay</code>, <strong><code>pid</code></strong>:<code>int</code>)</p>
 </blockquote>
 <p>Calculates the ratio between a player's attack orders and their
 common commands.</p>

@@ -159,13 +159,14 @@ def build_indicators(rpl: sc2reader.resources.Replay,
                         calc_get_ctrl_grp_ratio,
                         calc_select_ratio,
                         list_player_upgrades,
-                        calc_spe_abil_ratios
+                        calc_spe_abil_ratios,
+                        calc_apms
                         ]
 
     double_functions = [count_composition,
                         count_started]
     indi_collect = working_db['indicators']
-    for pid, player in rpl.player.items():
+    for pid in rpl.player.keys():
         rpl_indicators = {}
         for func in simple_functions:
             rpl_indicators.update(func(rpl, pid))

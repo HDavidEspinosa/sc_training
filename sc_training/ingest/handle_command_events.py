@@ -48,20 +48,23 @@ MOVE_COMMAND = ['RightClick']
 # Internal Cell
 
 # Helper functions for calc_apms
-def reindex(apm_dict:dict) -> dict:
+def reindex(rpl: sc2reader.resources.Replay, apm_dict:dict) -> dict:
     """Uses a dictionary that contains the player's minute-to-minute average
     APM of the player to compose a dictionary that uses the correct time
     index for this values based on the match's extension"""
     out_dict = {}
     for m in apm_dict.keys():
-        real_t = calc_realtime_index(m, single_replay)
+        real_t = calc_realtime_index(m, rpl)
         out_dict[real_t] = apm_dict[m]
 
     return out_dict
 
 def average(lst: list[float]) -> float:
     """Calculates the average of a list of floats."""
-    return sum(lst)/len(lst)
+    if len(lst) != 0:
+        return sum(lst)/len(lst)
+    else:
+        return 0
 
 
 # Cell
@@ -85,7 +88,10 @@ def calc_apms(rpl: sc2reader.resources.Replay,
         - dict[str, float]
             Dictionary with the game stage names as key and the Average
             APMs measurements of each stage as values"""
-    apms_dict = reindex(rpl.player[pid].apm)
+    if not rpl.player[pid].is_human:
+        return {'whole_APM':0,'early_APM':0,'mid_APM':0,'late_APM':0,}
+
+    apms_dict = reindex(rpl, rpl.player[pid].apm)
 
     apms_lists = [[apm for m, apm in apms_dict.items() if m < 4],
                   [apm for m, apm in apms_dict.items() if 4 <= m < 8],

@@ -159,7 +159,7 @@ The development of all modules starts with two elements: importing the module's 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x1ec1d787dc0&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x20a3b95c550&gt;</pre>
 </div>
 
 </div>
@@ -200,7 +200,7 @@ The development of all modules starts with two elements: importing the module's 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;generator object SC2Factory.load_all at 0x000001EC234FFA50&gt;</pre>
+<pre>&lt;generator object SC2Factory.load_all at 0x0000020A3E430AC0&gt;</pre>
 </div>
 
 </div>
@@ -257,7 +257,7 @@ The development of all modules starts with two elements: importing the module's 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Exportable-functions">Exportable functions<a class="anchor-link" href="#Exportable-functions"> </a></h2><p>In each module, I include a section where I compile all the exportable functions that respond to each module's challenges and requirements. Once exported, other modules can call these functions by importing the module that exported them in the first place.</p>
-<p>For example, in the following code, I demonstrate how to call the <a href="/sc_training/summarise_rpl.html#get_replay_info"><code>get_replay_info</code></a> function from the <code>summarise_rpl</code> module (see &lt;&lt;Chapter 1 - Summarising Replays&gt;&gt;).</p>
+<p>For example, in the following code, I demonstrate how to call the <a href="/sc_training/summarise_rpl.html#get_replay_info"><code>get_replay_info</code></a> function from the <code>summarise_rpl</code> module (see &lt;<3 - Summarising Replays>&gt;).</p>
 
 </div>
 </div>
@@ -297,6 +297,98 @@ Game category:               Ladder
 winner:                      2 
 players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Loss&#39;), (2, &#39;MxChrisxM&#39;, &#39;Terran&#39;, &#39;Win&#39;)] 
 
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Another example would be the use of the ingest's sub-package <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> function to gather to collect the data from a replay batch into a database. This database is setup using a <code>config.json</code> file which <strong><em>MUST BE CREATED AND STORED IN THE PROJECT'S DATA FOLDER</em></strong> (see <a href="/sc_training/ingest.html#load_configurations"><code>load_configurations</code></a> and <a href="/sc_training/ingest.html#set_up_db"><code>set_up_db</code></a> in &lt;<9 - The main ingest module>&gt;).</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sc_training.ingest</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">inventory_replays</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Inventorying replays at: test_replays\TestProfilerBatch in database TEST_library
+Load complete.
+153 files processed
+0 files loaded
+4 files ignored
+149 files alredy existed
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Once this function runs correctly and a batch of replays is processed and its data is stored in the database specified in the <code>config.json</code> file, the user can call the <a href="/sc_training/profiler.html#build_player_race_profiles"><code>build_player_race_profiles</code></a> to extract the race profiles. 
+{% include note.html content='that this function only creates a race profile if the player has at least five replays played with that race in the processed batch. In the sample batch only one player fulfills this requirement, that is why only one profile is created per race.' %}</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sc_training</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">build_player_race_profiles</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Accessing: TEST_library
+1 users found in database
+Generating Player Profiles
+Created the following profiles
+Protoss: 1
+Zerg: 1
+Terran: 1
 </pre>
 </div>
 </div>

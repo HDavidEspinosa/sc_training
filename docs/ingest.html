@@ -31,10 +31,13 @@ nb_path: "07_ingest.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p>This section defines the ingest process' <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> and <code>get_replay_indicators</code> functions following the design proposed in the Ingestion Sequence Diagram (see Section 1 - Data Ingestion and Clustering Process). It exports these functions into the ingest module of the ingest sub-package.</p>
+<h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction"> </a></h2><p>This module defines the <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> function following the design proposed in the Ingestion Sequence Diagram (see &lt;<2 - Data Ingestion and Clustering Process>&gt;). It exports these functions into the ingest module of the ingest sub-package.</p>
 <h3 id="Exportable-Members">Exportable Members<a class="anchor-link" href="#Exportable-Members"> </a></h3><ul>
 <li><a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a></li>
-<li><code>get_replay_indicators</code></li>
+</ul>
+<h4 id="Exportable-Helper-functions">Exportable Helper functions<a class="anchor-link" href="#Exportable-Helper-functions"> </a></h4><ul>
+<li><a href="/sc_training/ingest.html#load_configurations"><code>load_configurations</code></a></li>
+<li><a href="/sc_training/ingest.html#set_up_db"><code>set_up_db</code></a></li>
 </ul>
 
 </div>
@@ -110,9 +113,10 @@ players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Wi
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Storing-inventory-in-Database">Storing inventory in Database<a class="anchor-link" href="#Storing-inventory-in-Database"> </a></h3><p>I can store the <a href="/sc_training/summarise_rpl.html#Replay_data"><code>Replay_data</code></a> objects returned by <a href="/sc_training/summarise_rpl.html#get_replay_info"><code>get_replay_info</code></a> in a document-based database to illustrate how this function could store an inventory or replay information in such a format. Storing this inventory means that other processes could access it to navigate the information built by the ingest process.</p>
-<p>In the case of <code>sc_training</code>, I use a <code>config.json</code> file stored in the working project's data folder to set up a MongoDB local client and, through it, a database. The following code loads this file and defines the loading procedure for when this module is imported.</p>
-<p>I will divide this loading process into three steps. First, I locate and load the <code>config</code> file. This location process allows users to create a custom <code>config.json</code> in a data directory in their projects. That file can be used to customise the name of the database, the port address and number for the MongoDB client, and the location of the replays the user wants to process.</p>
+<h3 id="Storing-inventory-in-Database">Storing inventory in Database<a class="anchor-link" href="#Storing-inventory-in-Database"> </a></h3><p>I can store the <a href="/sc_training/summarise_rpl.html#Replay_data"><code>Replay_data</code></a> objects returned by <a href="/sc_training/summarise_rpl.html#get_replay_info"><code>get_replay_info</code></a> in a document-based database. Storing this inventory in a database means that other processes could access it to navigate the information built by the ingest process.</p>
+<p><code>sc_training</code>, uses a <code>config.json</code> file, which users should create and store in the working project's data folder, to set up a MongoDB local client. Using this client and the information in the config file the solution also creates the database. The following code loads this file and defines the loading procedure for when this module is imported.</p>
+<p>I will divide this loading process into three steps.</p>
+<h4 id="1---Handle-Config-file">1 - Handle Config file<a class="anchor-link" href="#1---Handle-Config-file"> </a></h4><p>I locate and load the <code>config</code> file. This location process allows users to create a custom <code>config.json</code> in a data directory in their projects. That file can be used to customise the name of the database, the port address and number for the MongoDB client, and the location of the replays the user wants to process. Once the file is located, I also define a procedure to ensure it contains the necessary information to connect with the MongoDB client and access the appropriate database.</p>
 <p>Apart from this option, the code also defines how the module can default to a <code>config</code> file stored in the library's data folder if the user fails to provide this file. This default file allows the system to attempt to function based on the assumption that the users are using a Windows computer and have a traditional installation of StarCraft II and MongoDB. Of course, this default set-up would not be expected to work in all cases, but it provides an option and a sample of the <code>config</code> file.</p>
 
 </div>
@@ -120,18 +124,18 @@ players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Wi
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Once the file is located, I also define a procedure to ensure it contains the necessary information to connect with the MongoDB client and access the appropriate database.</p>
+<p>The <a href="/sc_training/ingest.html#load_configurations"><code>load_configurations</code></a> function, uses various internal helper functions to locate, open, verify and load the information from a project's <code>config.json</code> file. It stores this information as a <a href="/sc_training/ingest.html#Config_settings"><code>Config_settings</code></a> object.</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>All of those check and load procedures are contained within the <a href="/sc_training/ingest.html#load_configurations"><code>load_configurations</code></a> function. The following sample code shows the use of this fucntion to set up a test data base.</p>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
-</div>
-</div>
+    {% endraw %}
+
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -143,9 +147,67 @@ players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Wi
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="load_configurations" class="doc_header"><code>load_configurations</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L85" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_configurations</code>()</p>
+<h4 id="Config_settings" class="doc_header"><code>class</code> <code>Config_settings</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L86" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Config_settings</code>(<strong><code>port_address</code></strong>:<code>str</code>, <strong><code>port_number</code></strong>:<code>int</code>, <strong><code>db_name</code></strong>:<code>str</code>, <strong><code>replay_path</code></strong>:<code>str</code>)</p>
 </blockquote>
-<p>Loads the project's</p>
+<p>This type of object stores the data extracted from the config file.</p>
+<p><em>Attributes</em></p>
+
+<pre><code>- port_address: str
+    Address of the MongoDB Client that the program will connect to.
+- port_number: int
+    Port number of the client located in the address above
+- db_name: str
+    Name of the project's data base
+- replay_path: str
+    Path to the replays that must be analysed and stored in the
+    database</code></pre>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="load_configurations" class="doc_header"><code>load_configurations</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L115" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_configurations</code>()</p>
+</blockquote>
+<p>Loads the project's configuration information.</p>
+<p>This function locates, verifies and extracts the project's configuration
+data. This data tells sc_training where to find the replays it needs to
+inventory and process, how to connect to the MongoDB client it will use
+to store this data in a database, and the name of the database it
+should use.</p>
+<p><em>Args</em></p>
+
+<pre><code>- None
+
+</code></pre>
+<p><em>Returns</em></p>
+
+<pre><code>- Config_settings
+
+</code></pre>
+<p><em>Errors</em></p>
+
+<pre><code>- FileNotFound
+    If there is no valid config file
+- jsonschema.exceptions.ValidationError
+    If the config file does not contain the necessary data or does
+    not conform to the proper schema necessary to work.</code></pre>
 
 </div>
 
@@ -164,6 +226,13 @@ players:                     [(1, &#39;HDEspino&#39;, &#39;Protoss&#39;, &#39;Wi
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The following sample code shows the use of <a href="/sc_training/ingest.html#load_configurations"><code>load_configurations</code></a> to set up a test data base.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -232,8 +301,9 @@ Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_a
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Once the database is set, I can loop through the replays in a file inserting the return values of the functions from the ingest subpackage's different modules into collections within the database.</p>
-<p>According to the Ingest and Clustering Sequence Diagram (see Section 1 Intro), I need to define a function that takes a batch of replays and inserts the indexing data into the <code>replays</code> collection. The following code shows the use of a loop that would do precisely that. 
+<h4 id="2---Index-replay-batch-data-in-the-&quot;replays&quot;-collection">2 - Index replay batch data in the "replays" collection<a class="anchor-link" href="#2---Index-replay-batch-data-in-the-&quot;replays&quot;-collection"> </a></h4><p>Once the database is set, I store the main descriptive data of each replay into the <code>replays</code> collection of the database. This information is crucial to be able to iterate through the batch and also to have an index that indicates what players played which matches. It also can be used to review other information about the match, for instance, was the match a ranked match? or what races did each player played with.</p>
+<p>To extract this data I use the <a href="/sc_training/summarise_rpl.html#get_replay_info"><code>get_replay_info</code></a> function from the <code>summarise_rpl</code> module (see &lt;<3 - Summarising Replays>&gt;).</p>
+<p>To collect this data I loop through the replays in a file inserting the return values of the functions from the ingest sub-package's different modules into collections within the database. 
 {% include note.html content='in the example, I set up a new database called <code>sample_db</code> that I will use in this notebook for illustration purposes. ' %}</p>
 
 </div>
@@ -330,8 +400,8 @@ Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_a
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Building-the-indicators-collection">Building the <code>indicators</code> collection<a class="anchor-link" href="#Building-the-indicators-collection"> </a></h2><p>Similarly, I can loop through every replay in a batch, extracting the performance indicators for each replays' players. Moreover, I can store these indicators as separate documents in a second collection (i.e. rpl_indicators). This two collection approach was defined in Section 1's introduction.</p>
-<p>In the following code, I illustrate how such a loop would apply all the functions defined in the <code>ingest</code> subpackage to build the indicators of two players in a sample replay. Each player's indicators are stored in a single flat dictionary, i.e. a dictionary that has no nested data structures as values.</p>
+<h4 id="3---Building-the-indicators-collection">3 - Building the <code>indicators</code> collection<a class="anchor-link" href="#3---Building-the-indicators-collection"> </a></h4><p>Once a replay's descriptive data is stored in the <code>replays</code> collections, I need to also extract and store the performance indicators for each player in the match in the <code>indicators</code> collection.</p>
+<p>In the following code, I illustrate how I can use all the functions defined in the <code>ingest</code> sub-package to build the indicators of two players in a sample replay. Each player's indicators are stored in a single flat dictionary, i.e. a dictionary that has no nested data structures as values.</p>
 
 </div>
 </div>
@@ -343,10 +413,13 @@ Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_a
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">indicators</span> <span class="o">=</span> <span class="n">sample_db</span><span class="p">[</span><span class="s1">&#39;indicators&#39;</span><span class="p">]</span>
-
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># First I locate the sample file.</span>
 <span class="n">sample_replay</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc2reader</span><span class="o">.</span><span class="n">load_replay</span><span class="p">(</span><span class="s1">&#39;test_replays\Jagannatha LE.SC2Replay&#39;</span><span class="p">)]</span>
 
+<span class="c1"># I create two list of all the functions from the ingest sub-package that I use</span>
+<span class="c1"># to collect the player&#39;s performance indicators.</span>
+<span class="c1"># I use two lists, because I need to make sure that all functions in the </span>
+<span class="c1"># list have the same caller structure.</span>
 <span class="n">simple_functions</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_player_macro_econ_stats</span><span class="p">,</span>
                     <span class="n">get_expan_times</span><span class="p">,</span>
                     <span class="n">get_expan_counts</span><span class="p">,</span>
@@ -361,23 +434,35 @@ Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_a
 <span class="n">double_functions</span> <span class="o">=</span> <span class="p">[</span><span class="n">count_composition</span><span class="p">,</span>
                     <span class="n">count_started</span><span class="p">]</span>
 
-
-
-
+<span class="c1"># I loop through the replays in sample replay, and through the players</span>
+<span class="c1"># in each replay. In each  storing the indicators of each player as a </span>
+<span class="c1"># dictionary in the indicators_list. </span>
 <span class="n">indicators_list</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">rpl</span> <span class="ow">in</span> <span class="n">sample_replay</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Processing: </span><span class="si">{</span><span class="n">rpl</span><span class="o">.</span><span class="n">filename</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">pid</span><span class="p">,</span> <span class="n">player</span> <span class="ow">in</span> <span class="n">rpl</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Processing player: pid:</span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">player</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Declare the dict that will contain all of the players performance</span>
+        <span class="c1"># indicators</span>
         <span class="n">rpl_indicators</span> <span class="o">=</span> <span class="p">{}</span>
         
+        <span class="c1"># Run through all functions that need the caller arguments rpl</span>
+        <span class="c1"># (for the replay being analysed) and pid (for the player id of</span>
+        <span class="c1"># the player being parsed) and that return a flat dict. </span>
         <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">simple_functions</span><span class="p">:</span>
             <span class="n">rpl_indicators</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">rpl</span><span class="p">,</span> <span class="n">pid</span><span class="p">))</span>
 
+        <span class="c1"># Run through all functions that need the caller arguments rpl</span>
+        <span class="c1"># (for the replay being analysed), pid (for the player id of</span>
+        <span class="c1"># the player being parsed) and a flag to focus on extracting data </span>
+        <span class="c1"># from the player&#39;s building or troops, and that return a flat dict.</span>
         <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">double_functions</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]:</span>
                 <span class="n">rpl_indicators</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">flatten_indicators</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">rpl</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">flag</span><span class="p">)))</span>
-                
+
+        <span class="c1"># I run this last function appart, because I need to flatten the</span>
+        <span class="c1"># output so that the resulting dictionary has no nested levels. </span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">get_prefered_spec_abil</span><span class="p">(</span><span class="n">rpl</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span>
         <span class="n">rpl_indicators</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">flatten_indicators</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
                 
@@ -409,8 +494,7 @@ Processing player: pid:2 Player 2 - MxChrisxM (Terran)
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>As a result of the code above, <code>indicaors_list</code> now contains two dictionaries that store the indicators for each player. 
-{% include tip.html content='In some cases, each player&#8217;s indicators lists would contain a different number of indicators. This difference exists because the list stores separate counts for the players&#8217; units and buildings according to their race during the match. Remember that each one of the game races has a different number of available units. ' %}</p>
+<p>As a result of the code above, <code>indicators_list</code> now contains two dictionaries that store the indicators for each player. In the <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> function, I store this data in the database's <code>indicators</code> collection instead of a list. In the previous code I used a list to illustrate how the process returns the following results:</p>
 
 </div>
 </div>
@@ -460,15 +544,21 @@ Second set of indicators contains:  377 indicators.
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Exportable-functions">Exportable functions<a class="anchor-link" href="#Exportable-functions"> </a></h2><p>This section defines <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a>. With this function, users can provide a directory containing multiple <code>.SC2Replay</code> files. The function will build four collections in the database specified in the <code>config.json</code> file.</p>
-<p>Thus, I have condensed two initially proposed functions in the ingestion process diagram, i.e. <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> and <code>get_replay_indicators</code>, to run in one loop. I also split the indicators by play race into separate collections. This separation will make it easier to compare and condense these replays into the players' race profiles.</p>
+<p>{% include tip.html content='In some cases, each player&#8217;s indicators lists would contain a different number of indicators. This difference exists because the list stores separate counts for the players&#8217; units and buildings according to their race during the match. Remember that each one of the game races has a different number of available units. ' %}</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Exportable-functions">Exportable functions<a class="anchor-link" href="#Exportable-functions"> </a></h2><p>This section defines <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a>. Users can pass a directory containing multiple <code>.SC2Replay</code> files to this function and it will extract all data from these files and store it in the <code>replays</code> and <code>indicators</code> collection of the projects database (as defined in the <code>config.json</code> file) following the logic explained above.</p>
 <p>Internally, the function uses three helper functions:</p>
 <ul>
 <li><a href="/sc_training/ingest.html#set_up_db"><code>set_up_db</code></a>: connects to the MongoDB client and loads the working database.</li>
 <li><a href="/sc_training/ingest.html#verify_replays_path"><code>verify_replays_path</code></a>: makes sure that the path past by the user is valid.</li>
 <li><a href="/sc_training/ingest.html#build_indicators"><code>build_indicators</code></a>: runs through the indicator extraction loop and stores the results in the indicators collections.</li>
 </ul>
-<p>Of these, I export the <a href="/sc_training/ingest.html#set_up_db"><code>set_up_db</code></a>.</p>
+<p>Of these, I export the <a href="/sc_training/ingest.html#set_up_db"><code>set_up_db</code></a>, given that it can be useful in other modules (see for example &lt;<10 - Player Profiler>&gt;)</p>
 
 </div>
 </div>
@@ -484,9 +574,14 @@ Second set of indicators contains:  377 indicators.
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="set_up_db" class="doc_header"><code>set_up_db</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L120" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>set_up_db</code>()</p>
+<h4 id="set_up_db" class="doc_header"><code>set_up_db</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L170" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>set_up_db</code>()</p>
 </blockquote>
 <p>Loads the database specified in the project's config.json file.</p>
+<p><em>Returns</em></p>
+
+<pre><code>- pymongo.database.Database
+    Python object that allows the user to interact with the
+    database specified in the project's config file.</code></pre>
 
 </div>
 
@@ -507,11 +602,43 @@ Second set of indicators contains:  377 indicators.
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="inventory_replays"><a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a><a class="anchor-link" href="#inventory_replays"> </a></h3><p>So, to summarise, the main exportable function of the ingest subpackage is <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a>.</p>
+<p>The following is a sample run of the <a href="/sc_training/ingest.html#set_up_db"><code>set_up_db</code></a> function to illustrate how it can be used to connect to a mongo database.</p>
 
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">worcking_bd</span> <span class="o">=</span> <span class="n">set_up_db</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">worcking_bd</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;pymongo.database.Database&#39;&gt;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -523,7 +650,7 @@ Second set of indicators contains:  377 indicators.
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="inventory_replays" class="doc_header"><code>inventory_replays</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L189" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>inventory_replays</code>(<strong><code>replay_batch</code></strong>:<code>Any</code>)</p>
+<h4 id="inventory_replays" class="doc_header"><code>inventory_replays</code><a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training/ingest/ingest.py#L248" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>inventory_replays</code>()</p>
 </blockquote>
 <p>This function builds two collections within the database
 specified in the config.json file.</p>
@@ -564,7 +691,7 @@ cwd/data/config.json in the following collections:</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>After running the function once I get the following sample results:</p>
+<p>After running the function once, I get the following sample results:</p>
 
 </div>
 </div>
@@ -577,7 +704,7 @@ cwd/data/config.json in the following collections:</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mongo_client</span><span class="o">.</span><span class="n">drop_database</span><span class="p">(</span><span class="s1">&#39;TEST_library&#39;</span><span class="p">)</span>
-<span class="n">inventory_replays</span><span class="p">(</span><span class="n">test_batch_path</span><span class="p">)</span>
+<span class="n">inventory_replays</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -590,7 +717,7 @@ cwd/data/config.json in the following collections:</p>
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Inventorying replays at: c:\Users\david\Documents\phdcode\sc_training\test_replays\TestProfilerBatch in database TEST_library
+<pre>Inventorying replays at: test_replays\TestProfilerBatch in database TEST_library
 Load complete.
 153 files processed
 149 files loaded

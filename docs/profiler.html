@@ -242,7 +242,7 @@ nb_path: "08_profiler.ipynb"
 <span class="n">working_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">working_repls</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> 
                            <span class="n">index</span><span class="o">=</span><span class="n">working_repls</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
                                                       <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">working_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">working_df</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">memory_usage</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_counts</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -258,9 +258,7 @@ nb_path: "08_profiler.ipynb"
 <pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
 RangeIndex: 130 entries, 0 to 129
 Columns: 389 entries, unspent_minerals_avg_whole to late_started_zealot
-dtypes: float64(97), int64(284), object(8)
-memory usage: 395.2+ KB
-</pre>
+dtypes: float64(97), int64(284), object(8)</pre>
 </div>
 </div>
 
@@ -273,7 +271,7 @@ memory usage: 395.2+ KB
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>After extracting all replays relative to a player and race, I group them into a DataFrame. In the sample case, the DataFrame has 130 entries and 385 columns. These columns represent the indicators stored by <a href="/sc_training/ingest.html#inventory_replays"><code>inventory_replays</code></a> into the <code>indicators</code> collection.</p>
-<p>More importantly, I see that there are three types of data stored in the columns (93 store decimals (type float64), 284 store integers (type int64) and 8 store other value types). In this case, the other value types are categorical values in the form of strings, which store the players' first and second prefered special abilities, as I show in the code below.</p>
+<p>More importantly, I see that there are three types of data stored in the columns (97 store decimals (type float64), 284 store integers (type int64) and 8 store other value types). In this case, the other value types are categorical values in the form of strings, which store the players' first and second prefered special abilities, as I show in the code below.</p>
 
 </div>
 </div>
@@ -288,57 +286,14 @@ memory usage: 395.2+ KB
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">working_df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">[</span><span class="n">working_df</span><span class="o">.</span><span class="n">dtypes</span> <span class="o">==</span> <span class="nb">object</span><span class="p">]</span>
 
 <span class="n">cat_features</span> <span class="o">=</span> <span class="n">working_df</span><span class="p">[[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">categorical_columns</span><span class="o">.</span><span class="n">index</span><span class="p">]]</span>
-<span class="n">cat_features</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
-</pre></div>
 
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 130 entries, 0 to 129
-Data columns (total 8 columns):
- #   Column                 Non-Null Count  Dtype 
----  ------                 --------------  ----- 
- 0   first_whole_pref_sab   130 non-null    object
- 1   second_whole_pref_sab  130 non-null    object
- 2   first_early_pref_sab   130 non-null    object
- 3   second_early_pref_sab  130 non-null    object
- 4   first_mid_pref_sab     130 non-null    object
- 5   second_mid_pref_sab    130 non-null    object
- 6   first_late_pref_sab    130 non-null    object
- 7   second_late_pref_sab   130 non-null    object
-dtypes: object(8)
-memory usage: 8.2+ KB
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pref_abil_df</span> <span class="o">=</span> <span class="n">working_df</span><span class="p">[[</span><span class="s1">&#39;first_whole_pref_sab&#39;</span><span class="p">,</span>
+<span class="c1"># I only include 4 of the 8 columns for space.</span>
+<span class="n">pref_abil_df</span> <span class="o">=</span> <span class="n">working_df</span><span class="p">[[</span><span class="s1">&#39;first_whole_pref_sab&#39;</span><span class="p">,</span>
  <span class="s1">&#39;second_whole_pref_sab&#39;</span><span class="p">,</span>
- <span class="s1">&#39;first_early_pref_sab&#39;</span><span class="p">,</span>
- <span class="s1">&#39;second_early_pref_sab&#39;</span><span class="p">]]</span>
+ <span class="s1">&#39;first_mid_pref_sab&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;second_mid_pref_sab&#39;</span><span class="p">]]</span>
 
-<span class="c1"># print(pref_abil_df.head(10).to_markdown())</span>
+<span class="c1"># print(pref_abil_df.tail(5).to_markdown())</span>
 </pre></div>
 
     </div>
@@ -355,79 +310,44 @@ memory usage: 8.2+ KB
 <th style="text-align:right"></th>
 <th style="text-align:left">first_whole_pref_sab</th>
 <th style="text-align:left">second_whole_pref_sab</th>
-<th style="text-align:left">first_early_pref_sab</th>
-<th style="text-align:left">second_early_pref_sab</th>
+<th style="text-align:left">first_mid_pref_sab</th>
+<th style="text-align:left">second_mid_pref_sab</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:right">0</td>
+<td style="text-align:right">125</td>
 <td style="text-align:left">ChronoBoostEnergyCost</td>
 <td style="text-align:left">None</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
 <td style="text-align:left">None</td>
-</tr>
-<tr>
-<td style="text-align:right">1</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">PrismaticAlignment</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
 <td style="text-align:left">None</td>
 </tr>
 <tr>
-<td style="text-align:right">2</td>
+<td style="text-align:right">126</td>
 <td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">GravitonBeam</td>
+<td style="text-align:left">UnloadTargetWarpPrism</td>
 <td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">None</td>
+<td style="text-align:left">UnloadTargetWarpPrism</td>
 </tr>
 <tr>
-<td style="text-align:right">3</td>
+<td style="text-align:right">127</td>
+<td style="text-align:left">ForceField</td>
 <td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">ArchonWarpSelection</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">None</td>
-</tr>
-<tr>
-<td style="text-align:right">4</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">ForceField</td>
 <td style="text-align:left">GuardianShield</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">None</td>
 </tr>
 <tr>
-<td style="text-align:right">5</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">AdeptPhaseShift</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">CancelSlot</td>
-</tr>
-<tr>
-<td style="text-align:right">6</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">CancelSlot</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">None</td>
-</tr>
-<tr>
-<td style="text-align:right">7</td>
+<td style="text-align:right">128</td>
 <td style="text-align:left">ChronoBoostEnergyCost</td>
 <td style="text-align:left">ForceField</td>
 <td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">None</td>
+<td style="text-align:left">ForceField</td>
 </tr>
 <tr>
-<td style="text-align:right">8</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">GuardianShield</td>
+<td style="text-align:right">129</td>
 <td style="text-align:left">ChronoBoostEnergyCost</td>
 <td style="text-align:left">None</td>
-</tr>
-<tr>
-<td style="text-align:right">9</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
-<td style="text-align:left">PhasingMode</td>
-<td style="text-align:left">ChronoBoostEnergyCost</td>
+<td style="text-align:left">None</td>
 <td style="text-align:left">None</td>
 </tr>
 </tbody>

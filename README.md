@@ -86,7 +86,7 @@ single_replay
 
 
 
-    <sc2reader.resources.Replay at 0x1ec1d787dc0>
+    <sc2reader.resources.Replay at 0x20a3b95c550>
 
 
 
@@ -100,7 +100,7 @@ replays
 
 
 
-    <generator object SC2Factory.load_all at 0x000001EC234FFA50>
+    <generator object SC2Factory.load_all at 0x0000020A3E430AC0>
 
 
 
@@ -133,7 +133,7 @@ with open(data_path/'upgrades.json') as f:
 
 In each module, I include a section where I compile all the exportable functions that respond to each module's challenges and requirements. Once exported, other modules can call these functions by importing the module that exported them in the first place.
 
-For example, in the following code, I demonstrate how to call the `get_replay_info` function from the `summarise_rpl` module (see <<Chapter 1 - Summarising Replays>>).
+For example, in the following code, I demonstrate how to call the `get_replay_info` function from the `summarise_rpl` module (see <<3 - Summarising Replays>>).
 
 ```python
 from sc_training.ingest.summarise_rpl import *
@@ -154,6 +154,40 @@ print(replay_data)
     winner:                      2 
     players:                     [(1, 'HDEspino', 'Protoss', 'Loss'), (2, 'MxChrisxM', 'Terran', 'Win')] 
     
+    
+
+Another example would be the use of the ingest's sub-package `inventory_replays` function to gather to collect the data from a replay batch into a database. This database is setup using a `config.json` file which ***MUST BE CREATED AND STORED IN THE PROJECT'S DATA FOLDER*** (see `load_configurations` and `set_up_db` in <<9 - The main ingest module>>).
+
+```python
+from sc_training.ingest import *
+
+inventory_replays()
+```
+
+    Inventorying replays at: test_replays\TestProfilerBatch in database TEST_library
+    Load complete.
+    153 files processed
+    0 files loaded
+    4 files ignored
+    149 files alredy existed
+    
+
+Once this function runs correctly and a batch of replays is processed and its data is stored in the database specified in the `config.json` file, the user can call the `build_player_race_profiles` to extract the race profiles. 
+{% include note.html content='that this function only creates a race profile if the player has at least five replays played with that race in the processed batch. In the sample batch only one player fulfills this requirement, that is why only one profile is created per race.' %}
+
+```python
+from sc_training import *
+
+build_player_race_profiles()
+```
+
+    Accessing: TEST_library
+    1 users found in database
+    Generating Player Profiles
+    Created the following profiles
+    Protoss: 1
+    Zerg: 1
+    Terran: 1
     
 
 ## References

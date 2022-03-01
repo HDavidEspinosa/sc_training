@@ -52,9 +52,8 @@ nb_path: "index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Accessing-the-Library's-Files-and-Documentation">Accessing the Library's Files and Documentation<a class="anchor-link" href="#Accessing-the-Library's-Files-and-Documentation"> </a></h2><p>{% include note.html content='a pdf version of this document is attached as Appendix C of my PhD project. This format is included for convenience. However, I remind the reader that, in this format, the library loses part of its original functions as an interactive artefact. Readers can download all the files described below from the following <a href="https://github.com/HDavidEspinosa/sc_training">GitHub repository</a>.
-' %}
-To facilitate the use of literary programming, I developed this library using I used <a href="https://nbdev.fast.ai/">nbdev</a>. The use of this tool means that this library is rendered in various ways to accommodate different interests.</p>
+<h2 id="Accessing-the-Library's-Files-and-Documentation">Accessing the Library's Files and Documentation<a class="anchor-link" href="#Accessing-the-Library's-Files-and-Documentation"> </a></h2><p>{% include note.html content='a pdf version of this document is attached as Appendix C of my PhD project. This format is included for convenience. However, I remind the reader that, in this format, the library loses part of its original functions as an interactive artefact. Readers can download all the files described below from the following <a href="https://github.com/HDavidEspinosa/sc_training">GitHub repository</a>.' %}
+To facilitate the use of literate programming, I developed this library using I used <a href="https://nbdev.fast.ai/">nbdev</a>. The use of this tool means that this library is rendered in various ways to accommodate different interests.</p>
 <ul>
 <li>First, since nbdev uses <em>interactive notebooks</em> (see <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/">Jupyter notebooks</a>) as a development environment, the library was developed and is originally contained in this format. These interactive documents intertwine textual elements that describe the ideas that support its components and the source code that defines its functions (see <a href="https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/">Jupyter/IPython Quick Start Guide</a> for a guide on how to set up the Jupyter and IPython libraries to use these documents). </li>
 <li>Second, the library is also exported as a traditional <em>python library</em>. Readers can find a functioning version of all the library's modules in the <a href="https://github.com/HDavidEspinosa/sc_training/tree/master/sc_training">repository's <code>sc_training</code> folder</a>, which they can use to replicate and verify any examples and experiments explored in this deliverable. </li>
@@ -69,8 +68,7 @@ To facilitate the use of literary programming, I developed this library using I 
 <h2 id="Setup">Setup<a class="anchor-link" href="#Setup"> </a></h2><p>Before going into the document itself, it is important to clarify some aspects regarding their composition.</p>
 <p>Because of the nature of the documents, each notebook is exported as a module of the <code>sc_training</code> library.</p>
 <p>Meanwhile, since each notebook works as a separate module, I have to include some setup elements at the beginning of each document. Since this process is almost identical in most cases, I will cover it here so that I can hide it in the module's documentation.
-{% include note.html content='Remember that any elements I hide in these documents can still be reviewed and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.
-' %}
+{% include note.html content='Remember that any elements I hide in these documents can still be reviewed and verified in the library&#8217;s development notebooks and the library&#8217;s exported source code.' %}
 The development of all modules starts with two elements: importing the module's dependencies and loading the development tests and sample data.</p>
 <p>Importing the module's dependencies means invoking several libraries used by each module. The following is an example of these imports.</p>
 
@@ -159,7 +157,7 @@ The development of all modules starts with two elements: importing the module's 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;sc2reader.resources.Replay at 0x20a3b95c550&gt;</pre>
+<pre>&lt;sc2reader.resources.Replay at 0x1af38d6d610&gt;</pre>
 </div>
 
 </div>
@@ -200,7 +198,7 @@ The development of all modules starts with two elements: importing the module's 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;generator object SC2Factory.load_all at 0x0000020A3E430AC0&gt;</pre>
+<pre>&lt;generator object SC2Factory.load_all at 0x000001AF3BA9BB30&gt;</pre>
 </div>
 
 </div>
